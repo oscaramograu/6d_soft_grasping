@@ -1,0 +1,6 @@
+<launch>
+  <!-- Include the parameters to the ros parameter server -->
+  <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/move_group_params.yaml"/>
+
+  <node name="controller_node" pkg="pandaqb_movegroup_control" type="test_target_approacher" output="screen" /> 
+</launch>

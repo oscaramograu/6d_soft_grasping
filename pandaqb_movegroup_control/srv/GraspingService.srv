@@ -1,0 +1,7 @@
+# Request
+sensor_msgs/Image image
+---
+#Response
+geometry_msgs/Point pose
+float32 w
+float32 theta

@@ -1,0 +1,8 @@
+dummy_nn_node:
+  # grasp_position: [0.41, -0.1, 0.0]
+  # theta: 0.25
+  # w: 0.05
+  
+  grasp_position: [0.3, 0.3, 0.0]
+  theta: 0.5
+  w: 0.05
