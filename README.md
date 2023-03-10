@@ -1,3 +1,8 @@
+# ToDos
+### 1 - Change the visualization markers while planning
+### 2 - Write the camera node
+### 3 - Write the NN node
+
 # Install all the dependencies in Linux:
 Install ROS Noetic: http://wiki.ros.org/ROS/Installation
 
@@ -19,7 +24,7 @@ Source the workspace:
 
 Remember that to avoid having to source the ```~/catkin_ws/devel/setup.bash``` each time you open a new shell, you can add the ```“source ~/catkin_ws/devel/setup.bash”``` on your ```~/.bashrc```.
 
-# To execute the code the simulation:
+# To use the code:
 ### 1 - Launch the simulation:
 ```roslaunch pandaqb_movegroup_control robot_only.launch```
 
@@ -31,9 +36,3 @@ Remember that to avoid having to source the ```~/catkin_ws/devel/setup.bash``` e
 
 ### 3 - Launch the Controller Node:
 ``` roslaunch pandaqb_movegroup_control controller_node.launch```
-
-# ToDos
-### 1 - Change the visualization markers while planning
-### 2 - Write the camera node
-### 3 - Write the NN node
-
