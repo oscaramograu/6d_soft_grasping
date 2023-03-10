@@ -2,5 +2,5 @@
   <!-- Include the parameters to the ros parameter server -->
   <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/move_group_params.yaml"/>
 
-  <node name="test_grasper" pkg="pandaqb_movegroup_control" type="test_grasper" output="screen" /> 
+  <node name="controller_node" pkg="pandaqb_movegroup_control" type="controller_node" output="screen" /> 
 </launch>

@@ -3,14 +3,18 @@
 #include <pandaqb_movegroup_control/CameraAPIs/image_handler.h>
 
 
-class TargetApproacher: public MoveGroup{
+class Grasper: public MoveGroup{
 public:
-    TargetApproacher(float theta_, float w_, std::vector <float> GraspPoint_);
-    ~TargetApproacher();
+    Grasper();
+    ~Grasper();
 
-    // Function to request the target pose and approach it
+    void setGraspParams(float theta_, float w_, std::vector <float> GraspPoint_);
+    void setGraspParams(float theta_, float w_, geometry_msgs::Point graspPoint_);
+    
     void approach();
 
+    void grasp();
+    
 private:
     // Function to make the request of the grasp pose in an image
     void setTragetOrientation();

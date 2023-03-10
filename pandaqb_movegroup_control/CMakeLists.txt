@@ -17,7 +17,8 @@ find_package(Eigen3 REQUIRED)
 
 add_service_files(
   FILES
-  GraspingService.srv
+  RequestGrasp.srv
+  DetectGrasp.srv
 )
 
 generate_messages(
@@ -56,22 +57,28 @@ add_library(API_Libraries
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
 
   ${PROJECT_SOURCE_DIR}/src/CameraAPIs/image_handler.cpp
+  ${PROJECT_SOURCE_DIR}/src/CameraAPIs/camera.cpp
 )
 
-add_executable(test_grasper 
-  ${PROJECT_SOURCE_DIR}/src/test_controller.cpp
+add_executable(controller_node 
+  ${PROJECT_SOURCE_DIR}/src/controller_node.cpp
 
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/grasper.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
+
+)
+
+add_executable(camera_node 
+  src/camera_node.cpp
+
   ${PROJECT_SOURCE_DIR}/src/CameraAPIs/image_handler.cpp
+  ${PROJECT_SOURCE_DIR}/src/CameraAPIs/camera.cpp
 )
 
-add_executable(grasp_server 
-  src/grasp_server.cpp
-)
+add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(camera_node ${camera_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_dependencies(test_grasper ${test_grasper_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(API_Libraries ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(API_Libraries
@@ -81,14 +88,14 @@ target_link_libraries(API_Libraries
   ${moveit_ros_planning_interface_LIBRARIES}
 )
 
-target_link_libraries(test_grasper
+target_link_libraries(controller_node
   Eigen3::Eigen
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   ${moveit_ros_planning_interface_LIBRARIES}
 )
 
-target_link_libraries(grasp_server
+target_link_libraries(camera_node
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
 )

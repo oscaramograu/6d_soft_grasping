@@ -1,0 +1,6 @@
+<launch>
+  <!-- Include the parameters to the ros parameter server -->
+  <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/fake_params.yaml"/>
+  
+  <node name="camera_node" pkg="pandaqb_movegroup_control" type="camera_node" output="screen" /> 
+</launch>

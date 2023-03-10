@@ -1,4 +1,4 @@
-dummy_nn_node:
+fake_params:
   # grasp_position: [0.41, -0.1, 0.0]
   # theta: 0.25
   # w: 0.05

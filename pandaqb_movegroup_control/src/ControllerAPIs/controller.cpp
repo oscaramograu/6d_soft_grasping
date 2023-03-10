@@ -1,0 +1,33 @@
+#include <pandaqb_movegroup_control/ControllerAPIs/controller.h>
+
+Controller::Controller(){
+    RequestClient = nh_.serviceClient<pandaqb_movegroup_control::RequestGrasp>("/RequestGrasp");
+}
+
+Controller::~Controller(){
+}
+
+void Controller::routine(){
+    // 1 - Move Home
+    grasper.moveToHomePose();
+
+    // 2 - Make a grasp request to the camera node and set the grasp parameters
+    RequestGrasp();
+
+    // 3 - Approach target pose
+    grasper.approach();
+
+    // 4 - Grasp the object
+    // grasper.grasp();
+}
+
+void Controller::RequestGrasp(){
+    if(RequestClient.call(RequestGraspSrv)){
+        ROS_INFO_STREAM("Grasp requested to the Camera Node from the Controller Node");
+        grasper.setGraspParams(RequestGraspSrv.response.theta, 
+            RequestGraspSrv.response.w, RequestGraspSrv.response.pose);
+    }
+    else{
+        ROS_ERROR_STREAM("There was an error calling the RequestGrasp service.");
+    }
+}

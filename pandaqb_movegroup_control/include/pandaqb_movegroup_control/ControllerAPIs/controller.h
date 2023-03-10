@@ -1,6 +1,6 @@
-#include <pandaqb_movegroup_control/GraspingService.h>
-#include <pandaqb_movegroup_control/CameraAPIs/image_handler.h>
 #include <pandaqb_movegroup_control/ControllerAPIs/grasper.h>
+#include <pandaqb_movegroup_control/RequestGrasp.h>
+
 
 class Controller {
 public:
@@ -10,21 +10,15 @@ public:
     void routine();
 
 private:
-    // Function to make the request of the grasp pose in an image
-    void GraspPoseCallback();
+    // Make the request of the grasp parameters to the camera node
+    void RequestGrasp();
 
-    // Used for client service communication
+    // Client server communication attributes
     ros::NodeHandle nh_;
     ros::ServiceClient RequestClient;
-    ros::ServiceServer PoseServer;
 
-    pandaqb_movegroup_control::GraspingService srv;
+    pandaqb_movegroup_control::RequestGrasp RequestGraspSrv;
 
-    // Recieved from DL model in requestPose()
-    float theta, w;
-    geometry_msgs::Pose::_position_type graspPose;
-
-    // Used to move to approach to the target pose in approach()
-    float z_offset;
-    geometry_msgs::Pose targetPose;
+    // Grasper class instance
+    Grasper grasper;
 };

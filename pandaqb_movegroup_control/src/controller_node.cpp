@@ -1,33 +1,41 @@
 #include <ros/ros.h>
 #include <moveit/move_group_interface/move_group_interface.h>
-#include <pandaqb_movegroup_control/ControllerAPIs/grasper.h>
+#include <pandaqb_movegroup_control/ControllerAPIs/controller.h>
 
 int main(int argc, char** argv){
     // Initialize the node
-    ros::init(argc, argv, "test_grasper_node");
+    ros::init(argc, argv, "controller_node");
     
     // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
 // ################################################################################################################
-    //Grasper  tests
+    //CONTROLLER  TESTS
 // ################################################################################################################
-    std::vector<float> graspPosition;
-    float w, theta;
-
-    ros::param::get("move_group_params/grasp_position", graspPosition);
-    ros::param::get("move_group_params/theta", theta);
-    ros::param::get("move_group_params/w", w);    
+    Controller controller;
+    controller.routine();
     
-    TargetApproacher targetApproacher(theta, w, graspPosition);
+// ################################################################################################################
+    //GRASPER  TESTS
+// ################################################################################################################
+    // std::vector<float> graspPosition;
+    // float w, theta;
 
-    targetApproacher.moveToHomePose();
-    targetApproacher.approach();
-    targetApproacher.moveToHomePose();
+    // ros::param::get("move_group_params/grasp_position", graspPosition);
+    // ros::param::get("move_group_params/theta", theta);
+    // ros::param::get("move_group_params/w", w);    
+    
+    // Grasper targetApproacher;
+
+    // targetApproacher.setGraspParams(theta,w,graspPosition);
+
+    // targetApproacher.moveToHomePose();
+    // targetApproacher.approach();
+    // targetApproacher.moveToHomePose();
 
 // ################################################################################################################
-    //Movegroup tests:
+    //MOVEGROUP TESTS:
 // ################################################################################################################
 
     // std::vector<geometry_msgs::Pose> waypoints;
@@ -53,5 +61,6 @@ int main(int argc, char** argv){
     // target_pose4.position.y -= .3;
     // targetApproacher.moveArmToPose(target_pose4);
 
+    ros::shutdown();
     return 0;
 }
