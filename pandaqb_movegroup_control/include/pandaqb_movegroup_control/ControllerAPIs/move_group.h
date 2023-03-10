@@ -20,9 +20,14 @@ public:
     void cartesianSpaceMotion(std::vector<geometry_msgs::Pose>& waypoints);
     void moveArmToPose(const geometry_msgs::Pose& pose);
 
+
+
 protected:
     void moveJointSpace(std::vector<double>);
-
+    
+    // Moveit visualization attributes
+    std::shared_ptr<moveit_visual_tools::MoveItVisualTools> visual_tools;
+    Eigen::Isometry3d text_pose;
 
 private:
     // Function to plan and execute a plan
@@ -45,8 +50,4 @@ private:
     std::vector<double> home;
     geometry_msgs::Pose home_pose;
     double planning_time, planning_attempts, velocity_scaling, acceleration_scaling;
-
-    // Moveit visualization attributes
-    std::shared_ptr<moveit_visual_tools::MoveItVisualTools> visual_tools;
-    Eigen::Isometry3d text_pose;
 };

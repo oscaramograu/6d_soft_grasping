@@ -1,11 +1,12 @@
-#include <pandaqb_movegroup_control/ControllerAPIs/target_aproacher.h>
+#include <pandaqb_movegroup_control/ControllerAPIs/grasper.h>
 #include "cmath"
 
-TargetApproacher::TargetApproacher(): z_offset(0.25)
+TargetApproacher::TargetApproacher(float theta_, float w_, std::vector <float> GraspPoint_):
+    z_offset(0.25), theta(theta_), w(w_)
 {
-    moveToHomePose();
-    graspingClient = nh_.serviceClient<pandaqb_movegroup_control::GraspingService>("GraspingService");
-    image_path = "/home/oscar/catkin_ws/src/Thesis/ImageData/first_image.png";
+    graspPoint.position.x = GraspPoint_.at(0);
+    graspPoint.position.y = GraspPoint_.at(1);
+    graspPoint.position.z = GraspPoint_.at(2);
 }
 
 TargetApproacher::~TargetApproacher(){
@@ -13,42 +14,22 @@ TargetApproacher::~TargetApproacher(){
 
 // Call request to get grasp pose, turn to target pose and move there
 void TargetApproacher::approach(){
-    ROS_INFO_STREAM("Grasp target requested.");
-    requestGraspPose();
-
-    getTargetPose();
-    getTragetOrientation();
+    setTargetPosition();
+    setTragetOrientation();
 
     ROS_INFO_STREAM("Moving to target pose.");
+    visual_tools->publishAxisLabeled(graspPoint, "grasp_pose");
     moveArmToPose(targetPose);
 }
 
-// Make a request to the DL model to get the grasp from an image
-void TargetApproacher::requestGraspPose(){
-    ih.set_ros_image(image_path);
-    srv.request.image = ih.get_ros_image();
-
-    if (graspingClient.call(srv))
-    {
-        ROS_INFO_STREAM("Parameters recieved from GraspingServer");
-        theta = srv.response.theta;
-        w = srv.response.w;
-        graspPose = srv.response.pose;
-    }
-    else
-    {
-        ROS_ERROR("Failed to call service GraspingService");
-    } 
-}
-
 // Get target pose position
-void TargetApproacher::getTargetPose(){
-    targetPose.position = graspPose;
+void TargetApproacher::setTargetPosition(){
+    targetPose.position = graspPoint.position;
     targetPose.position.z += z_offset;
 }
 
 // Get target pose orientation based on the obtained theta
-void TargetApproacher::getTragetOrientation(){
+void TargetApproacher::setTragetOrientation(){
     // Rotation arorund Z from theta obtained
     Eigen::Matrix3d Rz;
     Rz << cos(theta), -sin(theta), 0,
