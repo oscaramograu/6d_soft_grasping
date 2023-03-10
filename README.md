@@ -1,6 +1,8 @@
 # Install all the dependencies in Linux:
 Install ROS Noetic: http://wiki.ros.org/ROS/Installation
+
 Install MoveIt: https://moveit.ros.org/install/
+
 Install libfranka and franka_ros: https://frankaemika.github.io/docs/installation_linux.html
 
 Open a terminal and create a ros workspace in your desired location and clone the repository inside src folder:
