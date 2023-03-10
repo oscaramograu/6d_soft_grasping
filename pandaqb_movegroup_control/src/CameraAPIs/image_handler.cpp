@@ -47,7 +47,6 @@ bool ImageHandler::set_cv_image(std::string image_path){
     }
 
     else{
-        ROS_INFO_STREAM("Image found.");
         return true;     
     }
 }

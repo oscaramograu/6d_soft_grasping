@@ -6,3 +6,4 @@ fake_params:
   grasp_position: [0.3, 0.3, 0.0]
   theta: 0.5
   w: 0.05
+  image_path: "/home/oscar/catkin_ws/src/Thesis/ImageData/first_image.png"

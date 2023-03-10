@@ -1,6 +1,0 @@
-<launch>
-  <!-- Include the parameters to the ros parameter server -->
-  <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/dummy_nn_node.yaml"/>
-
-  <node name="grasp_server" pkg="pandaqb_movegroup_control" type="grasp_server" output="screen" /> 
-</launch>

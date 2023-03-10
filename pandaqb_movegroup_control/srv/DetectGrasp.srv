@@ -1,5 +1,5 @@
 sensor_msgs/Image image
 ---
-geometry_msgs/Point pose
+geometry_msgs/Point point
 float32 w
 float32 theta

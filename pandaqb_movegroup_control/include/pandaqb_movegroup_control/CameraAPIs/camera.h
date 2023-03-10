@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <pandaqb_movegroup_control/CameraAPIs/image_handler.h>
 #include <pandaqb_movegroup_control/DetectGrasp.h>
 #include <pandaqb_movegroup_control/RequestGrasp.h>
 
@@ -27,5 +28,6 @@ private:
     geometry_msgs::Point graspPoint;
 
     // Attributes to send to the NN node
-    //RGB-D ros image
+    std::string image_path;
+    ImageHandler ih;    
 };

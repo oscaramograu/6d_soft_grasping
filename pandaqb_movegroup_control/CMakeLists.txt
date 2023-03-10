@@ -3,6 +3,7 @@ project(pandaqb_movegroup_control)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
   message_generation
   moveit_core
@@ -32,6 +33,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES API_Libraries
   CATKIN_DEPENDS 
+   rospy
    roscpp 
    std_msgs
    moveit_core 

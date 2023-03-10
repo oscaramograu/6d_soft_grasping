@@ -25,7 +25,7 @@ void Controller::RequestGrasp(){
     if(RequestClient.call(RequestGraspSrv)){
         ROS_INFO_STREAM("Grasp requested to the Camera Node from the Controller Node");
         grasper.setGraspParams(RequestGraspSrv.response.theta, 
-            RequestGraspSrv.response.w, RequestGraspSrv.response.pose);
+            RequestGraspSrv.response.w, RequestGraspSrv.response.point);
     }
     else{
         ROS_ERROR_STREAM("There was an error calling the RequestGrasp service.");

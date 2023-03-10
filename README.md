@@ -1,7 +1,9 @@
 # ToDos
-1 - Finish dummy camera node
-2 - Finish dummy NN node (with python)
-3 - Allow to add the qb_hand as a gripper
+- Finish dummy camera node
+
+- Finish dummy NN node (with python)
+
+- Allow to add the qb_hand as a gripper
 
 # Install all the dependencies in Linux:
 - Install ROS Noetic: http://wiki.ros.org/ROS/Installation
@@ -27,14 +29,24 @@ source devel/setup.bash
 - Remember that to avoid having to source the ```~/catkin_ws/devel/setup.bash``` each time you open a new shell, you can add the ```“source ~/catkin_ws/devel/setup.bash”``` on your ```~/.bashrc```.
 
 # To use the code:
-1 - Launch the simulation:
-```roslaunch pandaqb_movegroup_control robot_only.launch```
+1 - Launch the robot:
 
-1 - Launch the real robot:
-```roslaunch pandaqb_movegroup_control robot_only.launch use_fake_hardware:=false```
+In simulation:
+```
+roslaunch pandaqb_movegroup_control robot_only.launch
+```
+
+Real robot:
+```
+roslaunch pandaqb_movegroup_control robot_only.launch use_fake_hardware:=false
+```
 
 2 - Launch the NN Node and the Camera Node:
-``` roslaunch pandaqb_movegroup_control dummy_nn_node.launch```
+```
+roslaunch pandaqb_movegroup_control dummy_nn_node.launch
+```
 
 3 - Launch the Controller Node:
-``` roslaunch pandaqb_movegroup_control controller_node.launch```
+```
+roslaunch pandaqb_movegroup_control controller_node.launch
+```
