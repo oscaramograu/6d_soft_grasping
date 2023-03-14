@@ -1,7 +1,7 @@
 #include "pandaqb_movegroup_control/ControllerAPIs/move_group.h"
 
 // Coonstructor for the PandaAPI class
-MoveGroup::MoveGroup(): PLANNING_GROUP("arm")
+MoveGroup::MoveGroup(): PLANNING_GROUP("panda_arm")
 {
     move_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(PLANNING_GROUP);
 
@@ -38,13 +38,13 @@ void MoveGroup::cartesianSpaceMotion(std::vector<geometry_msgs::Pose>& waypoints
     move_group_->execute(trajectory);
 }
 
-// Move the arm to a desired joint state position
 void MoveGroup::moveJointSpace(std::vector<double> abs_pos){
     if(abs_pos.size() != 7){
         ROS_ERROR_STREAM("PandaAPI::moveJointSpace(): input dimensions not valid!");
         ROS_ERROR_STREAM("Current dimensions are: " << abs_pos.size());
     }
 
+    ROS_INFO_STREAM(abs_pos[0]);
     move_group_->setJointValueTarget(abs_pos);
 
     PlanExecute();

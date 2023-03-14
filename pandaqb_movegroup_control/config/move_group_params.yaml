@@ -6,7 +6,8 @@ move_group_params:
   acceleration_scaling: 0.99
 
   # Home position for the panda robot
-  home: [0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785]
+  # home: [0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785]
+  home: [-0.000076, -0.715166, 0.000062, -2.275858, 1.569985, 2.316859, 0.000053]
 
   # Fake Grasp position params
   grasp_position: [0.3, 0.3, 0.0]

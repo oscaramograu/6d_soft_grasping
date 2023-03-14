@@ -37,7 +37,8 @@ int main(int argc, char** argv){
 // ################################################################################################################
     //MOVEGROUP TESTS:
 // ################################################################################################################
-
+    // MoveGroup mg;
+    // mg.printCurrentJointPosition();
     // std::vector<geometry_msgs::Pose> waypoints;
     // geometry_msgs::Pose target_pose1, target_pose2, target_pose3, target_pose4;
     // target_pose1 = targetApproacher.getCurrentPose();
