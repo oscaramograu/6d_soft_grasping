@@ -1,0 +1,7 @@
+<launch>
+  <!-- Include the parameters to the ros parameter server -->
+  <rosparam command="load" file="$(find grasp_detection)/config/fake_params.yaml"/>
+  
+  <node name="NN_Node" pkg="grasp_detection" type="NN_Node.py" output="screen" /> 
+
+</launch>

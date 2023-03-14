@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot name="qbhand" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Import the Franka arm -->
+    <xacro:include filename="$(find franka_description)/robots/common/franka_arm.xacro" />
+    <xacro:franka_arm arm_id="panda" safety_distance="0.03" gazebo="false" joint_limits="${xacro.load_yaml('$(find franka_description)/robots/panda/joint_limits.yaml')}"/>
+
+    <!-- Create a link and a joint to connect the last link of the panda arm with the base of the qb hand -->
+    <link name="panda_qb_link"/>
+
+    <joint name="fixed" type="fixed">
+        <parent link="panda_link8"/>
+        <child link="panda_qb_link"/>
+    </joint>  
+
+    <!-- Import the QB Hand and connect it to the created link -->
+    <xacro:include filename="$(find qb_hand_description)/urdf/qbhand.utils.xacro"/>
+    <xacro:build_hand_from_yaml configuration="qbhand_right" namespace="qbhand" parent="panda_qb">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:build_hand_from_yaml>
+
+</robot>

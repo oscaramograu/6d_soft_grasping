@@ -3,18 +3,20 @@
   <arg name="robot_ip" default = "172.16.02"/>
   <arg name="load_gripper" default = "false" />
   <arg name="use_fake_hardware" default = "true" />
+  <arg name="load_robot_description" default = "true" />
+  
 
-  <!-- 1-Launch fake robot and its controllers -->
+  <!-- 1-Launch fake robot controllers -->
   <node if="$(arg use_fake_hardware)" name="joint_state_publisher" pkg="joint_state_publisher"     type="joint_state_publisher">
       <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
   </node>
   <node if="$(arg use_fake_hardware)" name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
-  <!-- 1-Launch real robot and its controllers -->
+  <!-- 1-Launch real robot controllers -->
   <include unless="$(arg use_fake_hardware)" file="$(find franka_control)/launch/franka_control.launch" pass_all_args="true" />
 
   <!-- 2-Start moveit movegroup -->
-  <include file="$(find panda_moveit_config)/launch/move_group.launch" pass_all_args="true">
+  <include file="$(find moveit_config_panda_qb)/launch/move_group.launch" pass_all_args="true">
     <!-- Start moveit simple controllers (for real robot)-->
     <arg name="moveit_controller_manager" value="fake" if="$(arg use_fake_hardware)"/>
     <!-- Start moveit fake controllers -->
@@ -22,8 +24,8 @@
   </include>
 
   <!-- 3-Start the RViz visualization -->
-  <include file="$(find panda_moveit_config)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find panda_moveit_config)/launch/moveit.rviz"/>
+  <include file="$(find moveit_config_panda_qb)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find moveit_config_panda_qb)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 

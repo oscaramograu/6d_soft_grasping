@@ -19,7 +19,6 @@ find_package(Eigen3 REQUIRED)
 add_service_files(
   FILES
   RequestGrasp.srv
-  DetectGrasp.srv
 )
 
 generate_messages(
@@ -59,8 +58,7 @@ add_library(API_Libraries
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
 
   ${PROJECT_SOURCE_DIR}/src/CameraAPIs/image_handler.cpp
-  ${PROJECT_SOURCE_DIR}/src/CameraAPIs/camera.cpp
-)
+  )
 
 add_executable(controller_node 
   ${PROJECT_SOURCE_DIR}/src/controller_node.cpp
@@ -71,15 +69,7 @@ add_executable(controller_node
 
 )
 
-add_executable(camera_node 
-  src/camera_node.cpp
-
-  ${PROJECT_SOURCE_DIR}/src/CameraAPIs/image_handler.cpp
-  ${PROJECT_SOURCE_DIR}/src/CameraAPIs/camera.cpp
-)
-
 add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(camera_node ${camera_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_dependencies(API_Libraries ${catkin_EXPORTED_TARGETS})
 
@@ -95,9 +85,4 @@ target_link_libraries(controller_node
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   ${moveit_ros_planning_interface_LIBRARIES}
-)
-
-target_link_libraries(camera_node
-  ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
 )
