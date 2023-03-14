@@ -44,7 +44,6 @@ void MoveGroup::moveJointSpace(std::vector<double> abs_pos){
         ROS_ERROR_STREAM("Current dimensions are: " << abs_pos.size());
     }
 
-    ROS_INFO_STREAM(abs_pos[0]);
     move_group_->setJointValueTarget(abs_pos);
 
     PlanExecute();

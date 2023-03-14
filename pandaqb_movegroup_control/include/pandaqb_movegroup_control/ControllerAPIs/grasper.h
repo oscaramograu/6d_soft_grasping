@@ -1,6 +1,8 @@
 #include <pandaqb_movegroup_control/GraspingService.h>
 #include <pandaqb_movegroup_control/ControllerAPIs/move_group.h>
+#include <pandaqb_movegroup_control/ControllerAPIs/hand_group.h>
 #include <pandaqb_movegroup_control/CameraAPIs/image_handler.h>
+
 
 
 class Grasper: public MoveGroup{
