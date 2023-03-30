@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   pandaqb_movegroup_control
+  cv2
 )
 
 ## System dependencies are found with CMake's conventions

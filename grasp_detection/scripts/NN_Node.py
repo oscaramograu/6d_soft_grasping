@@ -1,13 +1,13 @@
 #! /usr/bin/env python
 
 import rospy
-from CameraComunicator import CameraComunicator
+from Help.GraspServer import GraspServer
 
 
 if __name__ == '__main__':
     rospy.init_node('NN_node') 
     rospy.loginfo("The NN_node is ready!")
 
-    cc = CameraComunicator()
+    server = GraspServer()
 
     rospy.spin()
