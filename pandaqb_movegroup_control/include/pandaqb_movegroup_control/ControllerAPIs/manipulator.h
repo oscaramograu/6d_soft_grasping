@@ -5,10 +5,10 @@
 
 
 
-class Grasper: public MoveGroup{
+class Manipulator: public MoveGroup{
 public:
-    Grasper();
-    ~Grasper();
+    Manipulator();
+    ~Manipulator();
 
     void setGraspParams(float theta_, float w_, std::vector <float> GraspPoint_);
     void setGraspParams(float theta_, float w_, geometry_msgs::Point graspPoint_);

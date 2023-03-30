@@ -3,8 +3,7 @@ Panels:
     Help Height: 84
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /MotionPlanning1/Status1
+      Expanded: ~
       Splitter Ratio: 0.5
     Tree Height: 295
   - Class: rviz/Help
@@ -944,6 +943,14 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: rviz_visual_tools
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

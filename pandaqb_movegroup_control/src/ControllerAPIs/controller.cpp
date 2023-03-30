@@ -9,22 +9,22 @@ Controller::~Controller(){
 
 void Controller::routine(){
     // 1 - Move Home
-    grasper.moveToHomePose();
+    manipulator.moveToHomePose();
 
     // 2 - Make a grasp request to the camera node and set the grasp parameters
     RequestGrasp();
 
     // 3 - Approach target pose
-    grasper.approach();
+    manipulator.approach();
 
     // 4 - Grasp the object
-    // grasper.grasp();
+    // manipulator.grasp();
 }
 
 void Controller::RequestGrasp(){
     if(RequestClient.call(RequestGraspSrv)){
         ROS_INFO_STREAM("Grasp requested to the Camera Node from the Controller Node");
-        grasper.setGraspParams(RequestGraspSrv.response.theta, 
+        manipulator.setGraspParams(RequestGraspSrv.response.theta, 
             RequestGraspSrv.response.w, RequestGraspSrv.response.point);
     }
     else{

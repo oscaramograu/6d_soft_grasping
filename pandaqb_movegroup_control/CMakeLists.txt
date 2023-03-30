@@ -55,7 +55,7 @@ include_directories(
 add_library(API_Libraries
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/hand_group.cpp
-  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/grasper.cpp
+  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/manipulator.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
 
   ${PROJECT_SOURCE_DIR}/src/CameraAPIs/image_handler.cpp
@@ -66,7 +66,7 @@ add_executable(controller_node
 
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/hand_group.cpp
-  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/grasper.cpp
+  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/manipulator.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
 
 )

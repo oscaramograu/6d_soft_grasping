@@ -1,13 +1,13 @@
-#include <pandaqb_movegroup_control/ControllerAPIs/grasper.h>
+#include <pandaqb_movegroup_control/ControllerAPIs/manipulator.h>
 #include "cmath"
 
-Grasper::Grasper(): z_offset(0.25){
+Manipulator::Manipulator(): z_offset(0.25){
 }
 
-Grasper::~Grasper(){
+Manipulator::~Manipulator(){
 }
 
-void Grasper::setGraspParams(float theta_, float w_, std::vector <float> graspPoint_){
+void Manipulator::setGraspParams(float theta_, float w_, std::vector <float> graspPoint_){
     graspPoint.position.x = graspPoint_.at(0);
     graspPoint.position.y = graspPoint_.at(1);
     graspPoint.position.z = graspPoint_.at(2);
@@ -16,13 +16,13 @@ void Grasper::setGraspParams(float theta_, float w_, std::vector <float> graspPo
     w = w_;
 };
 
-void Grasper::setGraspParams(float theta_, float w_, geometry_msgs::Point graspPoint_){
+void Manipulator::setGraspParams(float theta_, float w_, geometry_msgs::Point graspPoint_){
     graspPoint.position = graspPoint_;
     theta = theta_;
     w = w_;
 };
 
-void Grasper::approach(){
+void Manipulator::approach(){
     setTargetPosition();
     setTragetOrientation();
 
@@ -31,12 +31,12 @@ void Grasper::approach(){
     moveArmToPose(targetPose);
 }
 
-void Grasper::setTargetPosition(){
+void Manipulator::setTargetPosition(){
     targetPose.position = graspPoint.position;
     targetPose.position.z += z_offset;
 }
 
-void Grasper::setTragetOrientation(){
+void Manipulator::setTragetOrientation(){
     // Rotation arorund Z from theta obtained
     Eigen::Matrix3d Rz;
     Rz << cos(theta), -sin(theta), 0,

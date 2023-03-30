@@ -1,4 +1,4 @@
-#include <pandaqb_movegroup_control/ControllerAPIs/grasper.h>
+#include <pandaqb_movegroup_control/ControllerAPIs/manipulator.h>
 #include <pandaqb_movegroup_control/RequestGrasp.h>
 
 
@@ -19,6 +19,6 @@ private:
 
     pandaqb_movegroup_control::RequestGrasp RequestGraspSrv;
 
-    // Grasper class instance
-    Grasper grasper;
+    // Manipulator class instance
+    Manipulator manipulator;
 };

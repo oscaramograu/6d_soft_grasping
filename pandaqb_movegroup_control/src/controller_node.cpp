@@ -13,8 +13,8 @@ int main(int argc, char** argv){
 // ################################################################################################################
     //CONTROLLER  TESTS
 // ################################################################################################################
-    // Controller controller;
-    // controller.routine();
+    Controller controller;
+    controller.routine();
     
 // ################################################################################################################
     //GRASPER  TESTS
@@ -26,7 +26,7 @@ int main(int argc, char** argv){
     // ros::param::get("move_group_params/theta", theta);
     // ros::param::get("move_group_params/w", w);    
     
-    // Grasper targetApproacher;
+    // Manipulator targetApproacher;
 
     // targetApproacher.setGraspParams(theta,w,graspPosition);
 
@@ -65,8 +65,8 @@ int main(int argc, char** argv){
 // ################################################################################################################
     //HANDGROUP TESTS:
 // ################################################################################################################
-    HandGroup hg;
-    hg.grasp(0.3);
+    // HandGroup hg;
+    // hg.grasp(0.3);
 
     ros::shutdown();
     return 0;

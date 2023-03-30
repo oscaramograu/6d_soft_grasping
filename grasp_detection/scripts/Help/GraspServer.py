@@ -12,8 +12,6 @@ class GraspServer():
         self.grasp_server = rospy.Service('/RequestGrasp',RequestGrasp,self.grasp_callback)
         rospy.loginfo("The Service /RequestGrasp is ready!")
 
-        self.set_params()
-
     def grasp_callback(self, req):
         rospy.loginfo("Grasp requested from Controller Node to NN Node")
         response = RequestGraspResponse()
