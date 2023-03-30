@@ -7,8 +7,8 @@
       },
       "includePath": [
         "/opt/ros/noetic/include/**",
-        "/home/oscar/catkin_ws/src/Thesis/pandaqb_movegroup_control/include/**",
-        "/home/oscar/catkin_ws/devel/include/**",
+        "${workspaceFolder}/pandaqb_movegroup_control/include/**",
+        "${workspaceFolder}/../../devel/include/**",
         "/usr/include/**"
       ],
       "name": "ROS",

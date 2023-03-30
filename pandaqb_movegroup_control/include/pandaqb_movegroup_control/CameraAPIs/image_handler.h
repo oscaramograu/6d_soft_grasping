@@ -1,7 +1,7 @@
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
-#include <pandaqb_movegroup_control/GraspingService.h>
+#include <pandaqb_movegroup_control/RequestGrasp.h>
 
 class ImageHandler{
 public:
