@@ -16,14 +16,14 @@
   <include unless="$(arg use_fake_hardware)" file="$(find franka_control)/launch/franka_control.launch" pass_all_args="true" />
 
   <!-- 2-Start moveit movegroup -->
-  <include if="$(arg qb_gripper)" file="$(find qb2m_moveit_config)/launch/move_group.launch" pass_all_args="true">
+  <include if="$(arg qb_gripper)" file="$(find moveit_config_qb2m_panda)/launch/move_group.launch" pass_all_args="true">
     <!-- Start moveit simple controllers (for real robot)-->
     <arg name="moveit_controller_manager" value="fake" if="$(arg use_fake_hardware)"/>
     <!-- Start moveit fake controllers -->
     <arg name="moveit_controller_manager" value="simple" unless="$(arg use_fake_hardware)"/>
   </include>
 
-  <include unless="$(arg qb_gripper)" file="$(find panda_moveit_config)/launch/move_group.launch" pass_all_args="true">
+  <include unless="$(arg qb_gripper)" file="$(find moveit_config_only_panda)/launch/move_group.launch" pass_all_args="true">
     <!-- Start moveit simple controllers (for real robot)-->
     <arg name="moveit_controller_manager" value="fake" if="$(arg use_fake_hardware)"/>
     <!-- Start moveit fake controllers -->
@@ -31,13 +31,13 @@
   </include>
 
   <!-- 3-Start the RViz visualization -->
-  <include if="$(arg qb_gripper)" file="$(find qb2m_moveit_config)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find qb2m_moveit_config)/launch/moveit.rviz"/>
+  <include if="$(arg qb_gripper)" file="$(find moveit_config_qb2m_panda)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find moveit_config_qb2m_panda)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 
-  <include unless="$(arg qb_gripper)" file="$(find panda_moveit_config)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find panda_moveit_config)/launch/moveit.rviz"/>
+  <include unless="$(arg qb_gripper)" file="$(find moveit_config_only_panda)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find moveit_config_only_panda)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 
