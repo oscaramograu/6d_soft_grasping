@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="robot_ip" default = "172.16.02"/>
-  <arg name="load_gripper" default = "false" />
+  <arg name="qb_gripper" default = "true" />
   <arg name="use_fake_hardware" default = "true" />
   <arg name="load_robot_description" default = "true" />
   
@@ -16,7 +16,14 @@
   <include unless="$(arg use_fake_hardware)" file="$(find franka_control)/launch/franka_control.launch" pass_all_args="true" />
 
   <!-- 2-Start moveit movegroup -->
-  <include file="$(find qb2m_moveit_config)/launch/move_group.launch" pass_all_args="true">
+  <include if="$(arg qb_gripper)" file="$(find qb2m_moveit_config)/launch/move_group.launch" pass_all_args="true">
+    <!-- Start moveit simple controllers (for real robot)-->
+    <arg name="moveit_controller_manager" value="fake" if="$(arg use_fake_hardware)"/>
+    <!-- Start moveit fake controllers -->
+    <arg name="moveit_controller_manager" value="simple" unless="$(arg use_fake_hardware)"/>
+  </include>
+
+  <include unless="$(arg qb_gripper)" file="$(find panda_moveit_config)/launch/move_group.launch" pass_all_args="true">
     <!-- Start moveit simple controllers (for real robot)-->
     <arg name="moveit_controller_manager" value="fake" if="$(arg use_fake_hardware)"/>
     <!-- Start moveit fake controllers -->
@@ -24,8 +31,13 @@
   </include>
 
   <!-- 3-Start the RViz visualization -->
-  <include file="$(find qb2m_moveit_config)/launch/moveit_rviz.launch">
+  <include if="$(arg qb_gripper)" file="$(find qb2m_moveit_config)/launch/moveit_rviz.launch">
     <arg name="rviz_config" value="$(find qb2m_moveit_config)/launch/moveit.rviz"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include unless="$(arg qb_gripper)" file="$(find panda_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find panda_moveit_config)/launch/moveit.rviz"/>
     <arg name="debug" value="false"/>
   </include>
 
