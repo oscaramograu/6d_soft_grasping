@@ -1,0 +1,5 @@
+robot_ip_: "172.16.02"
+qb_gripper_: true
+use_fake_hardware_: true
+load_robot_description_: true
+load_gripper_: false

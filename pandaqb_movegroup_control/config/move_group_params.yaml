@@ -1,4 +1,5 @@
 move_group_params:
+
   # Velocity and acceleration scaling for manipulator planning in MoveIt
   planning_time: 50
   planning_attempts: 5

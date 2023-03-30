@@ -1,5 +1,5 @@
 controller_list:
-  - name: arm_position_controller
+  - name: panda_arm_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: True
@@ -11,10 +11,3 @@ controller_list:
       - panda_joint5
       - panda_joint6
       - panda_joint7
-  - name: hand_position_controller
-    action_ns: gripper_action
-    type: GripperCommand
-    default: True
-    joints:
-      - qbhand2m_motor_1_joint
-      - qbhand2m_motor_2_joint
