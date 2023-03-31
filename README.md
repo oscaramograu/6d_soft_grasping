@@ -1,9 +1,15 @@
 # ToDos
-- Finish dummy camera node
+- Download dataset from Danieles pc
 
-- Finish dummy NN node (with python)
+- Train model in Daniele's pc
 
-- Allow to add the qb_hand as a gripper
+- Install CUDA toolkit in workstation pc
+
+- Test zed library depth computation
+
+- Copy model from Daniele's pc to workstation
+
+- Send depth image to model and check the output
 
 # Install all the dependencies in Linux:
 - Install ROS Noetic: http://wiki.ros.org/ROS/Installation
