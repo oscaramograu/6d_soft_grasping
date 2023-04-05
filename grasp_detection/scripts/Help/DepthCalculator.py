@@ -20,10 +20,10 @@ class DepthCalculator():
         self.depth_img = None
 
         # Disparity parameters
-        self.nDisp = 160
+        self.nDisp = 32
         self.wSize = 11
-        self.lmbda = 95e3
-        self.sigma = 0.7
+        self.lmbda = 75e3
+        self.sigma = 0.5
 
         # Create a camera video object
         camera_index = 2
@@ -40,7 +40,7 @@ class DepthCalculator():
         cv2.resizeWindow('disp',600,600)
         
         cv2.createTrackbar('nDisp','disp',10,20,self.nothing) #10
-        cv2.createTrackbar('wSize','disp',4,20,self.nothing) #7 14 19
+        cv2.createTrackbar('wSize','disp',4,20,self.nothing) #7 14 19 
         cv2.createTrackbar('lmbda','disp',15,20,self.nothing) #13
         cv2.createTrackbar('sigma','disp',10,20,self.nothing) #13
 
@@ -223,7 +223,7 @@ class DepthCalculator():
         cv2.destroyAllWindows()
 
 dc = DepthCalculator()
-# dc.param_gui()
-dc.take_picture()
-print(dc.depth_img.shape)
-print(dc.disparity_img.shape)
+dc.param_gui()
+# dc.take_picture()
+# print(dc.depth_img.shape)
+# print(dc.disparity_img.shape)
