@@ -1,5 +1,6 @@
 import cv2
 import matplotlib.pyplot as plt
+from scripts.Help.data_preparation.Calibration import CameraCalibrator
 import time
 import numpy as np
 
@@ -8,6 +9,10 @@ class DepthCalculator():
         # RGB images
         self.l_img = None
         self.r_img = None
+
+        # Image undistorters
+        self.l_undist = CameraCalibrator("config/l_calib_params.yaml")
+        self.r_undist = CameraCalibrator("config/r_calib_params.yaml") # It only works depending on the directory from which you launch it
 
         # Grayscale images
         self.gl_img = None
@@ -29,11 +34,51 @@ class DepthCalculator():
         camera_index = 2
         self.cap = cv2.VideoCapture(camera_index)
 
-        self.cap.set(cv2.CAP_PROP_BRIGHTNESS, 64)
-        self.cap.set(cv2.CAP_PROP_CONTRAST, 0)
-    
+        # FHD resolution
+        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        # self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
+        self.cap.set(3, 1920)
+        self.cap.set(4, 1080)
+        self.cap.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))
+
+        # self.cap.set(cv2.CAP_PROP_BRIGHTNESS, 64)
+        # self.cap.set(cv2.CAP_PROP_CONTRAST, 0)
+
     def nothing(self, x):
         pass
+
+    def get_images(self):
+        # Capture frame-by-frame
+        ret, frame = self.cap.read()
+        # Display the resulting frame
+        if ret:
+            h = frame.shape[0]
+            w = frame.shape[1]//2
+
+            l, r = frame[:, :w,:], frame[:, w:,:]
+
+            self.l_img = cv2.resize(l, (w//2, h//2))
+            self.r_img = cv2.resize(r, (w//2, h//2))
+
+            self.l_img = self.l_undist.undistort_img(self.l_img)
+            self.r_img = self.r_undist.undistort_img(self.r_img)
+
+            self.r_img = cv2.resize(self.r_img, (self.l_img.shape[1], self.l_img.shape[0]))
+
+            # print(l.shape)
+            # print(r.shape)
+
+            # print(self.l_img.shape)
+            # print(self.r_img.shape)
+
+            self.gl_img = cv2.cvtColor(self.l_img,cv2.COLOR_BGR2GRAY)
+            self.gr_img = cv2.cvtColor(self.r_img,cv2.COLOR_BGR2GRAY)
+            return True
+        
+        else:
+            print("Frame not captured")
+            return False
 
     def param_gui(self):
         cv2.namedWindow('disp',cv2.WINDOW_NORMAL)
@@ -57,27 +102,6 @@ class DepthCalculator():
             # Close window using esc key
             if cv2.waitKey(1) == 27:
                 break
-
-    def get_images(self):
-        # Capture frame-by-frame
-        ret, frame = self.cap.read()
-        # Display the resulting frame
-        if ret:
-            h = frame.shape[0]
-            w = frame.shape[1]//2
-
-            l, r = frame[:, :w,:], frame[:, w:,:]
-
-            self.l_img = cv2.resize(l, (w//2, h//2))
-            self.r_img = cv2.resize(r, (w//2, h//2))
-
-            self.gl_img = cv2.cvtColor(self.l_img,cv2.COLOR_BGR2GRAY)
-            self.gr_img = cv2.cvtColor(self.r_img,cv2.COLOR_BGR2GRAY)
-            return True
-        
-        else:
-            print("Frame not captured")
-            return False
         
     def take_picture(self):
         while(True):
@@ -85,12 +109,18 @@ class DepthCalculator():
 
             self.compute_disparity_img()
 
-            self.compute_depth_image()
+            # self.compute_depth_image()
 
-            self.get_midpoint_depth()
+            # self.get_midpoint_depth()
             img = self.l_img
+            scale = 1
 
-            h, w, _ = img.shape
+            h, w = img.shape[:2]
+            h *= scale
+            w *= scale
+
+            img = cv2.resize(img, (w, h))
+
             center = (w//2, h//2)
             radius = 5
             color = (0, 255, 0)
@@ -107,47 +137,7 @@ class DepthCalculator():
         self.cap.release()
         cv2.destroyAllWindows()
 
-    def compute_disparity_img(self):
-        # Disparity settings
-        window_size = self.wSize
-        min_disp = 0
-        num_disp = self.nDisp
-        matcher_left = cv2.StereoSGBM_create(
-            blockSize = 5,
-            numDisparities = num_disp,
-            minDisparity = min_disp,
-            P1 = 8*3*window_size**2,
-            P2 = 32*3*window_size**2,
-            disp12MaxDiff = 1,
-            uniquenessRatio = 15,
-            speckleWindowSize = 0,
-            speckleRange = 5,
-            preFilterCap = 63,
-            mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY
-            )
-        matcher_right = cv2.ximgproc.createRightMatcher(matcher_left)
 
-        # Filter settings
-        wls_filter = cv2.ximgproc.createDisparityWLSFilter(matcher_left=matcher_left)
-        wls_filter.setLambda(self.lmbda)
-        wls_filter.setSigmaColor(self.sigma)
-
-        # Disparity calculation
-        displ = matcher_left.compute(self.gl_img, self.gr_img) .astype(np.float32)
-        displ = np.int16(displ)
-        dispr = matcher_right.compute(self.gr_img, self.gl_img) .astype(np.float32)
-        dispr = np.int16(dispr)
-
-        filteredImg = wls_filter.filter(displ, self.gl_img, None, dispr)
-        filteredImg = cv2.normalize(
-            src=filteredImg,
-            dst=filteredImg,
-            beta=1,
-            alpha=255,
-            norm_type=cv2.NORM_MINMAX,
-            dtype=cv2.CV_8U
-            )
-        self.disparity_img = np.uint8(filteredImg)
 
     def compute_depth_image(self):
         f = 2.8 # mm
@@ -171,8 +161,6 @@ class DepthCalculator():
         cv2.circle(img, center, radius, color, thickness)
 
         cv2.imshow('d', img)
-
-
 
     def store_disp_imgs(self, compute_params):
         if compute_params:
@@ -212,18 +200,14 @@ class DepthCalculator():
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-    def stream_d(self):
-        while(True):
-            # Capture frame-by-frame
-            ret, frame = self.cap.read()
-            # Display the resulting frame
-            cv2.imshow('frame', frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-        cv2.destroyAllWindows()
 
-dc = DepthCalculator()
-dc.param_gui()
+# dc = DepthCalculator()
 # dc.take_picture()
-# print(dc.depth_img.shape)
-# print(dc.disparity_img.shape)
+
+# dc.param_gui()
+# dc.get_images()
+# dc.compute_disparity_img()
+# dc.plot_imgs()
+
+# # print(dc.depth_img.shape)
+# # print(dc.disparity_img.shape)
