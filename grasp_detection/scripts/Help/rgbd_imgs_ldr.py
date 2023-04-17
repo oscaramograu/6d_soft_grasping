@@ -1,46 +1,9 @@
 import cv2
 import numpy as np
-import yaml
-from yaml.loader import SafeLoader
+import UVC_img_ldr as uvc 
 
-
-class ImageLoader():
-    def __init__(self, camera_index: int = 2) -> None:
-        try:
-            cap = cv2.VideoCapture(camera_index)
-            if cap is None or not cap.isOpened():
-                raise ConnectionError
-            else:
-                self._cap = cap
-                self._set_resolution()
-
-        except ConnectionError:
-            print("Could not initialize video caption with index: {}, try with a different index.".format(camera_index))
-
-    def _set_resolution(self):  # FHD resolution
-        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        # self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
-
-        self._cap.set(3, 1920)
-        self._cap.set(4, 1080)
-        self._cap.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))
-
-        # self.cap.set(cv2.CAP_PROP_BRIGHTNESS, 64)
-        # self.cap.set(cv2.CAP_PROP_CONTRAST, 0)
-
-    def get_rgb_image(self):
-        ret, frame = self._cap.read()
-        try:
-            if ret:
-                return frame
-            else:
-                raise ConnectionError
-        
-        except ConnectionError:
-            print("The frame was not captured")
-
-class StereoImgsLoader(ImageLoader):
-    def __init__(self, camera_index: int = 2) -> None:
+class StereoImgsDictLoader(uvc.ImageLoader):
+    def __init__(self, camera_index: int = 2) -> None: # Load camera index from yaml file
         super().__init__(camera_index)
         self.imgs = {
             "rgb_l": None,
@@ -48,40 +11,43 @@ class StereoImgsLoader(ImageLoader):
             "gs_l": None,
             "gs_r": None
         }
+        self._img_cal_l = uvc.ImageCalibrator("config/l_calib_params.yaml")
+        self._img_cal_r = uvc.ImageCalibrator("config/r_calib_params.yaml")
+
 
     def _compute_rgb_stereo_images(self): 
         merged_images_frame = self.get_rgb_image()
 
-        h = merged_images_frame.shape[0]
-        w = merged_images_frame.shape[1]//2
+        h, w = merged_images_frame.shape[0], merged_images_frame.shape[1]//2
 
-        l_img, r_img = merged_images_frame[:, :w,:], merged_images_frame[:, w:,:]
+        img_l, img_r = merged_images_frame[:, :w,:], merged_images_frame[:, w:,:]
 
-        l_img = cv2.resize(l_img, (w//2, h//2))
-        r_img = cv2.resize(r_img, (w//2, h//2))
+        img_l , img_r = cv2.resize(img_l, (w//2, h//2)), cv2.resize(img_r, (w//2, h//2))
 
-        self.imgs["rgb_l"], self.imgs["rgb_r"] =  l_img, r_img
+        img_l , img_r = self._img_cal_l(img_l),  self._img_cal_r(img_r)
+
+        self.imgs["rgb_l"], self.imgs["rgb_r"] =  img_l , img_r
     
     def _compute_grayscale_imgs(self):
         self.imgs["gs_l"] = cv2.cvtColor(self.imgs["rgb_l"],cv2.COLOR_BGR2GRAY)
         self.imgs["gs_r"] = cv2.cvtColor(self.imgs["rgb_r"],cv2.COLOR_BGR2GRAY)
     
-    def compute_rgb_gs_imgs(self) -> dict:
+    def __call__(self) -> dict:
         self._compute_rgb_stereo_images()
         self._compute_grayscale_imgs()
         return self.imgs
 
 
-class DepthImgLoader():
+class DepthImgDictLoader():
     def __init__(self) -> None:
-        self._img_ldr = StereoImgsLoader()
+        self._img_ldr = StereoImgsDictLoader()
 
         self.imgs = {
             "disp_map": None,
             "depth": None
         }
 
-        self._disp_params = {
+        self._disp_params = {  # Load them from a YAML file
             "wSize": 11,
             "nDisp": 32,
             "lambda": 75e3,
@@ -142,12 +108,12 @@ class DepthImgLoader():
     def _compute_depth(self):
         pass
 
-    def compute_disp_depth_imgs(self, gs_l, gs_r):
+    def __call__(self, gs_l, gs_r):
         self._compute_disparity(gs_l, gs_r)
         self._compute_depth()
         return self.imgs
 
-class ImgsDictCreator():
+class ImgsDictUpdater():
     def __init__(self) -> None:
         self.imgs = {
             "rgb_l": None,
@@ -158,13 +124,13 @@ class ImgsDictCreator():
             "depth": None                        
         }
 
-        self._rgb_gs_ldr = StereoImgsLoader()
-        self._depth_lr = DepthImgLoader()
+        self._rgb_gs_ldr = StereoImgsDictLoader()
+        self._depth_lr = DepthImgDictLoader()
 
-    def compute_all_imgs(self):
-        rgb_gs_imgs = self._rgb_gs_ldr.compute_rgb_gs_imgs()
+    def __call__(self):
+        rgb_gs_imgs = self._rgb_gs_ldr()
 
-        disp_depth_imgs = self._depth_lr.compute_disp_depth_imgs(rgb_gs_imgs["gs_l"], rgb_gs_imgs["gs_r"])
+        disp_depth_imgs = self._depth_lr(rgb_gs_imgs["gs_l"], rgb_gs_imgs["gs_r"])
 
         self.imgs.update(rgb_gs_imgs)
         self.imgs.update(disp_depth_imgs)

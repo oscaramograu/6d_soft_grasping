@@ -1,4 +1,4 @@
-from DepthCalculator import DepthCalculator
+from old.DepthCalculator import DepthCalculator
 from GraspDetector import GraspDetector
 import cv2
 import numpy as np
