@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import UVC_img_ldr as uvc 
+import data_preparation.UVC_img_ldr as uvc 
 
 class StereoImgsDictLoader(uvc.ImageLoader):
     def __init__(self, camera_index: int = 2) -> None: # Load camera index from yaml file
