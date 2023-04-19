@@ -17,6 +17,7 @@ class ImageLoader():
         except ConnectionError:
             print("Could not initialize video caption with index: "
                 "{}, try with a different index.".format(camera_index))
+            self._cap = None
 
     def _set_resolution(self):  # FHD resolution
         # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
@@ -29,7 +30,7 @@ class ImageLoader():
         # self.cap.set(cv2.CAP_PROP_BRIGHTNESS, 64)
         # self.cap.set(cv2.CAP_PROP_CONTRAST, 0)
 
-    def get_rgb_image(self):
+    def __call__(self):
         ret, frame = self._cap.read()
         try:
             if ret:
@@ -39,6 +40,11 @@ class ImageLoader():
         
         except ConnectionError:
             print("The frame was not captured")
+
+    def __del__(self):
+        if self._cap is not None:
+            self._cap.release()
+            
 
 class ImageCalibrator():
     def __init__(self, path: str):
@@ -69,11 +75,16 @@ class ImageCalibrator():
         h,  w = img.shape[:2]
         c_params  = (self._cam_mat, self._dist_coeffs)
 
-        newcameramtx, _ = cv2.getOptimalNewCameraMatrix(*c_params, (w,h), 1, (w,h))
+        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(*c_params, (w,h), 1, (w,h))
 
         calib_img = cv2.undistort(img, *c_params, None, newcameramtx)
 
-        x, y, w, h = calib_img
+        x, y, w, h = roi
         calib_img = calib_img[y:y+h, x:x+w]
 
         return(calib_img)
+    
+# IL = ImageLoader(2)
+# img = IL()
+
+# print(type(img))

@@ -16,15 +16,13 @@ class StereoImgsDictLoader(uvc.ImageLoader):
 
 
     def _compute_rgb_stereo_images(self): 
-        merged_images_frame = self.get_rgb_image()
+        merged_images_frame = super().__call__()
 
         h, w = merged_images_frame.shape[0], merged_images_frame.shape[1]//2
 
         img_l, img_r = merged_images_frame[:, :w,:], merged_images_frame[:, w:,:]
 
-        img_l , img_r = cv2.resize(img_l, (w//2, h//2)), cv2.resize(img_r, (w//2, h//2))
-
-        img_l , img_r = self._img_cal_l(img_l),  self._img_cal_r(img_r)
+        # img_l , img_r = self._img_cal_l(img_l),  self._img_cal_r(img_r) #CALIBRATE IMAGES CCORRECTLY
 
         self.imgs["rgb_l"], self.imgs["rgb_r"] =  img_l , img_r
     
@@ -106,34 +104,16 @@ class DepthImgDictLoader():
         self.imgs["disp_map"] =  norm_disp_img.astype(np.int16)
 
     def _compute_depth(self):
-        pass
+        pass #Compute image depth
 
     def __call__(self, gs_l, gs_r):
         self._compute_disparity(gs_l, gs_r)
         self._compute_depth()
         return self.imgs
+    
+# SIL = StereoImgsDictLoader()
+# imgs = SIL()
 
-class ImgsDictUpdater():
-    def __init__(self) -> None:
-        self.imgs = {
-            "rgb_l": None,
-            "rgb_r": None,
-            "gs_l": None,
-            "gs_r": None,
-            "disp_map": None,
-            "depth": None                        
-        }
-
-        self._rgb_gs_ldr = StereoImgsDictLoader()
-        self._depth_lr = DepthImgDictLoader()
-
-    def __call__(self):
-        rgb_gs_imgs = self._rgb_gs_ldr()
-
-        disp_depth_imgs = self._depth_lr(rgb_gs_imgs["gs_l"], rgb_gs_imgs["gs_r"])
-
-        self.imgs.update(rgb_gs_imgs)
-        self.imgs.update(disp_depth_imgs)
-
-    def __getitem__(self, key: str):
-        return self.imgs[key]
+# DIL = DepthImgDictLoader()
+# imgs = DIL(imgs["gs_l"], imgs["gs_r"])
+# print(type(imgs))
