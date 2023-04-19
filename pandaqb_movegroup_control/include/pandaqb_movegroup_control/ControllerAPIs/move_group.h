@@ -20,8 +20,6 @@ public:
     void cartesianSpaceMotion(std::vector<geometry_msgs::Pose>& waypoints);
     void moveArmToPose(const geometry_msgs::Pose& pose);
 
-
-
 protected:
     void moveJointSpace(std::vector<double>);
     
