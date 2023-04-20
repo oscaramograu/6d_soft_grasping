@@ -1,8 +1,6 @@
 # ToDos
-- load data from the yamol file to the robot_only.launch file
-- get the middpoint of the hand, and its normal
-- reorganize the classes and interfaces:
-    - It should be able to choose to load the normal gripper or the qb hand.
-    - Divide the code in more clear classes and interfaces. More and more simple functionalities.
-    - Depending on the EEF a different approach() must be designed. 
-    - To approach the hand, it must move its normal must match the normal of the target grasp point.
+- create the publisher to control the qb hand 2
+- create the class to use the movegroup of the arm and the qbhand2 publisher
+- add the mesh of the camera support to the urdf file
+- get the middpoint of the hand, and its normal (EEF tf) 
+- do the hand-eye calibration with moveit
