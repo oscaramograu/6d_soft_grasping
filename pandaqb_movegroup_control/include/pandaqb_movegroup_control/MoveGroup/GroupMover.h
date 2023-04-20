@@ -1,13 +1,15 @@
-#include <MoveGroup/InfoTriggerMG.h>
+#include <pandaqb_movegroup_control/MoveGroup/InfoTriggerMG.h>
 
 
-class GroupMover : InfoTriggerMoveGroup {
+class GroupMover : public InfoTriggerMoveGroup{
 public:
-    GroupMover();
+    GroupMover(std::string planning_group);
     virtual ~GroupMover();
 
-    moveit::planning_interface::MoveGroupInterface::Plan moveTo(const std::vector<geometry_msgs::Pose>& waypoints); // Cartesianspace
-    moveit::planning_interface::MoveGroupInterface::Plan moveTo(const std::vector<double>& joints); // Jointspace
+    void moveTo(const geometry_msgs::Pose& pose); // Cartesianspace
+    void moveTo(std::vector<double> joints); // Jointspace
+
+    void moveHome();
 
 private:
     void planExecute();

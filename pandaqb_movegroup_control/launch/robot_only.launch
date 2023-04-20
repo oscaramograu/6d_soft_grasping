@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-  <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/launch_params.yaml"/>
-<!-- 
-  <arg name="robot_ip" default = "$(arg robot_ip_)"/>
-  <arg name="qb_gripper" value = "$(arg qb_gripper_)" />
-  <arg name="use_fake_hardware" value = "($arg use_fake_hardware_)" />
-  <arg name="load_robot_description" value = "($arg load_robot_description_)" />
-  <arg name="load_gripper" value = "$(arg load_gripper_)" /> -->
+  <!-- <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/launch_params.yaml"/> -->
 
+  <arg name="robot_ip" default = "172.16.02"/>
+  <arg name="qb_gripper" default = "true" />
+  <arg name="use_fake_hardware" default = "true" />
+  <arg name="load_robot_description" default = "true" />
+  <arg name="load_gripper" default = "true" />
   
   <!-- Start ROS controllers -->
   

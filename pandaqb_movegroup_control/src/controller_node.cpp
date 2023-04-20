@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <pandaqb_movegroup_control/ControllerAPIs/controller.h>
+#include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 
 int main(int argc, char** argv){
     // Initialize the node
@@ -11,10 +12,25 @@ int main(int argc, char** argv){
     spinner.start();
 
 // ################################################################################################################
+    //GROUP MOVE  TESTS
+// ################################################################################################################
+    // GroupMover arm_mover("panda_arm");
+    // geometry_msgs::Pose pose = arm_mover.getCurrentPose();
+    // pose.position.z += 0.1;
+
+    // arm_mover.moveTo(pose);
+    // arm_mover.moveHome();
+
+    GroupMover hand_mover("qb_hand");
+    hand_mover.printCurrentJointPosition();
+    std::vector<double> closed_hand = {0.0};
+    hand_mover.moveTo(closed_hand);
+
+// ################################################################################################################
     //CONTROLLER  TESTS
 // ################################################################################################################
-    Controller controller;
-    controller.routine();
+    // Controller controller;
+    // controller.routine();
     
 // ################################################################################################################
     //GRASPER  TESTS

@@ -43,12 +43,7 @@ joint_limits:
     max_velocity: 2.61
     has_acceleration_limits: false
     max_acceleration: 0
-  qbhand2m_motor_1_joint:
-    has_velocity_limits: true
-    max_velocity: 100
-    has_acceleration_limits: false
-    max_acceleration: 0
-  qbhand2m_motor_2_joint:
+  qbhand2m_synergy_joint:
     has_velocity_limits: true
     max_velocity: 100
     has_acceleration_limits: false

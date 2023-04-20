@@ -3,20 +3,21 @@
 
 namespace rvt = rviz_visual_tools;
 
-class InfoTriggerMoveGroup: BaseMoveGroup{
+class InfoTriggerMoveGroup: public BaseMoveGroup{
 public:
-    InfoTriggerMoveGroup();
-    virtual ~InfoTriggerMoveGroup();
+    InfoTriggerMoveGroup(std::string planning_group);
+    ~InfoTriggerMoveGroup();
 
     geometry_msgs::Pose getCurrentPose();
-    geometry_msgs::Pose::_orientation_type getCurrentOrientation();
-
+    std::vector<double> getCurrentJointState();
     void printCurrentJointPosition();
 
 protected:
-    void visualizePlan(const moveit::planning_interface::MoveGroupInterface::Plan& plan);
-
+    void vizPlan(geometry_msgs::Pose target_pose);
+    void vizHoming();
+    void vizEnd();
+    
 private:
-    std::shared_ptr<moveit_visual_tools::MoveItVisualTools> visual_tools_;
-    Eigen::Isometry3d text_pose_;
+    std::shared_ptr<moveit_visual_tools::MoveItVisualTools> visual_tools;
+    Eigen::Isometry3d text_pose;
 };

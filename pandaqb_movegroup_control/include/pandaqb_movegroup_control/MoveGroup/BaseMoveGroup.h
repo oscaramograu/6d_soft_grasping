@@ -3,7 +3,7 @@
 
 class BaseMoveGroup{
 public:
-    BaseMoveGroup();
+    BaseMoveGroup(std::string planning_group);
     ~BaseMoveGroup();
 
 protected: 
@@ -11,9 +11,11 @@ protected:
     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_;
     moveit::planning_interface::MoveGroupInterface::Plan plan;
 
+    std::string PLANNING_GROUP;
+    std::vector<double> home;
 
 private:
-    std::string PLANNING_GROUP;
+    void load_params();
 
     // Ros param attributes
     double planning_time, planning_attempts, velocity_scaling, acceleration_scaling;

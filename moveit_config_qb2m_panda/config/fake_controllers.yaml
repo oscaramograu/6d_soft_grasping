@@ -12,8 +12,7 @@ controller_list:
   - name: fake_qb_hand_controller
     type: $(arg fake_execution_type)
     joints:
-      - qbhand2m_motor_1_joint
-      - qbhand2m_motor_2_joint
+      - qbhand2m_synergy_joint
 initial:  # Define initial robot poses per group
   - group: panda_arm
     pose: Home

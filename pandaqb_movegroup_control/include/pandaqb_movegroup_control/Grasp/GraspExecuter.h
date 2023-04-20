@@ -8,11 +8,12 @@ public:
 
     void approach(Grasp grasp);
 
-    void grasp();
+    void grasp(Grasp TargetGrasp);
 
 private:
-    void graspToPose();
+    geometry_msgs::Pose graspToPose(Grasp TargetGrasp);
     void graspToOrientation();
 
-    GroupMover Arm, Hand;
+    GroupMover Hand, Arm;
+    std::vector<double> closed_hand, opened_hand;
 };

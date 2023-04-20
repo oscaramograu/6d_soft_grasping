@@ -179,5 +179,3 @@ qb_hand:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(qbhand2m_motor_1_joint,qbhand2m_motor_2_joint)
-  longest_valid_segment_fraction: 0.005

@@ -40,7 +40,7 @@ void MoveGroup::cartesianSpaceMotion(std::vector<geometry_msgs::Pose>& waypoints
 
 void MoveGroup::moveJointSpace(std::vector<double> abs_pos){
     if(abs_pos.size() != 7){
-        ROS_ERROR_STREAM("PandaAPI::moveJointSpace(): input dimensions not valid!");
+        ROS_ERROR_STREAM("MoveGroup::moveJointSpace(): input dimensions not valid!");
         ROS_ERROR_STREAM("Current dimensions are: " << abs_pos.size());
     }
 
@@ -88,11 +88,11 @@ void MoveGroup::moveToHomePose(){
 }
 
 void MoveGroup::LoadParams(){
-    ros::param::get("move_group_params/home", home);
-    ros::param::get("move_group_params/planning_time", planning_time);
-    ros::param::get("move_group_params/planning_attempts", planning_attempts);
-    ros::param::get("move_group_params/velocity_scaling", velocity_scaling);
-    ros::param::get("move_group_params/acceleration_scaling", acceleration_scaling);
+    ros::param::get("move_group/panda_arm/home", home);
+    ros::param::get("move_group/panda_arm/planning_time", planning_time);
+    ros::param::get("move_group/panda_arm/planning_attempts", planning_attempts);
+    ros::param::get("move_group/panda_arm/velocity_scaling", velocity_scaling);
+    ros::param::get("move_group/panda_arm/acceleration_scaling", acceleration_scaling);
 
     move_group_->setPlanningTime(planning_time);
     move_group_->setNumPlanningAttempts(planning_attempts);
