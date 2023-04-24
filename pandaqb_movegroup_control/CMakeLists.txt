@@ -12,9 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_perception
   moveit_visual_tools
   cv_bridge
+  urdf
 )
 
-find_package(Eigen3 REQUIRED)
 
 add_service_files(
   FILES
