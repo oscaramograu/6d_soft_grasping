@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <pandaqb_movegroup_control/ControllerAPIs/controller.h>
-#include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
+#include <pandaqb_movegroup_control/MoveGroup/RobotMover.h>
 
 int main(int argc, char** argv){
     // Initialize the node
@@ -21,10 +21,22 @@ int main(int argc, char** argv){
     // arm_mover.moveTo(pose);
     // arm_mover.moveHome();
 
-    GroupMover hand_mover("qb_hand");
-    hand_mover.printCurrentJointPosition();
-    std::vector<double> closed_hand = {0.0};
-    hand_mover.moveTo(closed_hand);
+    // GroupMover hand_mover("qb_hand");
+    // hand_mover.printCurrentJointPosition();
+    // std::vector<double> closed_hand = {0.0};
+    // hand_mover.moveTo(closed_hand);
+
+    RobotMover robot_mover;
+    geometry_msgs::Pose target_pose = robot_mover.getCurrentPose();
+    target_pose.position.x += 0.1;
+    target_pose.position.y += 0.1;
+    target_pose.position.z -= 0.1;
+    target_pose.orientation.x = 0.0;
+    target_pose.orientation.y = 0.0;
+    target_pose.orientation.z = 0.0;
+    target_pose.orientation.w = 1.0;
+    
+    robot_mover.move(target_pose);
 
 // ################################################################################################################
     //CONTROLLER  TESTS

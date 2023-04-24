@@ -71,6 +71,11 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          camera_support_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -386,6 +391,11 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          camera_support_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -678,6 +688,11 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        camera_support_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         panda_link0:
           Alpha: 1
           Show Axes: false
@@ -960,6 +975,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        camera_support_link:
+          Value: false
         panda_link0:
           Value: false
         panda_link0_sc:
@@ -1049,7 +1066,7 @@ Visualization Manager:
         qbhand2m_motor_2_tendon_virtual_link:
           Value: false
         qbhand2m_palm_link:
-          Value: false
+          Value: true
         qbhand2m_ring_distal_link:
           Value: false
         qbhand2m_ring_distal_virtual_link:
@@ -1065,7 +1082,7 @@ Visualization Manager:
         qbhand2m_ring_proximal_virtual_link:
           Value: false
         qbhand2m_synergy_tendon_virtual_link:
-          Value: true
+          Value: false
         qbhand2m_thumb_distal_link:
           Value: false
         qbhand2m_thumb_distal_virtual_link:
@@ -1109,6 +1126,8 @@ Visualization Manager:
                           {}
                         panda_link8:
                           panda_qb_link:
+                            camera_support_link:
+                              {}
                             qbhand2m_base_link:
                               qbhand2m_end_effector_link:
                                 {}

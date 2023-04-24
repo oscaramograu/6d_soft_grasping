@@ -16,8 +16,8 @@ protected:
     void vizPlan(geometry_msgs::Pose target_pose);
     void vizHoming();
     void vizEnd();
-    
-private:
     std::shared_ptr<moveit_visual_tools::MoveItVisualTools> visual_tools;
+
+private:
     Eigen::Isometry3d text_pose;
 };

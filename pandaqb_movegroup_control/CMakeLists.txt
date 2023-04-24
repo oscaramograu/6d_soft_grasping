@@ -67,6 +67,7 @@ add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/BaseMoveGroup.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/GroupMover.cpp
+  ${PROJECT_SOURCE_DIR}/src/MoveGroup/RobotMover.cpp
 )
 
 add_executable(controller_node 
@@ -77,15 +78,14 @@ add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EX
 add_dependencies(API_Libraries ${catkin_EXPORTED_TARGETS})
 add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(API_Libraries
-  Eigen3::Eigen
-  ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${moveit_ros_planning_interface_LIBRARIES}
-)
+# target_link_libraries(API_Libraries
+#   Eigen3::Eigen
+#   ${catkin_LIBRARIES}
+#   ${Boost_LIBRARIES}
+#   ${moveit_ros_planning_interface_LIBRARIES}
+# )
 
 target_link_libraries(MoveGroup_libs
-  Eigen3::Eigen
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   ${moveit_ros_planning_interface_LIBRARIES}
