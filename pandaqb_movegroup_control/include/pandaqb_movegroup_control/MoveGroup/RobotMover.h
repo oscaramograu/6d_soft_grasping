@@ -14,4 +14,5 @@ private:
     void pandaLink_to_EEF();
 
     std::string eef_frame;
+    shape_msgs::SolidPrimitive collision_obj_primitive;
 };

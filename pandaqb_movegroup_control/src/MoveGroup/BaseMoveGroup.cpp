@@ -46,3 +46,21 @@ void BaseMoveGroup::load_params(){
     move_group_->setMaxVelocityScalingFactor(velocity_scaling);
     move_group_->setMaxAccelerationScalingFactor(acceleration_scaling);
 }
+
+void BaseMoveGroup::add_collision_object(std::string name, 
+        shape_msgs::SolidPrimitive primitive, geometry_msgs::Pose pose){
+    moveit_msgs::CollisionObject collision_object;
+    collision_object.header.frame_id = move_group_->getPlanningFrame();
+
+    collision_object.id = name;
+
+    collision_object.primitives.push_back(primitive);
+    collision_object.primitive_poses.push_back(pose);
+    collision_object.operation = collision_object.ADD;
+
+    std::vector<moveit_msgs::CollisionObject> collision_objects;
+    collision_objects.push_back(collision_object);
+
+    ROS_INFO_STREAM("Add an object into the world");
+    planning_scene_.addCollisionObjects(collision_objects);
+}

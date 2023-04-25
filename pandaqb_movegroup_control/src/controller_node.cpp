@@ -30,11 +30,11 @@ int main(int argc, char** argv){
     geometry_msgs::Pose target_pose = robot_mover.getCurrentPose();
     target_pose.position.x += 0.1;
     target_pose.position.y += 0.1;
-    target_pose.position.z -= 0.1;
-    target_pose.orientation.x = 0.0;
-    target_pose.orientation.y = 0.0;
-    target_pose.orientation.z = 0.0;
-    target_pose.orientation.w = 1.0;
+    target_pose.position.z -= 0.1;   
+    target_pose.orientation.x = 5.5511e-17;
+    target_pose.orientation.y = -0.2474;
+    target_pose.orientation.z = -5.5511e-17;
+    target_pose.orientation.w = 0.96891;
     
     robot_mover.move(target_pose);
 
