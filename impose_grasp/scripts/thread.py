@@ -4,16 +4,16 @@ import os
 import time
 from typing import Callable
 
-from include.app.app import App
+from impose_grasp.app.app import App
 
-from include.models.cameras.realsense_D415 import D415
-from include.models.cameras.base_camera import CamFrame
-from include.models.dt_object import DTObject
-from include.models.obstruction_pcd import ObstructionPcd
+from impose_grasp.models.cameras.realsense_D415 import D415
+from impose_grasp.models.cameras.base_camera import CamFrame
+from impose_grasp.models.dt_object import DTObject
+from impose_grasp.models.obstruction_pcd import ObstructionPcd
 
-from include.networks.pose_detection_network import PoseDetectionNetwork
-from include.lib.geometry import invert_homogeneous
-from include.lib.utils import time_stamp
+from impose_grasp.networks.pose_detection_network import PoseDetectionNetwork
+from impose_grasp.lib.geometry import invert_homogeneous
+from impose_grasp.lib.utils import time_stamp
 
 class CameraThread:
     def __init__(self, cb_camera: Callable[[CamFrame], None] = None): #, cb_camera: Callable[[CamFrame], None] = None):
@@ -30,7 +30,7 @@ class CameraThread:
         self.obj_detector = self.create_objDetector()
 
         n_points = 512
-        self.pose_detector = PoseDetectionNetwork(self.obj_type , n_points)
+        self.pose_detector = PoseDetectionNetwork(self.dt_obj_type , n_points)
 
         self.obstruction_pcd = ObstructionPcd()
 
@@ -38,19 +38,20 @@ class CameraThread:
         self.darknet_frame = None
         self.dt = None
         self.cb_camera = cb_camera
+        self.use_icp = False
 
     def create_dtObject(self, obj_id):
-        meshpath = os.path.join("data", "models", obj_id, f"{obj_id}.ply")
+        meshpath = os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "models", obj_id, f"{obj_id}.ply")
 
         new_obj = DTObject(name=obj_id,
                            meshpath=meshpath, show_axes=True)
         return new_obj
     
     def create_objDetector(self):
-        from include.networks.pvn.lib.main_darknet import MainDarknet 
-
+        from impose_grasp.networks.pvn.lib.main_darknet import MainDarknet, MainDarknetParams
+        # mainDarknetParams = MainDarknetParams()
         objectDetector = MainDarknet()
-        obj_data = os.path.join("data", "weights", "darknet", "cps")
+        obj_data = os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "weights", "darknet", "cps")
         objectDetector.cfg_file = os.path.join(obj_data, "yolo.cfg")
         objectDetector.data_file = os.path.join(obj_data, "obj.data")
         objectDetector.params.monitor_params.weights_path = os.path.join(obj_data, "yolo.weights")
@@ -59,6 +60,7 @@ class CameraThread:
         return objectDetector
     
     def manage_fps(self):
+        """ Makes the while loop sleep to run at 30fps """
         t_last_cb_camera = self.t_last_cb_camera
         dt = time.perf_counter() - t_last_cb_camera
 
@@ -72,6 +74,10 @@ class CameraThread:
         self.dt = dt
 
     def get_dtObjDetections_and_set_darknetFrame(self, frame: CamFrame):
+        """ 
+            Uses the darknet object detector to safe the detected object in the frame,
+            and returns the dict with highest conidence class and their bbox 
+        """
         confidence_threshold = self.settings['confidence']
         self.darknet_frame, detections, _ = self.obj_detector.image_detection(
             frame.rgb.copy(), confidence_threshold, None)
@@ -80,6 +86,13 @@ class CameraThread:
         return detections
     
     def get_bboxOfObjInFrame(self, frame: CamFrame, detected):
+        """
+            If it was not previously detected the bbox from darknet, 
+            and convert it to the original image frame.
+
+            If it was previously detected calculate the bounding box from pvn 
+            prediction, project the bounding box of the object into the image.
+        """
         bbox = None
         detections = self.get_dtObjDetections_and_set_darknetFrame(frame)
         if len(detections) > 0:
@@ -89,13 +102,16 @@ class CameraThread:
                 bbox_xywh, frame.rgb.shape[:2])
 
         if detected:
-            # if previously detected calculate the bounding box from pvn prediction
-            # project the bounding box of the object into the image
+            # 
             bbox = self.get_bboxProjected(frame)
 
         return bbox
     
     def get_bboxProjected(self, frame: CamFrame):
+        """ 
+            Calculate the bounding box of the object from pvn prediction 
+            and project it into the image.
+        """
         affine_matrix = invert_homogeneous(
             frame.extrinsic) @ self.dt_obj.pose
         pvn_bbox = self.dt_obj.bounding_box @ affine_matrix[:3, :3].T
@@ -114,7 +130,11 @@ class CameraThread:
 
         return pvn_bbox
     
-    def detectAndGet_AffineMatrix(self,frame: CamFrame, bbox):
+    def detect_object_andGet_affineMatrix(self,frame: CamFrame, bbox):
+        """
+            Tries to detect the object (detected flag) and the rotation matrix 
+            of the object wrt the world (affine matrix) using the pvn pose detector
+        """
         affine_matrix = None
         if bbox is not None and self.pose_detector is not None:
             try:
@@ -125,6 +145,7 @@ class CameraThread:
         return detected, affine_matrix
     
     def annotate_frameWithBbox(self, frame: CamFrame, bbox, affine_matrix):
+        """ Annotates the frame with the bounding box """
         annotated = frame.rgb.copy()
         if self.draw_object:
             if bbox is not None:
@@ -146,7 +167,7 @@ class CameraThread:
         frame = None
         detected = False
 
-        while not self.stop_flag:
+        while True:
             self.manage_fps()
 
             frame = self.cam.grab_frame()
@@ -154,16 +175,14 @@ class CameraThread:
                 continue
 
             # Image (2D object detection/prediction)
-            bbox = self.get_bboxOfObjInFrame(self, frame, detected)
+            bbox = self.get_bboxOfObjInFrame(frame, detected)
 
             # 6D pose estimation of selected object
             detected = False
-            detected, affine_matrix = self.detectAndGet_AffineMatrix(frame, bbox)
+            detected, affine_matrix = self.detect_object_andGet_affineMatrix(frame, bbox)
 
             if detected:
                 current_pose = frame.extrinsic @ affine_matrix
-
-                self.dt_obj.show()
                 self.dt_obj.transform(current_pose)
 
             else:
@@ -175,6 +194,17 @@ class CameraThread:
 
             # annotate
             anno_frame = self.annotate_frameWithBbox(frame, bbox, affine_matrix)
+            cv2.imshow("Detection frame", anno_frame)
 
             if self.cb_camera is not None:
                 self.cb_camera(anno_frame)
+
+            # Check for key press             
+            key = cv2.waitKey(1)
+            if key == ord('q'):  # Exit loop if 'q' key is pressed
+                break
+
+        cv2.destroyAllWindows()
+
+ct = CameraThread()
+ct.main()

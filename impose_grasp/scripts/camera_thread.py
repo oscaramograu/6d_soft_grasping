@@ -6,17 +6,17 @@ import os
 import time
 from threading import Thread
 from typing import List, Callable
-import open3d as o3d
 
-from include.app.app import App
-from include.models.cameras.base_camera import Camera, CamFrame
-from include.models.dt_object import DTObject
-from include.networks.pose_detection_network import PoseDetectionNetwork
-from include.lib.geometry import invert_homogeneous
-from include.lib.utils import time_stamp
+from impose_grasp.app.app import App
 
+from impose_grasp.models.cameras.base_camera import Camera, CamFrame
+from impose_grasp.models.dt_object import DTObject
+from impose_grasp.models.obstruction_pcd import ObstructionPcd
 
+from impose_grasp.networks.pose_detection_network import PoseDetectionNetwork
 
+from impose_grasp.lib.geometry import invert_homogeneous
+from impose_grasp.lib.utils import time_stamp
 
 class DigitalTwin:
     EYE_IN_HAND = "eye_in_hand"  # reserved name for cam on robot gripper
@@ -92,7 +92,7 @@ class DigitalTwin:
         self.dt_objectcs_list.update({unique_obj_name: new_obj})
 
     def camera_thread(self):
-        from include.networks.pvn.lib.main_darknet import MainDarknet 
+        from impose_grasp.networks.pvn.lib.main_darknet import MainDarknet 
 
         poseDetections = {}
         # in the future single object detector for all objects -> decision logic
@@ -165,14 +165,14 @@ class DigitalTwin:
             # Image (2D object detection/prediction)
             bbox = None
             confidence_threshold = settings['confidence']
-            darknet_frame, detections, _ = objectDetector.image_detection(
+            darknet_frame, detections, _ = objectDetector.image_detection( 
                 frame.rgb.copy(), confidence_threshold, None)
             # print(detections)
-            detections = [x for x in detections if x[0] == dt_obj_type]
+            detections = [x for x in detections if x[0] == dt_obj_type] # detectionts is a list with tuples of detected objects of the selcted type, containing the bbox and confidence value
             if len(detections) > 0:
                 bbox_xywh = detections[-1][2]
                 confidence = detections[-1][1]
-                bbox = objectDetector.yolo_bbox_2_original(
+                bbox = objectDetector.yolo_bbox_2_original( # sends the selected bbox to yolo to extract a more accurate bbox
                     bbox_xywh, frame.rgb.shape[:2])
 
             if detected:
