@@ -26,7 +26,7 @@ class PoseDetectionNetwork:
         self.n_sample_points = n_sample_points
 
         # load custom ops
-        ops_base_path = 'networks/pvn/pvn3d/lib/pointnet2_utils/tf_ops'
+        ops_base_path = '/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/networks/pvn/lib/net/pointnet2_utils/tf_ops'
         tf.load_op_library(os.path.join(
             ops_base_path, 'grouping', 'tf_grouping_so.so'))
         tf.load_op_library(os.path.join(

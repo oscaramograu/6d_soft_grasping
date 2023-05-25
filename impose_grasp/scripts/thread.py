@@ -24,7 +24,7 @@ class CameraThread:
 
         self.cam = D415(name="realsense_D415")
 
-        self.dt_obj_type = "cpsduck"
+        self.dt_obj_type = "cat"
         self.dt_obj = self.create_dtObject(self.dt_obj_type)
 
         self.obj_detector = self.create_objDetector()
@@ -41,7 +41,7 @@ class CameraThread:
         self.use_icp = False
 
     def create_dtObject(self, obj_id):
-        meshpath = os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "models", obj_id, f"{obj_id}.ply")
+        meshpath = os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/networks/pvn/demo_data/obj_06.ply")
 
         new_obj = DTObject(name=obj_id,
                            meshpath=meshpath, show_axes=True)
@@ -50,12 +50,10 @@ class CameraThread:
     def create_objDetector(self):
         from impose_grasp.networks.pvn.lib.main_darknet import MainDarknet, MainDarknetParams
         # mainDarknetParams = MainDarknetParams()
+
         objectDetector = MainDarknet()
-        obj_data = os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "weights", "darknet", "cps")
-        objectDetector.cfg_file = os.path.join(obj_data, "yolo.cfg")
-        objectDetector.data_file = os.path.join(obj_data, "obj.data")
-        objectDetector.params.monitor_params.weights_path = os.path.join(obj_data, "yolo.weights")
-        objectDetector.initial_trainer_and_model()
+
+        objectDetector.initial_trainer_and_model()  
 
         return objectDetector
     
