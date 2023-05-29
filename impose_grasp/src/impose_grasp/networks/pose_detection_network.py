@@ -8,9 +8,11 @@ import open3d as o3d
 from impose_grasp.lib.utils import load_mesh
 from impose_grasp.app.app import App
 
-from impose_grasp.networks.pvn.lib.data.utils import get_crop_index, pcld_processor_tf
-from impose_grasp.networks.pvn.lib.monitor.visualizer import project2img
-from impose_grasp.networks.pvn.lib.net.pprocessnet import InitialPoseModel
+import sys
+sys.path.append('/home/oscar/Desktop/code/6IMPOSE')
+from lib.data.utils import get_crop_index, pcld_processor_tf
+from lib.monitor.visualizer import project2img
+from lib.net.pprocessnet import InitialPoseModel
 
 
 class PoseDetectionNetwork:
@@ -26,7 +28,9 @@ class PoseDetectionNetwork:
         self.n_sample_points = n_sample_points
 
         # load custom ops
-        ops_base_path = '/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/networks/pvn/lib/net/pointnet2_utils/tf_ops'
+        path_to_6IMPOSE = '/home/oscar/Desktop/code/6IMPOSE' 
+
+        ops_base_path = os.path.join(path_to_6IMPOSE, 'lib', 'net', 'pointnet2_utils', 'tf_ops')
         tf.load_op_library(os.path.join(
             ops_base_path, 'grouping', 'tf_grouping_so.so'))
         tf.load_op_library(os.path.join(

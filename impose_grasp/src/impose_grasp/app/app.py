@@ -14,14 +14,13 @@ class NumpyArrayEncoder(json.JSONEncoder):
         else:
             return super(NumpyArrayEncoder, self).default(obj)
 
-
-def write_settings():
-    with open('/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/app/settings.json', 'w') as F:
+def write_settings(path_to_settings):
+    with open(path_to_settings, 'w') as F:
         json.dump(App().settings, F, indent=2, cls=NumpyArrayEncoder)
 
 
-def read_settings():
-    with open('/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/app/settings.json', 'r') as F:
+def read_settings(path_to_settings):
+    with open(path_to_settings, 'r') as F:
         data = json.load(F)
     App().settings = data
 
@@ -42,5 +41,6 @@ class App:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(App, cls).__new__(cls, *args, **kwargs)
-            read_settings()
+            settings_path = os.path.join(os.getcwd(), 'src', 'impose_grasp', 'app', 'settings.json')
+            read_settings(settings_path)
         return cls._instance

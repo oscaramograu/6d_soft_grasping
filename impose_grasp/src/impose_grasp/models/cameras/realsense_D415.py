@@ -23,7 +23,7 @@ class D415(Realsense):
             return
 
         jsonObj = json.load(
-            open(os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "d415_config.json")))
+            open(os.path.join(os.getcwd(), "src/impose_grasp/data", "d415_config.json")))
         json_string = str(jsonObj).replace("'", '\"')
         advnc_mode = rs.rs400_advanced_mode(self.device)
         advnc_mode.load_json(json_string)

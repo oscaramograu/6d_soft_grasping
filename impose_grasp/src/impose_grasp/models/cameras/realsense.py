@@ -79,7 +79,11 @@ class Realsense(Camera):
         return self.rgb_shape[::-1]
 
     def get_model(self):
-        return load_mesh(os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "models", f"realsense_{self.device_name}.ply"))
+        mesh_path = os.path.join(os.getcwd(), 'src', 'impose_grasp', 'data', 
+                                 'models', f"realsense_{self.device_name}.ply")
+        print(mesh_path)
+        return load_mesh(mesh_path) 
+    #"/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "models", f"realsense_{self.device_name}.ply"
 
     def grab_frame(self) -> CamFrame:
         if self.device is None:

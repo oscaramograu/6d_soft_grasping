@@ -10,8 +10,7 @@ project(grasp_detection)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
-  pandaqb_movegroup_control
-  cv2
+  # pandaqb_movegroup_control
 )
 
 ## System dependencies are found with CMake's conventions

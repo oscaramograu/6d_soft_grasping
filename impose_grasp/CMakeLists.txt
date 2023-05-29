@@ -19,6 +19,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_subdirectory(src)
+
 catkin_python_setup()
 
 ## System dependencies are found with CMake's conventions

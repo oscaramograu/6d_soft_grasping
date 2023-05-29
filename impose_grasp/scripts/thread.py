@@ -15,6 +15,8 @@ from impose_grasp.networks.pose_detection_network import PoseDetectionNetwork
 from impose_grasp.lib.geometry import invert_homogeneous
 from impose_grasp.lib.utils import time_stamp
 
+import open3d as o3d
+
 class CameraThread:
     def __init__(self, cb_camera: Callable[[CamFrame], None] = None): #, cb_camera: Callable[[CamFrame], None] = None):
             # flags
@@ -41,14 +43,16 @@ class CameraThread:
         self.use_icp = False
 
     def create_dtObject(self, obj_id):
-        meshpath = os.path.join("/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/networks/pvn/demo_data/obj_06.ply")
+        meshpath = os.path.join(os.getcwd(), 'data', 'demo_data', 'obj_06.ply"')
 
         new_obj = DTObject(name=obj_id,
                            meshpath=meshpath, show_axes=True)
         return new_obj
     
     def create_objDetector(self):
-        from impose_grasp.networks.pvn.lib.main_darknet import MainDarknet, MainDarknetParams
+        import sys
+        sys.path.append('/home/oscar/Desktop/code/6IMPOSE')
+        from lib.main_darknet import MainDarknet
         # mainDarknetParams = MainDarknetParams()
 
         objectDetector = MainDarknet()

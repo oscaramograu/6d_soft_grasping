@@ -1,10 +1,14 @@
 {
     "python.autoComplete.extraPaths": [
         "/home/neurolab/catkin_ws/devel/lib/python3/dist-packages",
-        "/opt/ros/noetic/lib/python3/dist-packages"
+        "/opt/ros/noetic/lib/python3/dist-packages",
+        "/home/oscar/catkin_ws/devel/lib/python3/dist-packages",
+        "/home/oscar/Desktop/code/6IMPOSE"
     ],
     "python.analysis.extraPaths": [
         "/home/neurolab/catkin_ws/devel/lib/python3/dist-packages",
-        "/opt/ros/noetic/lib/python3/dist-packages"
+        "/opt/ros/noetic/lib/python3/dist-packages",
+        "/home/oscar/catkin_ws/devel/lib/python3/dist-packages",
+        "/home/oscar/Desktop/code/6IMPOSE"
     ]
 }
