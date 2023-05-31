@@ -41,6 +41,6 @@ class App:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(App, cls).__new__(cls, *args, **kwargs)
-            settings_path = os.path.join(os.getcwd(), 'src', 'impose_grasp', 'app', 'settings.json')
+            settings_path = os.path.join('src', 'impose_grasp', 'app', 'settings.json')
             read_settings(settings_path)
         return cls._instance

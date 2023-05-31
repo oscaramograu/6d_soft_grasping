@@ -65,18 +65,20 @@ class DarknetDetector():
         image_resized = image_resized.astype(np.uint8)
         darknet.copy_image_from_bytes(self.darknet_image, image_resized.tobytes())
         detections = darknet.detect_image(self.network, self.class_names, self.darknet_image, thresh=self.yolo_thresh)
-        darknet.free_image(self.darknet_image)
+        # darknet.free_image(self.darknet_image)
         pred_bboxes = []
 
         if len(detections) != 0:
             detect = detections[-1]  # picking the detection with highest confidence score
             bbox = formatting_predictions(detect, self.yolo_rescale_factor, self.dw, self.dh)
             pred_bboxes.extend([bbox2det(box) for box in [bbox]])
-        else:
-            bbox = self.bbox_default
+            self.bbox = bbox
 
-        self.bbox = bbox
-        return True
-    
+            return True
+
+        else:
+            self.bbox = self.bbox_default
+            return False
+
     def get_resnet_inputs(self):
         return self.bbox, self.resnet_input_size

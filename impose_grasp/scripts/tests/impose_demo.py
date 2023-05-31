@@ -35,4 +35,3 @@ with Image.open(dpt_path) as depth:
 detector = PositionDetector(darknet_paths, pvn_paths)
 detector.detect(rgb, dpt)
 detector.safe_result()
-

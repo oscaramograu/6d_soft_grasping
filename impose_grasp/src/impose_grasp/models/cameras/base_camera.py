@@ -70,9 +70,9 @@ class Camera(TargetModel, ABC):
 
         # load matrices from self or saved config
         self.cal_path = os.path.join(
-            os.getcwd(), "data", "calibration")
+            "data", "calibration", self.get_unique_id())
         self.img_path = os.path.join(
-            os.getcwd(), "data", "images")
+            "data", "images", self.get_unique_id())
 
         if not os.path.exists(self.cal_path):
             os.makedirs(self.cal_path)
@@ -84,7 +84,8 @@ class Camera(TargetModel, ABC):
             self.intrinsic_matrix = np.loadtxt(
                 os.path.join(self.cal_path, "intrinsic_matrix.txt"))
         else:
-            self.intrinsic_matrix = os.path.join(self.cal_path, "intrinsic_matrix.txt")#self.get_intrinsic_matrix()
+            self.intrinsic_matrix = self.get_intrinsic_matrix()
+
         if os.path.exists(os.path.join(self.cal_path, "extrinsic_matrix.txt")):
             self.extrinsic_matrix = np.loadtxt(
                 os.path.join(self.cal_path, "extrinsic_matrix.txt"))

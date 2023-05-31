@@ -1,6 +1,7 @@
 from impose_grasp.networks.darknet_detector import DarknetDetector
 from impose_grasp.networks.pvn_detector import PvnDetector
 import os
+import numpy as np
 import cv2
 
 class PositionDetector():
@@ -11,13 +12,18 @@ class PositionDetector():
         self.result_img = None
 
     def detect(self,rgb, dpt):
-        self.darknet.inference(rgb)
-        bbox, resnet_input_size = self.darknet.get_resnet_inputs()
+        detected = self.darknet.inference(rgb)
 
-        self.pvn.load_inputs(bbox, resnet_input_size)
-        self.pvn.inference(rgb, dpt)
+        if detected:
+            bbox, resnet_input_size = self.darknet.get_resnet_inputs()
 
-        self.result_img = self.pvn.rgb_img_for_visualization()
+            self.pvn.load_inputs(bbox, resnet_input_size)
+            self.pvn.inference(rgb, dpt)
+
+            self.result_img = self.pvn.rgb_img_for_visualization()
+            
+        else:
+            self.result_img = rgb
 
     def safe_result(self):
         proj_pose_path = os.path.join(self.pvn.paths["demo_data"], "result.jpg")

@@ -26,8 +26,8 @@ intrinsic_matrix = np.array([[intrinsics.fx, 0, intrinsics.ppx],
                              [0, 0, 1]])
 
 # Save the intrinsic matrix to a text file
-os.path.join(os.getcwd(), "data", "calibration", "intrinsic_matrix.txt")
-np.savetxt('intrinsic_matrix.txt', intrinsic_matrix)
+save_path = os.path.join(os.getcwd(), "data", "calibration")
+np.savetxt(os.path.join(save_path, 'intrinsic_matrix.txt'), intrinsic_matrix)
 
 
 # Print the intrinsic matrix

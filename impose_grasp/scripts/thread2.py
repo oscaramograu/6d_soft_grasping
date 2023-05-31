@@ -1,37 +1,27 @@
 import cv2
 import time
 from typing import Callable
-from threading import Thread
 from impose_grasp.app.app import App
 import os
 
 from impose_grasp.models.cameras.realsense_D415 import D415
 from impose_grasp.models.cameras.base_camera import CamFrame
-from impose_grasp.models.targetmodel import TargetModel
 
-from impose_grasp.lib.utils import load_mesh
 from impose_grasp.networks.detector import PositionDetector
 
 class CameraThread:
-    BASE_PATH = os.path.join(os.getcwd() ,'impose_grasp','data', 'models', 'fanuc_crx_10ial')
-    SIX_IMPOSE_PATH = os.path.join("home", "oscar", "Desktop", "code", "6IMPOSE")
-
+    BASE_PATH = os.path.join("src",'impose_grasp','data', 'models', 'fanuc_crx_10ial')
+    SIX_IMPOSE_PATH = "/home/oscar/Desktop/code/6IMPOSE" 
     def __init__(self, cb_camera: Callable[[CamFrame], None] = None):
         self.settings = App().settings['Object Detection']
         self.t_last_cb_camera = 0.0
 
-        self.eye_in_hand = D415(name="realsense_D415")
+        self.cam = D415(name="realsense_D415")
         
-        self.eye_in_hand.start()
-        self.eye_in_hand.attach(self.endeffector, self.eye_in_hand.extrinsic_matrix)
-        self.endeffector = TargetModel("fanuc_crx", mesh=load_mesh(os.path.join(self.BASE_PATH, 'j6.ply')))
+        self.cam.start()
         
         self.dt = None
         self.cb_camera = cb_camera
-
-        self.thread = Thread(target=self.main)
-
-        self.thread.start()
 
         self.detector = self.create_detector()
 
@@ -54,7 +44,7 @@ class CameraThread:
             "demo_data": path_to_demo_file()
         }
 
-        self.detector = PositionDetector(darknet_paths, pvn_paths)
+        return PositionDetector(darknet_paths, pvn_paths)
 
 
     def manage_fps(self):
@@ -76,6 +66,7 @@ class CameraThread:
 
         while True:
             self.manage_fps()
+            print(self.settings['FPS'])
 
             frame = self.cam.grab_frame()
             if frame is None:
@@ -85,7 +76,7 @@ class CameraThread:
 
             result_img = self.detector.get_result_img()
 
-            cv2.imshow("detected object", result_img)
+            cv2.imshow("detected object", frame.rgb)
 
             key = cv2.waitKey(1)
             if key == ord('q'):  # Exit loop if 'q' key is pressed
@@ -95,7 +86,6 @@ class CameraThread:
 
     def close(self):
         print("Quitting...")
-        self.thread.join()
         self.cam.close()
 
 ct = CameraThread()
