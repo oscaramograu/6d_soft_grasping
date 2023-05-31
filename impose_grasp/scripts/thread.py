@@ -44,7 +44,8 @@ class CameraThread:
 
     def create_dtObject(self, obj_id):
         meshpath = os.path.join(os.getcwd(), 'data', 'demo_data', 'obj_06.ply"')
-
+        meshpath = '/home/oscar/catkin_ws/src/thesis/impose_grasp/data/demo_data/obj_06.ply'
+        print(meshpath)
         new_obj = DTObject(name=obj_id,
                            meshpath=meshpath, show_axes=True)
         return new_obj

@@ -20,6 +20,9 @@ class HiddenPrints:
 def time_stamp():
     return datetime.now().strftime("%H:%M:%S:%f")
 
+def path_to_demo_file(path_from_demo_to_file=""):
+    path_to_demo = os.path.join(os.getcwd(), "data/demo_data")
+    return os.path.join(path_to_demo, path_from_demo_to_file) 
 
 def get_gripper_vis(gripper, gpose: GrippingPose, thickness=0.005):
     grasp_width = gpose.width
