@@ -1,31 +1,41 @@
 import cv2
 import time
-from typing import Callable
+
 from impose_grasp.app.app import App
-import os
-
 from impose_grasp.models.cameras.realsense_D415 import D415
-from impose_grasp.models.cameras.base_camera import CamFrame
-
 from impose_grasp.networks.detector import PositionDetector
 
 class CameraThread:
-    BASE_PATH = os.path.join("src",'impose_grasp','data', 'models', 'fanuc_crx_10ial')
     SIX_IMPOSE_PATH = "/home/oscar/Desktop/code/6IMPOSE" 
-    def __init__(self, cb_camera: Callable[[CamFrame], None] = None):
-        self.settings = App().settings['Object Detection']
-        self.t_last_cb_camera = 0.0
 
-        self.cam = D415(name="realsense_D415")
+    def __init__(self):
+        self._settings = App().settings['Object Detection']
+        self._t_last_cb_camera = 0.0
+
+        self._cam = D415(name="realsense_D415")
         
-        self.cam.start()
+        self._cam.start()
         
-        self.dt = None
-        self.cb_camera = cb_camera
+        self._dt = None
 
-        self.detector = self.create_detector()
+        self.detector = self._create_detector()
 
-    def create_detector(self):
+    def _create_detector(self) -> PositionDetector:
+        """ 
+            Loads the paths of the files that are necessary to create the darknet detector 
+            and for the pvn pose estimator.
+            - Darknet: 
+                - yolo config
+                - obj data
+                - yolo pre-trained weights
+            - PVN: 
+                - object mesh
+                - keypoints
+                - corners
+                - pvn config
+                - pvn pre-trained weights    
+        """
+
         from impose_grasp.lib.utils import path_to_demo_file
         darknet_paths = {
             "6IMPOSE": self.SIX_IMPOSE_PATH,
@@ -47,28 +57,31 @@ class CameraThread:
         return PositionDetector(darknet_paths, pvn_paths)
 
 
-    def manage_fps(self):
-        """ Makes the while loop sleep to run at 30fps """
-        t_last_cb_camera = self.t_last_cb_camera
+    def _manage_fps(self, fps: int) -> None:
+        """ Makes the loop sleep to run at the defined FPS """
+        t_last_cb_camera = self._t_last_cb_camera
         dt = time.perf_counter() - t_last_cb_camera
 
-        if dt < 1/self.settings['FPS']:
+        if dt < 1/fps:
             # limit to 30 FPS
-            time.sleep(1/self.settings['FPS'] - dt)
+            time.sleep(1/fps - dt)
             dt = time.perf_counter() - t_last_cb_camera
 
-        self.t_last_cb_camera = time.perf_counter()
+        self._t_last_cb_camera = time.perf_counter()
 
-        self.dt = dt
+        self._dt = dt
 
-    def main(self):
+    def main(self) -> None:
+        """ 
+            Executes a while loop running at the fps determined in the settings file.
+            It positions the object in the 3D space using darknet and pvn.
+        """
         frame = None
-
         while True:
-            self.manage_fps()
-            print(self.settings['FPS'])
+            self._manage_fps(self._settings['FPS'])
+            print(self._settings['FPS'])
 
-            frame = self.cam.grab_frame()
+            frame = self._cam.grab_frame()
             if frame is None:
                 continue
 
@@ -76,7 +89,7 @@ class CameraThread:
 
             result_img = self.detector.get_result_img()
 
-            cv2.imshow("detected object", frame.rgb)
+            cv2.imshow("detected object", result_img)
 
             key = cv2.waitKey(1)
             if key == ord('q'):  # Exit loop if 'q' key is pressed
@@ -84,10 +97,9 @@ class CameraThread:
 
         cv2.destroyAllWindows()
 
-    def close(self):
-        print("Quitting...")
-        self.cam.close()
+        self._close()
 
-ct = CameraThread()
-ct.main()
-ct.close()
+    def _close(self):
+        """ Turns the camera off """
+        print("Quitting...")
+        self._cam.close()
