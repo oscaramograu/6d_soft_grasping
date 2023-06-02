@@ -1,13 +1,12 @@
 from abc import abstractmethod
-from impose_grasp.models.cameras.base_camera import Camera, CamFrame
 import pyrealsense2 as rs
 import numpy as np
 import cv2
 import os
+
 from impose_grasp.app.app import App
-
-from impose_grasp.lib.utils import load_mesh, time_stamp
-
+from impose_grasp.models.cameras.base_camera import Camera, CamFrame
+from impose_grasp.lib.utils import load_mesh, time_stamp, PATH_TO_IMPOSE_GRASP
 
 class WrongCameraException(Exception):
     pass
@@ -79,9 +78,8 @@ class Realsense(Camera):
         return self.rgb_shape[::-1]
 
     def get_model(self):
-        mesh_path = os.path.join(os.getcwd(), 'src', 'impose_grasp', 'data', 
+        mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP, 'src', 'impose_grasp', 'data', 
                                  'models', f"realsense_{self.device_name}.ply")
-        print(mesh_path)
         return load_mesh(mesh_path) 
     #"/home/neurolab/catkin_ws/src/thesis/impose_grasp/src/impose_grasp/data", "models", f"realsense_{self.device_name}.ply"
 

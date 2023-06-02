@@ -19,10 +19,12 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_subdirectory(src)
-
 catkin_python_setup()
 
+install(PROGRAMS
+     nodes/Rt_publisher
+     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 

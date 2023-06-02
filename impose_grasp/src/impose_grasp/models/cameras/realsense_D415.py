@@ -1,9 +1,9 @@
 import pyrealsense2 as rs
-import numpy as np
 from .realsense import Realsense
 import os
 import json
 
+from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP
 
 class D415(Realsense):
     rgb_shape = (1920, 1080)  # maximum resolution
@@ -23,7 +23,7 @@ class D415(Realsense):
             return
 
         jsonObj = json.load(
-            open(os.path.join(os.getcwd(), "src/impose_grasp/data", "d415_config.json")))
+            open(os.path.join(PATH_TO_IMPOSE_GRASP, "src/impose_grasp/data", "d415_config.json")))
         json_string = str(jsonObj).replace("'", '\"')
         advnc_mode = rs.rs400_advanced_mode(self.device)
         advnc_mode.load_json(json_string)

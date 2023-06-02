@@ -3,12 +3,11 @@ import numpy as np
 import open3d as o3d
 from impose_grasp.models.targetmodel import TargetModel
 import os
-from impose_grasp.lib.utils import time_stamp
+from impose_grasp.lib.utils import time_stamp, PATH_TO_IMPOSE_GRASP
 from impose_grasp.lib.geometry import get_affine_matrix_from_6d_vector, homogeneous_mat_from_RT, invert_homogeneous, rotation_between_vectors
 from impose_grasp.lib.camera_calibration import read_chessboards, load_arrays, load_images, cv2_calibration, optimize_camera_offeset
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-
 
 @dataclass
 class CamFrame():
@@ -70,9 +69,9 @@ class Camera(TargetModel, ABC):
 
         # load matrices from self or saved config
         self.cal_path = os.path.join(
-            "data", "calibration", self.get_unique_id())
+            PATH_TO_IMPOSE_GRASP, "data", "calibration", self.get_unique_id())
         self.img_path = os.path.join(
-            "data", "images", self.get_unique_id())
+            PATH_TO_IMPOSE_GRASP, "data", "images", self.get_unique_id())
 
         if not os.path.exists(self.cal_path):
             os.makedirs(self.cal_path)

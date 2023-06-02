@@ -72,11 +72,15 @@ class DarknetDetector():
         pred_bboxes = []
 
         if len(detections) != 0:
+            confidence = float(detections[0][1])
+        else:
+            confidence = 0.0
+
+        if confidence >= 90:
             detect = detections[-1]  # picking the detection with highest confidence score
             bbox = formatting_predictions(detect, self._yolo_rescale_factor, self._dw, self._dh)
             pred_bboxes.extend([bbox2det(box) for box in [bbox]])
             self._bbox = bbox
-
             return True
 
         else:

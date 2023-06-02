@@ -2,6 +2,7 @@ import cv2
 import time
 
 from impose_grasp.app.app import App
+from impose_grasp.models.cameras.base_camera import CamFrame
 from impose_grasp.models.cameras.realsense_D415 import D415
 from impose_grasp.networks.detector import PositionDetector
 
@@ -36,7 +37,7 @@ class CameraThread:
                 - pvn pre-trained weights    
         """
 
-        from impose_grasp.lib.utils import path_to_demo_file
+        from impose_grasp.nodes.node_utils import path_to_demo_file
         darknet_paths = {
             "6IMPOSE": self.SIX_IMPOSE_PATH,
             "yolo_config": path_to_demo_file("yolo_model/yolov4-tiny-lm-cat.cfg"),
@@ -73,8 +74,9 @@ class CameraThread:
 
     def main(self) -> None:
         """ 
-            Executes a while loop running at the fps determined in the settings file.
-            It positions the object in the 3D space using darknet and pvn.
+        Executes a while loop running at the fps determined in the settings file.
+        It positions the object in the 3D space using darknet and pvn.
+        USED TO TEST, NOT IN ROS
         """
         frame = None
         while True:
@@ -82,24 +84,33 @@ class CameraThread:
             print(self._settings['FPS'])
 
             frame = self._cam.grab_frame()
-            if frame is None:
-                continue
-
-            self.detector.detect(frame.rgb, frame.depth)
+            Rt = self.detector.compute_pose_in_frame(frame)
 
             result_img = self.detector.get_result_img()
-
             cv2.imshow("detected object", result_img)
 
             key = cv2.waitKey(1)
             if key == ord('q'):  # Exit loop if 'q' key is pressed
-                break
+                break   
+                    
+        self.close()
 
-        cv2.destroyAllWindows()
+    def grab_frame_from_cam(self) -> bool:
+        """ 
+        Grabs a frame to detect the object.
+        """
+        frame = self._cam.grab_frame()
+        if frame is None:
+            print("No frame was grabbed check if camera is connected")
+        else:
+            return frame
+        
+    def compute_Rt(self, frame: CamFrame):
+        self.detector.detect(frame.rgb, frame.depth)
+        self.detector.get_Rt()
 
-        self._close()
-
-    def _close(self):
-        """ Turns the camera off """
+    def close(self):
+        """ Turns the camera off, and closes the window """
         print("Quitting...")
         self._cam.close()
+        cv2.destroyAllWindows()

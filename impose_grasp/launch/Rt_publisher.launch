@@ -1,0 +1,5 @@
+<launch>
+  <node name="Rt_publisher" pkg="impose_grasp" 
+        type="rt_publisher_node.py" output="screen"
+    />
+</launch>

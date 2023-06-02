@@ -1,7 +1,9 @@
-from impose_grasp.networks.darknet_detector import DarknetDetector
-from impose_grasp.networks.pvn_detector import PvnDetector
 import os
 import cv2
+
+from impose_grasp.networks.darknet_detector import DarknetDetector
+from impose_grasp.networks.pvn_detector import PvnDetector
+from impose_grasp.models.cameras.base_camera import CamFrame
 
 class PositionDetector():
     def __init__(self, darknet_paths, pvn_paths) -> None:
@@ -10,33 +12,34 @@ class PositionDetector():
 
         self.result_img = None
 
-    def detect(self,rgb, dpt):
+    def compute_pose_in_frame(self, frame: CamFrame) -> bool:
         """
         - It first uses daknet to crop the detected object in a bbox of the image.
         
         - If the object is detected:
             - The cropped img is sent to PVN to get the rotation and translation matrices of the object
             - The result image attribute is set to the cropped rgb frame
+
         - If its not detected:
             - The result image attribute is set to the original rgb frame
         """
-        detected = self.darknet.inference(rgb)
+        detected = self.darknet.inference(frame.rgb)
 
         if detected:
             bbox, resnet_input_size = self.darknet.get_resnet_inputs()
 
-            self.pvn.inference(rgb, dpt, bbox, resnet_input_size)
+            self.pvn.inference(frame.rgb, frame.depth, bbox, resnet_input_size)
 
             self.result_img = self.pvn.rgb_img_for_visualization()
             
         else:
-            self.result_img = rgb
-
+            self.result_img = frame.rgb
+        
     def safe_result(self):
         """
         Safes the result image attribute tot a file under the path: demo_data/result.jpg
         """
-        proj_pose_path = os.path.join(self.pvn.paths["demo_data"], "result.jpg")
+        proj_pose_path = os.path.join(self.pvn._paths["demo_data"], "result.jpg")
 
         cv2.imwrite(proj_pose_path, cv2.cvtColor(self.get_result_img(), cv2.COLOR_RGB2BGR))
         print("The result is saved to: " + proj_pose_path)

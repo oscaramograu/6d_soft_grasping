@@ -47,17 +47,17 @@ class PvnDetector(PvnSetterAndGetter):
 
         self._crop_index, crop_factor = get_crop_index(self._bbox, base_crop_resolution=self._resnet_input_size)
 
-        self._rgb = crop_image(self._rgb, self.crop_index.astype(int))
-        self._dpt = crop_image(self._dpt, self.crop_index.astype(int))
+        self._rgb = crop_image(self._rgb, self._crop_index.astype(int))
+        self._dpt = crop_image(self._dpt, self._crop_index.astype(int))
         
         rgb_normalized = self._rgb.copy() / 255.
         pcld_processor_tf(self._dpt.astype(np.float32),
                             rgb_normalized.astype(np.float32), self._intrinsic_matrix, 1,
-                            self._n_sample_points, xy_ofst=self.crop_index[:2],
+                            self._n_sample_points, xy_ofst=self._crop_index[:2],
                             depth_trunc=2.0)
         pcld_xyz, pcld_feats, sampled_index = pcld_processor_tf(self._dpt.astype(np.float32),
                                                                 rgb_normalized.astype(np.float32), self._intrinsic_matrix, 1,
-                                                                self._n_sample_points, xy_ofst=self.crop_index[:2],
+                                                                self._n_sample_points, xy_ofst=self._crop_index[:2],
                                                                 depth_trunc=2.0)
 
         self._rgb = tf.image.resize(self._rgb, self._resnet_input_size).numpy()
@@ -84,7 +84,7 @@ class PvnDetector(PvnSetterAndGetter):
 
     def rgb_img_for_visualization(self):
         from lib.monitor.visualizer import project_p3d, draw_p2ds
-        pred_pts = np.dot(self._mesh_points.copy(), self._Rt_pre[:, :3].T) + self._Rt_pre[:, 3]
+        pred_pts = np.dot(self._mesh_points.copy(), self.Rt_pre[:, :3].T) + self.Rt_pre[:, 3]
         pre_mesh_projected = project_p3d(pred_pts, cam_scale=1, K=self._intrinsic_matrix)
         pre_mesh_projected[:, 0] -= self._crop_index[0]
         pre_mesh_projected[:, 1] -= self._crop_index[1]

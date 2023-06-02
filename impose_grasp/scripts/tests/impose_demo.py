@@ -2,7 +2,8 @@ from PIL import Image
 import numpy as np
 
 from impose_grasp.networks.detector import PositionDetector
-from impose_grasp.lib.utils import path_to_demo_file
+from impose_grasp.nodes.node_utils import path_to_demo_file
+from impose_grasp.models.cameras.base_camera import CamFrame
 
 six_impose_path = "/home/oscar/Desktop/code/6IMPOSE"
 
@@ -31,7 +32,11 @@ with Image.open(rgb_path) as rgb:
 
 with Image.open(dpt_path) as depth:
     dpt = np.array(depth) / 1000.
+    
+frame = CamFrame()
+frame.rgb = rgb
+frame.depth = dpt
 
 detector = PositionDetector(darknet_paths, pvn_paths)
-detector.detect(rgb, dpt)
+detector.compute_pose_in_frame(frame)
 detector.safe_result()
