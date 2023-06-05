@@ -7,7 +7,7 @@ from impose_grasp.nodes.Rt_publisher import RtPublisher
 from impose_grasp.nodes.node_utils import path_to_demo_file
 
 if __name__ == '__main__':
-    Rt_publisher = RtPublisher()
+    Rt_publisher = RtPublisher(1)
     
     # =============== Real ===============
     # while True:

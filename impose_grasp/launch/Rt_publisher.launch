@@ -1,5 +1,5 @@
 <launch>
-  <node name="Rt_publisher" pkg="impose_grasp" 
-        type="rt_publisher_node.py" output="screen"
+  <node name="obj_to_cam_Rt_publisher" pkg="impose_grasp" 
+        type="obj_to_cam_rt_publisher_node.py" output="screen"
     />
 </launch>
