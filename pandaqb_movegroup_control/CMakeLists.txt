@@ -6,14 +6,17 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
-  moveit_core
-  moveit_ros_planning
+  moveit_core 
+  moveit_ros_planning 
   moveit_ros_planning_interface
   moveit_ros_perception
   moveit_visual_tools
   cv_bridge
   urdf
 )
+
+# find_package(Eigen REQUIRED)
+# include_directories(${Eigen_INCLUDE_DIRS})
 
 
 add_service_files(
@@ -31,8 +34,9 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES 
-    API_Libraries 
+    Controller_libs  
     MoveGroup_libs
+    Matrix_libs
   CATKIN_DEPENDS 
    rospy
    roscpp 
@@ -54,15 +58,13 @@ include_directories(
   ${moveit_ros_planning_interface_INCLUDE_DIRS}
 )
 
-add_library(API_Libraries
+# ======================================== Controller Node ========================================
+add_library(Controller_libs
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/hand_group.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/manipulator.cpp
   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
-
-  ${PROJECT_SOURCE_DIR}/src/CameraAPIs/image_handler.cpp
 )
-
 add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/BaseMoveGroup.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
@@ -75,8 +77,39 @@ add_executable(controller_node
 )
 
 add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(API_Libraries ${catkin_EXPORTED_TARGETS})
+add_dependencies(Controller_libs ${catkin_EXPORTED_TARGETS})
 add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(MoveGroup_libs
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${moveit_ros_planning_interface_LIBRARIES}
+)
+target_link_libraries(controller_node
+  Controller_libs
+  MoveGroup_libs
+)
+
+# ====================================== Matrix Publisher Node ======================================
+add_library(Matrix_libs
+  ${PROJECT_SOURCE_DIR}/src/MatrixManipulation/obj_w_Rt_publisher.cpp
+)
+add_executable(matrix_publisher_node 
+  ${PROJECT_SOURCE_DIR}/src/matrix_publisher_node.cpp
+)
+
+add_dependencies(matrix_publisher_node ${matrix_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(Matrix_libs ${catkin_EXPORTED_TARGETS})
+
+# target_link_libraries(Matrix_libs
+#   Eigen3::Eigen
+# )
+
+target_link_libraries(matrix_publisher_node
+  ${catkin_LIBRARIES}
+  # ${Eigen_LIBRARIES}   
+  Matrix_libs
+)
 
 # target_link_libraries(API_Libraries
 #   Eigen3::Eigen
@@ -84,14 +117,3 @@ add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
 #   ${Boost_LIBRARIES}
 #   ${moveit_ros_planning_interface_LIBRARIES}
 # )
-
-target_link_libraries(MoveGroup_libs
-  ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${moveit_ros_planning_interface_LIBRARIES}
-)
-
-target_link_libraries(controller_node
-  API_Libraries
-  MoveGroup_libs
-)

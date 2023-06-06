@@ -1,5 +1,5 @@
 import rospy
-from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Float32MultiArray, MultiArrayLayout, MultiArrayDimension
 from rospy.numpy_msg import numpy_msg
 import numpy as np
 
@@ -39,7 +39,6 @@ class RtPublisher:
 
     def test_publish_Rt(self, rgb, dpt):
         while not rospy.is_shutdown():
-
             frame = CamFrame
             frame.rgb = rgb
             frame.depth = dpt
@@ -47,8 +46,7 @@ class RtPublisher:
             Rt = self._get_Rt_from_frame(frame)
             if(type(Rt) == None):
                 Rt = np.zeros((2,2))
-            msg = Float32MultiArray()
-            msg.data = Rt.flatten().tolist()
+            msg = self._numpy_to_array_msg(Rt)
             self.pub.publish(msg)
 
             self.rate.sleep()
@@ -69,3 +67,18 @@ class RtPublisher:
         """
         self._obj_detector.compute_pose_in_frame(frame)
         return self._obj_detector.get_Rt()
+    
+    def _numpy_to_array_msg(self, np_array: np.ndarray) -> Float32MultiArray:
+        """
+        Converts a numpy array to a Float32Multiarray msg type to be sent with ros.
+        """
+        row, col = np_array.shape
+        row_dim, col_dim = MultiArrayDimension("rows", row, row*col), MultiArrayDimension("columns", col, col)
+        dim_list = [row_dim, col_dim]
+
+        layout = MultiArrayLayout(dim_list, 0)
+        data = np_array.flatten().tolist()
+
+        array_msg = Float32MultiArray(layout, data)
+
+        return array_msg     
