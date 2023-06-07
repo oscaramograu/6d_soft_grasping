@@ -1,11 +1,6 @@
 #include <pandaqb_movegroup_control/MatrixManipulation/ObjWorldTransformer.h>
 
 ObjWorldTransformer::ObjWorldTransformer(){
-    cam_EEF_->matrix() << //LOAD THE MATRIX FROM THE PARAMETER SERVER
-        1.0, .1, .1, .1,
-        .1, 1.0, .1, .1,
-        .1, .1, 1.0, .1,
-        .1, .1, .1, 1.0; 
 }
 ObjWorldTransformer::~ObjWorldTransformer(){
 }
@@ -13,7 +8,8 @@ ObjWorldTransformer::~ObjWorldTransformer(){
 void ObjWorldTransformer::set_ObjCam_T(Eigen::Affine3d obj_cam){
     *obj_cam_ = obj_cam;
 }
-void ObjWorldTransformer::set_CamEEF_T(Eigen::Affine3d cam_EEF){
+void ObjWorldTransformer::set_CamEEF_T(Eigen::Affine3d cam_EEF){ 
+    //LOAD THE MATRIX FROM THE PARAMETER SERVER
     *cam_EEF_ = cam_EEF;
 }
 void ObjWorldTransformer::set_EEFWorld_T(Eigen::Affine3d EEF_w){
