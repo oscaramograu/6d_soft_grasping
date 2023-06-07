@@ -75,7 +75,8 @@
         "variant": "cpp",
         "bit": "cpp",
         "dense": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "core": "cpp"
     },
     "python.analysis.extraPaths": [
         "/home/neurolab/catkin_ws/devel/lib/python3/dist-packages",

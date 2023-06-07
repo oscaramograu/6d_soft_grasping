@@ -93,6 +93,7 @@ target_link_libraries(controller_node
 # ====================================== Matrix Publisher Node ======================================
 add_library(Matrix_libs
   ${PROJECT_SOURCE_DIR}/src/MatrixManipulation/obj_w_Rt_publisher.cpp
+  ${PROJECT_SOURCE_DIR}/src/MatrixManipulation/ObjWorldTransformer.cpp
 )
 add_executable(matrix_publisher_node 
   ${PROJECT_SOURCE_DIR}/src/matrix_publisher_node.cpp
@@ -101,19 +102,8 @@ add_executable(matrix_publisher_node
 add_dependencies(matrix_publisher_node ${matrix_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(Matrix_libs ${catkin_EXPORTED_TARGETS})
 
-# target_link_libraries(Matrix_libs
-#   Eigen3::Eigen
-# )
 
 target_link_libraries(matrix_publisher_node
   ${catkin_LIBRARIES}
-  # ${Eigen_LIBRARIES}   
   Matrix_libs
 )
-
-# target_link_libraries(API_Libraries
-#   Eigen3::Eigen
-#   ${catkin_LIBRARIES}
-#   ${Boost_LIBRARIES}
-#   ${moveit_ros_planning_interface_LIBRARIES}
-# )
