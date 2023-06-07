@@ -5,7 +5,7 @@ int main(int argc, char** argv){
     // Initialize the node
     ros::init(argc, argv, "Rt_publisher_node");
 
-    ObjWorld_RtPublisher ObjWorld_pub;
+    ObjWorld_TPublisher ObjWorld_pub;
 
     ros::spin();
 
