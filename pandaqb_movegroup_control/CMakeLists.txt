@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0.2)
 project(pandaqb_movegroup_control)
 
 find_package(catkin REQUIRED COMPONENTS
+  tf
+  tf_conversions
   roscpp
   rospy
   std_msgs
@@ -12,12 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_perception
   moveit_visual_tools
   cv_bridge
-  urdf
+  urdf  
 )
-
-# find_package(Eigen REQUIRED)
-# include_directories(${Eigen_INCLUDE_DIRS})
-
 
 add_service_files(
   FILES
@@ -38,15 +36,17 @@ catkin_package(
     MoveGroup_libs
     Matrix_libs
   CATKIN_DEPENDS 
-   rospy
-   roscpp 
-   std_msgs
-   moveit_core 
-   moveit_ros_planning 
-   moveit_ros_planning_interface
-   moveit_ros_perception
-   moveit_visual_tools
-   cv_bridge
+    tf
+    tf_conversions
+    rospy
+    roscpp 
+    std_msgs
+    moveit_core 
+    moveit_ros_planning 
+    moveit_ros_planning_interface
+    moveit_ros_perception
+    moveit_visual_tools
+    cv_bridge
  
   DEPENDS system_lib
 )
@@ -102,7 +102,10 @@ add_executable(matrix_publisher_node
 add_dependencies(matrix_publisher_node ${matrix_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(Matrix_libs ${catkin_EXPORTED_TARGETS})
 
-
+target_link_libraries(Matrix_libs
+  ${tf_LIBRARIES}
+  ${tf_conversions_LIBRARIES}  
+)
 target_link_libraries(matrix_publisher_node
   ${catkin_LIBRARIES}
   Matrix_libs

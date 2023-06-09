@@ -48,11 +48,13 @@ protected:
      * 
      * @return the final object to world transformation matrix
      */
-    Eigen::Affine3d* get_ObjWorld_T();
+    Eigen::Affine3d get_ObjWorld_T();
+
+    Eigen::Affine3d get_CamEEF_T();
 
 private:
-    Eigen::Affine3d *obj_cam_, *cam_EEF_, *EEF_w_, *obj_w_;
+    Eigen::Affine3d obj_cam_, cam_EEF_, EEF_w_, obj_w_;
 
     void set_ObjWorld_T(Eigen::Affine3d obj_w);
-    Eigen::Affine3d compose(Eigen::Affine3d* AB, Eigen::Affine3d* BC);
+    Eigen::Affine3d compose(Eigen::Affine3d AB, Eigen::Affine3d BC);
 };
