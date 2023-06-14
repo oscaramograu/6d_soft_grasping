@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="qbhand" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- Import the Franka arm -->
     <xacro:include filename="$(find franka_description)/robots/common/franka_arm.xacro" />
