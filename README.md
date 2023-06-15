@@ -5,11 +5,11 @@
 - Test image detection of the ducks using 6IMPOSE.
 - Test if the 6D positioning works properly.
 - Write the pipeline to execute a grasp.
+- Requirements.txt for impose grasp.
 
 # Install all the dependencies in Linux:
-- Install CUDA (at least 11.2)
-
-- Create a conda environtment and install the requirements.txt
+## General requirements
+- Install CUDA 11.2 at least.
 
 - Install ROS Noetic: http://wiki.ros.org/ROS/Installation
 
@@ -17,20 +17,38 @@
 
 - Install libfranka and franka_ros: https://frankaemika.github.io/docs/installation_linux.html
 
-- Open a terminal and create a ros workspace in your desired location and clone the repository inside src folder:
+- Install the qb soft hand required packages: http://wiki.ros.org/qb_hand/Tutorials/ROS%20Packages%20Installation
+
+- Clone the repository in your ros workspace inside the src folder: (if you don't have any workspace create one)
 ```
-mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/oscaramograu/thesis.git
-cd ..
-catkin_make
+git clone https://github.com/oscaramograu/6d_soft_grasping.git
 ```
 
+## Impose grasp package setup
+- Create a anaconda environtment and activate it.
+
+- Install the requirements.txt.
+```
+pip install -r requirements.txt
+```
+
+- Clone 6IMPOSE anywhere in your computer, and follow the instructions to run the demo file. https://github.com/HP-CAO/6IMPOSE
+
+- Set the path to the cloned 6IMPOSE repo in impose_grasp package.
+
+
+## Build project
 - Source the workspace:
 ```
+cd ~/catkin_ws/src
 source devel/setup.bash
 ```
 
+- Build the probject:
+```
+catkin_make
+```
 - Remember that to avoid having to source the ```~/catkin_ws/devel/setup.bash``` each time you open a new shell, you can add the ```“source ~/catkin_ws/devel/setup.bash”``` on your ```~/.bashrc```.
 
 # Usage Instructions:
