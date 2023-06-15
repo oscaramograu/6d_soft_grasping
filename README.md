@@ -62,7 +62,7 @@ In a second terminal launch the following (after activating the conda environtme
 roslaunch impose_grasp Rt_publisher.launch
 ```
 
-3 - Launch the Controller Node to execute the routine to perform the best grasp on the detected object:
+3 - Launch the Controller Node to execute the routine to perform the best grasp on the detected object: (**Still need to be developed**)
 ```
 roslaunch pandaqb_movegroup_control controller_node.launch
 ```
