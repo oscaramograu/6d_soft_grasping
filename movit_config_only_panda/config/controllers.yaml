@@ -1,6 +1,6 @@
   controller_manager_ns: ''
   controller_list:
-    - name: panda_arm_controller
+    - name: effort_joint_trajectory_controller
       action_ns: follow_joint_trajectory
       type: FollowJointTrajectory
       default: true

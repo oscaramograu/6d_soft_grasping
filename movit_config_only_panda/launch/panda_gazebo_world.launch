@@ -47,7 +47,7 @@
         type="spawner"
         name="panda_controller_spawner"
         respawn="false" output="screen"
-        args="--wait-for initialized franka_state_controller panda_arm_controller" />
+        args="--wait-for initialized franka_state_controller effort_joint_trajectory_controller" />
   
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   <node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher">
