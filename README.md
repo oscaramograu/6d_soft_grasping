@@ -5,7 +5,6 @@
 - Test image detection of the ducks using 6IMPOSE.
 - Test if the 6D positioning works properly.
 - Write the pipeline to execute a grasp.
-- Requirements.txt for impose grasp.
 
 # Install all the dependencies in Linux:
 ## General requirements
@@ -28,15 +27,15 @@ git clone https://github.com/oscaramograu/6d_soft_grasping.git
 ## Impose grasp package setup
 - Create a anaconda environtment and activate it.
 
-- Install the requirements.txt.
+- Install the requirements.txt under impose_grasp package.
 ```
+roscd impose_grasp
 pip install -r requirements.txt
 ```
 
-- Clone 6IMPOSE anywhere in your computer, and follow the instructions to run the demo file. https://github.com/HP-CAO/6IMPOSE
+- Clone 6IMPOSE anywhere in your computer. **NO NEED TO INSTALL THEIR REQUIREMENTS (ALLREADY INSTALLED)**. Follow the instructions to run the demo file. https://github.com/HP-CAO/6IMPOSE
 
 - Set the path to the cloned 6IMPOSE repo in impose_grasp package.
-
 
 ## Build project
 - Source the workspace:
