@@ -42,7 +42,7 @@
         <child  link="panda_link0" />
       </joint>
 
-      <xacro:gazebo-joint joint="panda_joint1" transmission="hardware_interface/PositionJointInterface" />
+      <!-- <xacro:gazebo-joint joint="panda_joint1" transmission="hardware_interface/PositionJointInterface" />
       <xacro:gazebo-joint joint="panda_joint2" transmission="hardware_interface/PositionJointInterface" />
       <xacro:gazebo-joint joint="panda_joint3" transmission="hardware_interface/PositionJointInterface" />
       <xacro:gazebo-joint joint="panda_joint4" transmission="hardware_interface/PositionJointInterface" />
@@ -64,7 +64,7 @@
       <xacro:gazebo-joint joint="panda_joint4" transmission="hardware_interface/EffortJointInterface" />
       <xacro:gazebo-joint joint="panda_joint5" transmission="hardware_interface/EffortJointInterface" />
       <xacro:gazebo-joint joint="panda_joint6" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint7" transmission="hardware_interface/EffortJointInterface" />
+      <xacro:gazebo-joint joint="panda_joint7" transmission="hardware_interface/EffortJointInterface" /> -->
 
       <xacro:transmission-franka-state arm_id="panda" />
       <xacro:transmission-franka-model arm_id="panda"
@@ -77,13 +77,13 @@
         </gazebo>
       </xacro:if> -->
       
-      <gazebo>
+      <!-- <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
           <controlPeriod>0.001</controlPeriod>
           <robotSimType>franka_gazebo/FrankaHWSim</robotSimType>
         </plugin>
         <self_collide>true</self_collide>
-      </gazebo>
+      </gazebo> -->
       
     </xacro:if>
   </xacro:macro>
