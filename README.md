@@ -1,4 +1,4 @@
-# ToDos
+# ToDo's
 - Hand Eye Calibration (get the camera cable, mount on the robot, print chess board on a solid base, use move it camera calibration and safe the poses).
 - Change the used model of the cat for the duck model.
 - Test image detection of the ducks using 6IMPOSE.
