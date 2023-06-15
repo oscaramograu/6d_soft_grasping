@@ -1,17 +1,15 @@
 # ToDos
-- Download dataset from Danieles pc
-
-- Train model in Daniele's pc
-
-- Install CUDA toolkit in workstation pc
-
-- Test zed library depth computation
-
-- Copy model from Daniele's pc to workstation
-
-- Send depth image to model and check the output
+- Hand Eye Calibration (get the camera cable, mount on the robot, print chess board on a solid base, use move it camera calibration and safe the poses).
+- Change the used model of the cat for the duck model.
+- Test image detection of the ducks using 6IMPOSE.
+- Test if the 6D positioning works properly.
+- Write the pipeline to execute a grasp.
 
 # Install all the dependencies in Linux:
+- Install CUDA (at least 11.2)
+
+- Create a conda environtment and install the requirements.txt
+
 - Install ROS Noetic: http://wiki.ros.org/ROS/Installation
 
 - Install MoveIt: https://moveit.ros.org/install/
@@ -34,25 +32,36 @@ source devel/setup.bash
 
 - Remember that to avoid having to source the ```~/catkin_ws/devel/setup.bash``` each time you open a new shell, you can add the ```“source ~/catkin_ws/devel/setup.bash”``` on your ```~/.bashrc```.
 
-# To use the code:
-1 - Launch the robot:
+# Usage Instructions:
+## Required Hardware
+- Franka Emika Panda arm
+- QB soft hand 2
+- Realsense D415 camera
+- Support for the camera _link required_ 
+- Cable to connect the camera
+- Duck toy _link required_
 
-In simulation:
+## Software
+1 - Launch the franka with the qb hand in moveit to test the movements or using the real robot:
+In one terminal launch the following:
+- In simulation:
 ```
-roslaunch pandaqb_movegroup_control robot_only.launch
-```
-
-Real robot:
-```
-roslaunch pandaqb_movegroup_control robot_only.launch use_fake_hardware:=false
+roslaunch pandaqb_movegroup_control panda_qb.launch
 ```
 
-2 - Launch the NN Node and the Camera Node:
+- Real robot:
 ```
-roslaunch pandaqb_movegroup_control dummy_nn_node.launch
+roslaunch pandaqb_movegroup_control panda_qb.launch sim:=false
 ```
 
-3 - Launch the Controller Node:
+2 - Launch the 6IMPOSE detection node:
+In a second terminal launch the following (after activating the conda environtment and installed the requirements.txt):
+
+```
+roslaunch impose_grasp Rt_publisher.launch
+```
+
+3 - Launch the Controller Node to execute the routine to perform the best grasp on the detected object:
 ```
 roslaunch pandaqb_movegroup_control controller_node.launch
 ```
