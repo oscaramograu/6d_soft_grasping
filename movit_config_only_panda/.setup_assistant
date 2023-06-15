@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: franka_description
+    relative_path: robots/panda/panda.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/panda.srdf
+  CONFIG:
+    author_name: Oscar Amo Grau
+    author_email: oscaramog@gmail.com
+    generated_timestamp: 1686671809
