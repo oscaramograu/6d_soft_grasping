@@ -71,11 +71,11 @@
          root="panda_joint1"
          tip="panda_joint8"
        />      
-      <xacro:if value="$(arg hand)">
+      <!-- <xacro:if value="$(arg hand)">
         <gazebo>
           <plugin name="qb_hand_gazebo_plugin" filename="libqb_hand_gazebo_plugin.so"/>
         </gazebo>
-      </xacro:if>
+      </xacro:if> -->
       
       <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
