@@ -1,0 +1,24 @@
+<launch>
+  <arg name="sim" default = "true" />
+  <arg name="gazebo" default = "true" />
+
+  <arg name="rviz_file" default="default"/>
+
+  <!-- Launch the robot in Gazebo launch file if simulation -->
+  <group if="$(arg sim)">
+    <include if="$(arg gazebo)"
+    file="$(find panda_qb_description)/launch/panda_gazebo_world.launch" />
+  </group>
+  <!-- Launch the franka robot controllers for the real robot -->
+  <include unless="$(arg sim)" 
+    file="$(find franka_control)/launch/franka_control.launch">
+    <arg name="robot_ip" value="172.16.0.2"/>
+    <arg name="robot" value="panda"/>
+    <arg name="load_gripper" value="false"/>
+  </include>
+
+  <!-- Launch moveit planning execution -->
+  <include file="$(find movit_config_only_panda)/launch/moveit_planning_execution.launch">
+    <arg name="rviz_file" default="$(arg rviz_file)"/>
+  </include>
+</launch>

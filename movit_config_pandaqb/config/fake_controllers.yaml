@@ -1,0 +1,21 @@
+controller_list:
+  - name: fake_arm_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+  - name: fake_hand_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - qbhand2m_manipulation_joint
+      - qbhand2m_motor_1_joint
+      - qbhand2m_motor_2_joint
+      - qbhand2m_synergy_joint
+initial:  # Define initial robot poses per group
+  - group: arm
+    pose: home
