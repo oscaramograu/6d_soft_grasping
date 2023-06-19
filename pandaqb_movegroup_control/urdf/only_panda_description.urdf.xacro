@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda_qb">
+  <xacro:include filename="$(find pandaqb_movegroup_control)/urdf/only_panda_robot.xacro"/>
+
+  <xacro:only_panda_robot
+    joint_limits="${xacro.load_yaml('$(find franka_description)/robots/panda/joint_limits.yaml')}">
+  </xacro:only_panda_robot>
+
+</robot>

@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="arm_id"      default="panda" doc="Name of the panda robot to spawn" />
+  <arg name="gazebo"      default="true" />
+
   <arg name="initial_joint_positions"
        doc="Initial joint configuration of the panda. Specify as a list of name/value pairs in form of '-J [name-of-joint] [value-in-rad]'. Default is a 90 degree bend in the elbow"
        default="-J panda_joint1 0
@@ -24,11 +26,7 @@
   
   <param name="robot_description"
          command="xacro $(find pandaqb_movegroup_control)/urdf/only_panda_description.urdf.xacro
-                  gazebo:=true
-                  hand:=false
-                  arm_id:=panda
-                  xyz:='0 0 0'
-                  rpy:='0 0 0'">
+                  gazebo:=$(arg gazebo)">
   </param>
 
   <rosparam file="$(find franka_gazebo)/config/franka_hw_sim.yaml" subst_value="true" />

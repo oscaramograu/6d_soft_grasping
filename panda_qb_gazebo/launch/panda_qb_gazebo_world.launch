@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <launch>
+<!-- Launch parameters -->
   <arg name="arm_id"      default="panda" doc="Name of the panda robot to spawn" />
+  <arg name="gazebo"      default="true" />
+  <arg name="hand"      default="false" />
   <arg name="initial_joint_positions"
        doc="Initial joint configuration of the panda. Specify as a list of name/value pairs in form of '-J [name-of-joint] [value-in-rad]'. Default is a 90 degree bend in the elbow"
        default="-J panda_joint1 0
@@ -14,26 +17,25 @@
                 -J panda_finger_joint2 0.001"
        />
 
+<!-- Launch empty gazebo world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="worlds/empty.world"/>
-    <!-- Always start in paused mode, and only unpause when spawning the model -->
     <arg name="paused" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="use_sim_time" value="true"/>
   </include>
-  
+
+<!-- Load the robot description, controllers, and simulation params -->
   <param name="robot_description"
-         command="xacro $(find pandaqb_movegroup_control)/urdf/only_panda_description.urdf.xacro
-                  gazebo:=true
-                  hand:=false
-                  arm_id:=panda
-                  xyz:='0 0 0'
-                  rpy:='0 0 0'">
+         command="xacro $(find pandaqb_movegroup_control)/urdf/pandaqb_description.urdf.xacro
+                  gazebo:=$(arg gazebo)
+                  hand:=$(arg hand)">
   </param>
 
   <rosparam file="$(find franka_gazebo)/config/franka_hw_sim.yaml" subst_value="true" />
-  <rosparam file="$(find movit_config_only_panda)/config/default_controllers.yaml" subst_value="true" />
+  <rosparam file="$(find movit_config_panda_qb)/config/default_controllers.yaml" subst_value="true" />
 
+<!-- Spawn the robot model -->
   <node name="panda_model_spawner"
         pkg="gazebo_ros"
         type="spawn_model"
@@ -42,16 +44,23 @@
         args="-urdf -param robot_description -model panda -unpause
               $(arg initial_joint_positions)"/>
 
-   <!-- spawns the controller after the robot was put into its initial joint pose  -->
+<!-- Spawn the controller after the robot was put into its initial joint pose  -->
   <node pkg="controller_manager"
         type="spawner"
         name="panda_controller_spawner"
         respawn="false" output="screen"
-        args="--wait-for initialized franka_state_controller effort_joint_trajectory_controller" />
-  
+        args="--wait-for initialized 
+          franka_state_controller 
+          effort_joint_trajectory_controller 
+          qbhand2m_joint_state_controller
+          qbhand2m_motor_positions_trajectory_controller" />
+
+<!-- Run robot and joint state publishers -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   <node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher">
-    <rosparam param="source_list">[franka_state_controller/joint_states] </rosparam>
+    <rosparam param="source_list">
+      [franka_state_controller/joint_states, 
+      qbhand2m_joint_state_controller/joint_states] </rosparam>
     <param name="rate" value="30"/>
   </node>
 </launch>

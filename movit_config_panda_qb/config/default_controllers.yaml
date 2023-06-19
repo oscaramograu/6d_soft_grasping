@@ -1,4 +1,4 @@
-panda_arm_controller:
+effort_joint_trajectory_controller:
   type: effort_controllers/JointTrajectoryController
   joints:
     - panda_joint1

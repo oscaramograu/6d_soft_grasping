@@ -1,90 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="qb_franka_robot" params="joint_limits">
-    <!-- Should a qb_gripper be mounted at the flange?" -->
-    <xacro:arg name="hand" default="false" />
-    <!-- Is the robot being simulated in gazebo?" -->
+  <xacro:macro name="qb_panda_robot" params="joint_limits">
     <xacro:arg name="gazebo" default="false" />
+    <xacro:arg name="hand" default="true" />
 
-    <xacro:include filename="$(find franka_description)/robots/common/utils.xacro" />
     <xacro:include filename="$(find franka_description)/robots/common/franka_arm.xacro" />
-
     <xacro:franka_arm arm_id="panda" safety_distance="0.03" gazebo="$(arg gazebo)" joint_limits="${joint_limits}"/>
 
+    <xacro:include filename="$(find pandaqb_movegroup_control)/urdf/camera_support.xacro"/>
+
     <xacro:if value="$(arg hand)">
-      <!-- Create a link and a joint to connect the last link of the panda arm with the base of the qb hand -->
-      <link name="panda_qb_link"/>
-
-      <joint name="fixed" type="fixed">
-          <parent link="panda_link8"/>
-          <child link="panda_qb_link"/>
-      </joint>
-
       <!-- Import the QB Hand and connect it to the created link -->
       <xacro:include filename="$(find qb_hand_description)/urdf/qbhand.utils.xacro"/>
-      <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m" parent="panda_qb">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+      <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m" parent="camera_support">
+        <origin xyz="0 0 0.01" rpy="0 0 0"/>
       </xacro:build_hand_2m_from_yaml>
-
-      <xacro:include filename="$(find pandaqb_movegroup_control)/urdf/AroundSupport.xacro"/>
-    </xacro:if>
-
-    <!-- Define additional Gazebo tags -->
-    <xacro:if value="$(arg gazebo)">
-      <xacro:arg name="xyz" default="0 0 0" />
-      <xacro:arg name="rpy" default="0 0 0" />
-
-      <!-- Gazebo requires a joint to a link called "world" for statically mounted robots -->
-      <link name="world" />
-      <joint name="world_joint" type="fixed">
-        <origin xyz="$(arg xyz)" rpy="$(arg rpy)" />
-        <parent link="world" />
-        <child  link="panda_link0" />
-      </joint>
-
-      <!-- <xacro:gazebo-joint joint="panda_joint1" transmission="hardware_interface/PositionJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint2" transmission="hardware_interface/PositionJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint3" transmission="hardware_interface/PositionJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint4" transmission="hardware_interface/PositionJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint5" transmission="hardware_interface/PositionJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint6" transmission="hardware_interface/PositionJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint7" transmission="hardware_interface/PositionJointInterface" />
-
-      <xacro:gazebo-joint joint="panda_joint1" transmission="hardware_interface/VelocityJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint2" transmission="hardware_interface/VelocityJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint3" transmission="hardware_interface/VelocityJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint4" transmission="hardware_interface/VelocityJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint5" transmission="hardware_interface/VelocityJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint6" transmission="hardware_interface/VelocityJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint7" transmission="hardware_interface/VelocityJointInterface" />
-
-      <xacro:gazebo-joint joint="panda_joint1" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint2" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint3" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint4" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint5" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint6" transmission="hardware_interface/EffortJointInterface" />
-      <xacro:gazebo-joint joint="panda_joint7" transmission="hardware_interface/EffortJointInterface" /> -->
-
-      <xacro:transmission-franka-state arm_id="panda" />
-      <xacro:transmission-franka-model arm_id="panda"
-         root="panda_joint1"
-         tip="panda_joint8"
-       />      
-      <!-- <xacro:if value="$(arg hand)">
-        <gazebo>
-          <plugin name="qb_hand_gazebo_plugin" filename="libqb_hand_gazebo_plugin.so"/>
-        </gazebo>
-      </xacro:if> -->
-      
-      <!-- <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-          <controlPeriod>0.001</controlPeriod>
-          <robotSimType>franka_gazebo/FrankaHWSim</robotSimType>
-        </plugin>
-        <self_collide>true</self_collide>
-      </gazebo> -->
-      
     </xacro:if>
   </xacro:macro>
+
+  
 </robot>

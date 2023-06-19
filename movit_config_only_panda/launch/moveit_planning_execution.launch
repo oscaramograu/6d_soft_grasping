@@ -2,6 +2,7 @@
   <!-- The planning and execution components of MoveIt! configured to  -->
   <!-- publish the current configuration of the robot (simulated or real)  -->
   <!-- and the current state of the world as seen by the planner -->
+  <arg name="rviz_file" default = "default"/>
 
   <!-- launch movegroup -->
   <include file="$(find movit_config_only_panda)/launch/move_group.launch">
@@ -11,6 +12,6 @@
 
   <!-- The visualization component of MoveIt! -->
   <include file="$(find movit_config_only_panda)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find movit_config_only_panda)/rviz/default.rviz"/>
+    <arg name="rviz_config" value="$(find movit_config_only_panda)/rviz/$(arg rviz_file).rviz"/>
   </include>
 </launch>
