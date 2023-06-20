@@ -5,31 +5,45 @@ from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
 
+def set_up_camera_info():
+    D = [0.11310159563080885, -0.25086810996017317, 0.00035361841864570614, -0.005393722121755429, 0.0]
+    K = [598.9326314947814, 0.0, 306.7966418687852, 0.0, 599.5015658716676, 231.988396801157, 0.0, 0.0, 1.0]
+    R = [0.37215665516088925, -0.020097006977225797, -0.9279523340829615, 0.05043420784283281, 0.998726400003529, -0.0014030735037909468, 0.9267986915715435, -0.04627837774326621, 0.37269625307309795]
+    P = [297.70310942771675, 0.0, -4253.122383117676, 0.0, 0.0, 297.70310942771675, -228.14882278442383, 0.0, 0.0, 0.0, 1.0, 0.0]
+    
+    camera_info_msg = CameraInfo()
+    camera_info_msg.header.frame_id = 'camera_frame'
+    camera_info_msg.height = 480
+    camera_info_msg.width = 640
+
+    # Set the distortion coefficients
+    camera_info_msg.distortion_model = "plumb_bob"
+    camera_info_msg.D = D
+    # Set the intrinsic matrix
+    camera_info_msg.K = K
+    # Set the rectification coefficients
+    camera_info_msg.R = R
+    # Set the projection coefficients
+    camera_info_msg.P = P
+    
+    return camera_info_msg
+
+
 def camera_node():
-    # Initialize the ROS node
     rospy.init_node('camera_node', anonymous=True)
 
-    # Set up the camera publisher
     image_pub = rospy.Publisher('camera/image_raw', Image, queue_size=10)
     camera_info_pub = rospy.Publisher('camera/camera_info', CameraInfo, queue_size=10)
 
-    # Set the camera parameters (intrinsic calibration)
-    camera_info_msg = CameraInfo()
-    camera_info_msg.header.frame_id = 'camera_frame'  # Set an accurate coordinate frame here
-    camera_info_msg.height = 480  # Set the image height
-    camera_info_msg.width = 640   # Set the image width
-    # Set other camera parameters such as camera matrix, distortion coefficients, etc.
+    camera_info_msg = set_up_camera_info()
 
-    # Initialize the OpenCV bridge
     bridge = CvBridge()
 
     # Open the camera
-    cap = cv2.VideoCapture(4)  # Replace 0 with the camera index if multiple cameras are available
+    cap = cv2.VideoCapture(0)  # 4 left, 2 right, 0 webcam
 
-    # Start publishing the images and camera info
-    rate = rospy.Rate(30)  # Set the desired publishing rate (30 Hz in this example)
+    rate = rospy.Rate(30)  # desired publishing rate (30 Hz in this example)
     while not rospy.is_shutdown():
-        # Capture the image from the camera
         ret, frame = cap.read()
 
         if ret:
@@ -44,19 +58,11 @@ def camera_node():
 
             # Publish the camera info
             camera_info_msg.header.stamp = time_stamp
-            camera_info_msg.header.frame_id = frame_id
-            # Set the intrinsic matrix
-            camera_info_msg.K = [8.933e+02, 0.0, 6.318e+02,
-                            0.0,8.933e+02, 3.581e+02,
-                            0.0, 0.0, 1.0]
-            # Set the distortion coefficients
-            camera_info_msg.D = [0.0, 0.0, 0.0, 0.0, 0.0]
 
             camera_info_pub.publish(camera_info_msg)
 
         rate.sleep()
 
-    # Release the camera and shutdown the node
     cap.release()
     rospy.loginfo('Camera node has been shutdown.')
 
