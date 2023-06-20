@@ -1,6 +1,6 @@
 moveit_setup_assistant_config:
   URDF:
-    package: pandaqb_movegroup_control
+    package: panda_qb_description
     relative_path: urdf/only_panda_description.urdf.xacro
     xacro_args: ""
   SRDF:
@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: Oscar Amo Grau
     author_email: oscaramog@gmail.com
-    generated_timestamp: 1686920181
+    generated_timestamp: 1687263567

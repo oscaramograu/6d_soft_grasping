@@ -1,9 +1,13 @@
 <launch>
+  <arg name="sim"      default="true" doc="Name of the panda robot to spawn" />
+
   <node name="camera_img_publisher" pkg="impose_grasp" 
         type="camera_img_publisher_node.py" output="screen"
     />
 
   <node pkg="tf2_ros" type="static_transform_publisher" name="camera_frame_publisher" args="0 0 0 0 0 0 camera_support_link camera_frame" />
 
-  <include file="$(find panda_qb_description)/launch/panda.launch"/>
+  <include file="$(find panda_qb_description)/launch/panda.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>
 </launch>

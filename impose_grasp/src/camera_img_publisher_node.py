@@ -24,7 +24,7 @@ def camera_node():
     bridge = CvBridge()
 
     # Open the camera
-    cap = cv2.VideoCapture(2)  # Replace 0 with the camera index if multiple cameras are available
+    cap = cv2.VideoCapture(4)  # Replace 0 with the camera index if multiple cameras are available
 
     # Start publishing the images and camera info
     rate = rospy.Rate(30)  # Set the desired publishing rate (30 Hz in this example)
@@ -45,6 +45,12 @@ def camera_node():
             # Publish the camera info
             camera_info_msg.header.stamp = time_stamp
             camera_info_msg.header.frame_id = frame_id
+            # Set the intrinsic matrix
+            camera_info_msg.K = [8.933e+02, 0.0, 6.318e+02,
+                            0.0,8.933e+02, 3.581e+02,
+                            0.0, 0.0, 1.0]
+            # Set the distortion coefficients
+            camera_info_msg.D = [0.0, 0.0, 0.0, 0.0, 0.0]
 
             camera_info_pub.publish(camera_info_msg)
 
