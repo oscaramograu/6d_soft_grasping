@@ -33,12 +33,19 @@ def camera_node():
         ret, frame = cap.read()
 
         if ret:
+            frame_id = "camera_frame"
+            time_stamp = rospy.Time.now()
+
             # Publish the image
             image_msg = bridge.cv2_to_imgmsg(frame, 'bgr8')
+            image_msg.header.frame_id = frame_id
+            image_msg.header.stamp = time_stamp
             image_pub.publish(image_msg)
 
             # Publish the camera info
-            camera_info_msg.header.stamp = rospy.Time.now()
+            camera_info_msg.header.stamp = time_stamp
+            camera_info_msg.header.frame_id = frame_id
+
             camera_info_pub.publish(camera_info_msg)
 
         rate.sleep()
