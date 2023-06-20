@@ -32,7 +32,6 @@
 
   </link>
 
-  <!-- Gazebo requires a joint to a link called "world" for statically mounted robots -->
   <link name="camera_frame" />
   <joint name="camera_joint" type="fixed">
     <origin xyz="0.06 0.06 0.02" rpy="0.0872665 0 2.35619" />
