@@ -40,7 +40,7 @@ def camera_node():
     bridge = CvBridge()
 
     # Open the camera
-    cap = cv2.VideoCapture(0)  # 4 left, 2 right, 0 webcam
+    cap = cv2.VideoCapture(4)  # 4 left, 2 right, 0 webcam
 
     rate = rospy.Rate(30)  # desired publishing rate (30 Hz in this example)
     while not rospy.is_shutdown():

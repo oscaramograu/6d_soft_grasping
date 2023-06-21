@@ -10,18 +10,18 @@ if __name__ == '__main__':
     Rt_publisher = RtPublisher(1)
     
     # =============== Real ===============
-    # while True:
-    #     Rt_publisher.publish_Rt()
+    while True:
+        Rt_publisher.publish_Rt()
 
     # =============== Test ===============
-    while True:
-        rgb_path = path_to_demo_file("rgb_0001.png")
-        dpt_path = path_to_demo_file("dpt_0001.png")
+    # while True:
+    #     rgb_path = path_to_demo_file("rgb_0001.png")
+    #     dpt_path = path_to_demo_file("dpt_0001.png")
 
-        with Image.open(rgb_path) as rgb:
-            rgb = np.array(rgb).astype(np.uint8)
+    #     with Image.open(rgb_path) as rgb:
+    #         rgb = np.array(rgb).astype(np.uint8)
 
-        with Image.open(dpt_path) as depth:
-            dpt = np.array(depth) / 1000.
+    #     with Image.open(dpt_path) as depth:
+    #         dpt = np.array(depth) / 1000.
 
-        Rt_publisher.test_publish_Rt(rgb, dpt)
+    #     Rt_publisher.test_publish_Rt(rgb, dpt)

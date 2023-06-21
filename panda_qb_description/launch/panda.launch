@@ -9,6 +9,9 @@
     <include if="$(arg gazebo)"
     file="$(find panda_qb_description)/launch/panda_gazebo_world.launch" />
   </group>
+
+  <include file="$(find panda_qb_description)/launch/eye_in_hand_calibration.launch" />
+
   <!-- Launch the franka robot controllers for the real robot -->
   <include unless="$(arg sim)" 
     file="$(find franka_control)/launch/franka_control.launch">
