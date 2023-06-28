@@ -10,7 +10,7 @@
     file="$(find panda_qb_description)/launch/panda_gazebo_world.launch" />
   </group>
 
-  <include file="$(find panda_qb_description)/launch/eye_in_hand_calibration.launch" />
+  <include file="$(find panda_qb_description)/launch/camera_link_broadcaster.launch" />
 
   <!-- Launch the franka robot controllers for the real robot -->
   <include unless="$(arg sim)" 
