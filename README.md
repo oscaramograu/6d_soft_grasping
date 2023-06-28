@@ -1,10 +1,9 @@
 # ToDo's
-- Hand Eye Calibration (get the camera cable, mount on the robot, print chess board on a solid base, use move it camera calibration and safe the poses).
-- Change the used model of the cat for the duck model.
 - Make a better way to select the model in impose grasp.
-- Test image detection of the ducks using 6IMPOSE.
 - Test if the 6D positioning works properly.
 - Write the pipeline to execute a grasp.
+- Load the mesh of the target object once detected.
+- Make a function to filter out several detections to finally set the proper one.
 
 # Install all the dependencies in Linux:
 ## General requirements
