@@ -3,7 +3,7 @@ from PIL import Image
 import numpy as np
 
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP
-from impose_grasp.networks.detector_new import PositionDetector
+from impose_grasp.networks.detector import Detector
 from impose_grasp.models.cameras.base_camera import CamFrame
 
 
@@ -15,8 +15,10 @@ frame = CamFrame
 frame.rgb = rgb
 frame.depth = None
 
-pd = PositionDetector("cpsduck")
-bbox = pd.darknet_detector.inference(frame)
+pd = Detector("cpsduck")
+
+pd.set_frame(frame)
+bbox = pd.compute_bbox()
 
 print("initial img size: ", rgb.size)
 print("initial img shape: ", rgb.shape)

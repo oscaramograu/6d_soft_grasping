@@ -16,7 +16,7 @@ from lib.monitor.visualizer import project2img
 from lib.net.pprocessnet import InitialPoseModel
 
 
-class PoseDetectionNetwork:
+class PvnDetector:
     step = -1
 
     base_crop = (80, 80)

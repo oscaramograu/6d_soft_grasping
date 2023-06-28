@@ -5,7 +5,7 @@ import numpy as np
 
 from impose_grasp.models.cameras.realsense_D415 import D415
 from impose_grasp.models.cameras.base_camera import CamFrame
-from impose_grasp.networks.detector_new import PositionDetector
+from impose_grasp.networks.detector import PositionDetector
 
 class RtPublisher:
     def __init__(self, freq: int = 10):

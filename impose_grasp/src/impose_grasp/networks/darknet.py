@@ -8,7 +8,7 @@ from lib.main_darknet import MainDarknet
 from impose_grasp.models.cameras.base_camera import CamFrame
 
 
-class NewDarknetDetector():
+class DarknetDetector():
     def __init__(self, obj_name) -> None:
         self.confidence = 0.05  # relevant settings
 
