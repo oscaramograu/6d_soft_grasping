@@ -12,31 +12,59 @@ class Detector():
 
         self.frame: CamFrame
         self.bbox = None
-        self.affine_matrix = None
+        self.affine = None
         self.detected = None
 
     def set_frame(self, frame: CamFrame):
+        """
+            - Sets the atribute frame given a camera frame object.
+            
+            (Used after grabing a frame with a camera object)
+        """
         self.frame = frame
 
     def compute_bbox(self):
+        """
+            - Calculates the bounding box of the target object from a
+            previously set frame.
+
+            - Sets the bounding box to the bbox attribute.
+
+            (Used after setting the frame )
+        """
         self.bbox = self.darknet_detector.inference(self.frame)
     
-    def compute_affine(self):        
-    # 6D pose estimation of selected object        
+    def compute_affine(self):    
+        """
+            - Calculates the 6D pose estimation of the target object, 
+            using PVN. Based on the previously set bbox.
+
+            - The 6D pose estimation is computed as a numpy affine 
+            matrix.
+
+            - Sets the affine matrix to the affine attribute.
+
+            (Used after setting bbox)
+        """    
         _use_icp = False
         if self.bbox is not None:
-            detected, affine_matrix = self.pvn_detector.inference(self.bbox, self.frame.rgb.copy(
-                ), self.frame.depth, self.frame.intrinsic, use_icp=_use_icp)  # affine_matrix.shape = 3x4 !
+            detected, affine = self.pvn_detector.inference(self.bbox, self.frame.rgb.copy(
+                ), self.frame.depth, self.frame.intrinsic, use_icp=_use_icp)  # affine.shape = 3x4 !
 
-            self.affine_matrix = affine_matrix
+            self.affine = affine
             self.detected = detected
         else:
-            self.affine_matrix = None
+            self.affine = None
             self.detected = None
     
     def get_affine(self):
+        """
+            - Retrieves the affine matrix from the affine atribute.
+            
+            (Used after setting affine)
+        """
         if self.detected:
-            return self.affine_matrix
+            return self.affine
         else:
             print("No object was detected")
             return None

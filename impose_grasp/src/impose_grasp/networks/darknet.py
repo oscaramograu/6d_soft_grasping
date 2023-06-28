@@ -10,15 +10,17 @@ from impose_grasp.models.cameras.base_camera import CamFrame
 
 class DarknetDetector():
     def __init__(self, obj_name) -> None:
-        self.confidence = 0.05  # relevant settings
+        self.confidence = 0.05  # settings
 
         self._dt_obj_type = obj_name
         self._obj_detector = self._create_obj_detector()
 
     def inference(self, frame: CamFrame):
         """
-          If not previously detected calculate the bounding box from 
-          darknet inference
+            Use darknet to compute a bounding box of the target
+            objects detected in a given image frame
+
+            I nothing was detected returns None
         """
         confidence_threshold = self.confidence
         darknet_frame, detections, _ = self._obj_detector.image_detection(
@@ -35,6 +37,12 @@ class DarknetDetector():
             return None
     
     def _create_obj_detector(self):
+        """
+            Initializes a darknet object using the following files:
+            - weights: yolo.weights (weights of the pre-trained model)
+            - cfg: yolo.cfg (network parameters)
+            - data: obj.data (list of target objects)
+        """
         objectDetector = MainDarknet()
         obj_data = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "darknet")
         weights_path =  os.path.join(obj_data, "yolo.weights")

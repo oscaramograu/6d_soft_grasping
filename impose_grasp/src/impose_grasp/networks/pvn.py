@@ -2,12 +2,9 @@ import tensorflow as tf
 import numpy as np
 import os
 import sys
-import cv2
-import random
 import open3d as o3d
 
 from impose_grasp.lib.utils import load_mesh
-
 from impose_grasp.lib.utils import SIX_IMPOSE_PATH, PATH_TO_IMPOSE_GRASP
 sys.path.append(SIX_IMPOSE_PATH)
 
@@ -17,6 +14,18 @@ from lib.net.pprocessnet import InitialPoseModel
 
 
 class PvnDetector:
+    """
+        The following is required to build the pvn detector:
+        - Successfully compile 6IMPOSE
+        - Folder under /data/models/obj_id containing:
+            - Kpoints folder:
+                - center.txt
+                - corners.txt
+                - farthest.txt
+                - radius.txt
+            - obj_id.ply
+            - saved_model.pb
+    """
     step = -1
 
     base_crop = (80, 80)
