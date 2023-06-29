@@ -1,10 +1,10 @@
 #include <ros/ros.h>
 #include <trajectory_msgs/JointTrajectory.h>
 
-class QbHandController {
+class HandControllerBase {
 public:
-    QbHandController();
-    ~QbHandController();
+    HandControllerBase();
+    ~HandControllerBase();
 
     void sendTrajectory(double pos1, double pos2, double duration); // seconds
 

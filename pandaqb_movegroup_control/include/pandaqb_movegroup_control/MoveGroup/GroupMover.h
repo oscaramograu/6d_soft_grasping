@@ -11,6 +11,8 @@ public:
 
     void moveHome();
 
+    void set_EEF_link(std::string arm_eef_frame);
+
 private:
     void planExecute();
 };

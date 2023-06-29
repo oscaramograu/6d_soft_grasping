@@ -18,8 +18,8 @@ frame.depth = None
 pd = Detector("cpsduck")
 
 pd.set_frame(frame)
-bbox = pd.compute_bbox()
-
+pd.compute_bbox()
+bbox = pd.bbox
 print("initial img size: ", rgb.size)
 print("initial img shape: ", rgb.shape)
 

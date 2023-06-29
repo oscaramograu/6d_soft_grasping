@@ -7,7 +7,7 @@ public:
     RobotMover();
     ~RobotMover();
 
-    void move(geometry_msgs::Pose target);
+    void move_to_grasp_pose(geometry_msgs::Pose target);
     
 private:
     geometry_msgs::Pose target_to_EEF(geometry_msgs::Pose targetGrasp);

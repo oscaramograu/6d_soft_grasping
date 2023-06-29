@@ -3,11 +3,13 @@
 RobotMover::RobotMover(): 
     eef_frame("qbhand2m_palm_link"), GroupMover("panda_arm"){
     move_group_->setEndEffectorLink(eef_frame);
-    ROS_INFO_STREAM("The end effector frame is: " << move_group_->getEndEffectorLink());
+    ROS_INFO_STREAM("The end effector frame is: " 
+        << move_group_->getEndEffectorLink());
 
     collision_obj_primitive.type = collision_obj_primitive.SPHERE;
     collision_obj_primitive.dimensions.resize(1);
-    collision_obj_primitive.dimensions[collision_obj_primitive.SPHERE_RADIUS] = 0.05;
+    collision_obj_primitive.dimensions[
+        collision_obj_primitive.SPHERE_RADIUS] = 0.05;
     // collision_obj_primitive.type = collision_obj_primitive.BOX;
     // collision_obj_primitive.dimensions.resize(3);
     // collision_obj_primitive.dimensions[collision_obj_primitive.BOX_X] = 0.1;

@@ -1,6 +1,6 @@
 #include <pandaqb_movegroup_control/Grasp/QbHandPub.h>
 
-QbHandController::QbHandController() {
+HandControllerBase::HandControllerBase() {
     // Initialize ROS node handle
     ros::NodeHandle nh;
 
@@ -8,9 +8,9 @@ QbHandController::QbHandController() {
     pub_ = nh.advertise<trajectory_msgs::JointTrajectory>(
             "/qbhand2m1/control/qbhand2m1_motor_positions_trajectory_controller/command", 10);
 }
-QbHandController::~QbHandController(){}
+HandControllerBase::~HandControllerBase(){}
 
-void QbHandController::sendTrajectory(double pos1, double pos2, double duration) { // seconds
+void HandControllerBase::sendTrajectory(double pos1, double pos2, double duration) { // seconds
     // Create JointTrajectory message
     trajectory_msgs::JointTrajectory traj_msg;
     traj_msg.header.seq = 0;
