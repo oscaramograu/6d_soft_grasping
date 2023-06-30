@@ -1,11 +1,6 @@
-#include <ros/ros.h>
 #include <ros/package.h>
-
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
-#include <moveit_msgs/CollisionObject.h>
 #include <pcl/io/ply_io.h>
-#include <pcl_conversions/pcl_conversions.h>
-#include <shape_msgs/Mesh.h>
 
 class ObjectBase
 {

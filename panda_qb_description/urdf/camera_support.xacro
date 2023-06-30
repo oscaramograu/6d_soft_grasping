@@ -10,7 +10,7 @@
     <visual>
       <origin rpy="0 0 -${pi/4}" xyz="-0.051 0.00 -0.009"/>
       <geometry>
-        <mesh filename="package://pandaqb_movegroup_control/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://panda_qb_description/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="gray">
       <color rgba="1 1 1 1"/>
@@ -20,7 +20,7 @@
     <collision>
       <origin rpy="0 0 -${pi/4}" xyz="-0.051 0.00 -0.009"/>
       <geometry>
-        <mesh filename="package://pandaqb_movegroup_control/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://panda_qb_description/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 

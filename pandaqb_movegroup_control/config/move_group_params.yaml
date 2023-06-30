@@ -18,9 +18,3 @@ move_group:
 
     # Home joint positions for the panda robot
     home: [0.0]
-
-grasp:
-    # Fake Grasp position params
-    grasp_position: [0.3, 0.3, 0.0]
-    theta: 0.5
-    w: 0.05

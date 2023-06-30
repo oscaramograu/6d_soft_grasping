@@ -24,8 +24,8 @@ void GraspExecuter::power(){
 
     open_flag = false;
 }
-void GraspExecuter::power(){
-    ROS_INFO_STREAM("STARTING OPEM PROCESS");
+void GraspExecuter::open(){
+    ROS_INFO_STREAM("STARTING OPEN PROCESS");
     sendTrajectory(motor_open[0], motor_open[1], duration);
 
     open_flag = true;

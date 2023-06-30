@@ -2,54 +2,46 @@ cmake_minimum_required(VERSION 3.0.2)
 project(pandaqb_movegroup_control)
 
 find_package(catkin REQUIRED COMPONENTS
-  tf
-  tf_conversions
+  # tf
+  # tf_conversions
   roscpp
-  rospy
   std_msgs
-  message_generation
-  moveit_core 
-  moveit_ros_planning 
-  moveit_ros_planning_interface
-  moveit_ros_perception
+  # message_generation
+  # moveit_core 
+  # moveit_ros_planning 
+  # moveit_ros_planning_interface
+  # moveit_ros_perception
   moveit_visual_tools
-  cv_bridge
-  urdf  
+  # cv_bridge
+  # urdf  
 )
 
 find_package(PCL REQUIRED)
 
-add_service_files(
-  FILES
-  RequestGrasp.srv
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  sensor_msgs
-  geometry_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+#   sensor_msgs
+#   geometry_msgs
+# )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES 
-    # Controller_libs  
     Control_libs
     MoveGroup_libs
-    Matrix_libs
   CATKIN_DEPENDS 
-    tf
-    tf_conversions
-    rospy
+    # tf
+    # tf_conversions
+    # rospy
     roscpp 
     std_msgs
-    moveit_core 
-    moveit_ros_planning 
-    moveit_ros_planning_interface
-    moveit_ros_perception
+    # moveit_core 
+    # moveit_ros_planning 
+    # moveit_ros_planning_interface
+    # moveit_ros_perception
     moveit_visual_tools
-    cv_bridge
+    # cv_bridge
  
   DEPENDS system_lib
 )
@@ -57,28 +49,22 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIR}
-  ${moveit_ros_planning_interface_INCLUDE_DIRS}
+  # ${Boost_INCLUDE_DIR}
+  # ${moveit_ros_planning_interface_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
-link_directories(${PCL_LIBRARY_DIRS})
-add_definitions(${PCL_DEFINITIONS})
+# link_directories(${PCL_LIBRARY_DIRS})
+# add_definitions(${PCL_DEFINITIONS})
 # ======================================== Controller Node ========================================
-# add_library(Controller_libs
-#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
-#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/hand_group.cpp
-#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/manipulator.cpp
-#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
-# )
 add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/BaseMoveGroup.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/GroupMover.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
-  ${PROJECT_SOURCE_DIR}/src/MoveGroup/RobotMover.cpp
 )
 add_library(Control_libs
   ${PROJECT_SOURCE_DIR}/src/TargetObject/TargetObject.cpp
   ${PROJECT_SOURCE_DIR}/src/Grasp/QbHandPub.cpp
+  ${PROJECT_SOURCE_DIR}/src/Grasp/HandController.cpp
 )
 
 add_executable(controller_node 
@@ -86,39 +72,16 @@ add_executable(controller_node
 )
 
 add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-# add_dependencies(Controller_libs ${catkin_EXPORTED_TARGETS})
 add_dependencies(Control_libs ${catkin_EXPORTED_TARGETS})
 add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(MoveGroup_libs
   ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${moveit_ros_planning_interface_LIBRARIES}
+  # ${Boost_LIBRARIES}
+  # ${moveit_ros_planning_interface_LIBRARIES}
   ${PCL_LIBRARIES}
 )
 target_link_libraries(controller_node
-  # Controller_libs
   Control_libs
   MoveGroup_libs
-)
-
-# ====================================== Matrix Publisher Node ======================================
-add_library(Matrix_libs
-  ${PROJECT_SOURCE_DIR}/src/MatrixManipulation/obj_w_Rt_publisher.cpp
-  ${PROJECT_SOURCE_DIR}/src/MatrixManipulation/ObjWorldTransformer.cpp
-)
-add_executable(matrix_publisher_node 
-  ${PROJECT_SOURCE_DIR}/src/matrix_publisher_node.cpp
-)
-
-add_dependencies(matrix_publisher_node ${matrix_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(Matrix_libs ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(Matrix_libs
-  ${tf_LIBRARIES}
-  ${tf_conversions_LIBRARIES}  
-)
-target_link_libraries(matrix_publisher_node
-  ${catkin_LIBRARIES}
-  Matrix_libs
 )
