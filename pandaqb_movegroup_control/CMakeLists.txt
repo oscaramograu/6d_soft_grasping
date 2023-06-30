@@ -17,6 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
   urdf  
 )
 
+find_package(PCL REQUIRED)
+
 add_service_files(
   FILES
   RequestGrasp.srv
@@ -32,7 +34,8 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES 
-    Controller_libs  
+    # Controller_libs  
+    Control_libs
     MoveGroup_libs
     Matrix_libs
   CATKIN_DEPENDS 
@@ -56,20 +59,26 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
   ${moveit_ros_planning_interface_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
-
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 # ======================================== Controller Node ========================================
-add_library(Controller_libs
-  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
-  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/hand_group.cpp
-  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/manipulator.cpp
-  ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
-)
+# add_library(Controller_libs
+#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/move_group.cpp
+#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/hand_group.cpp
+#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/manipulator.cpp
+#   ${PROJECT_SOURCE_DIR}/src/ControllerAPIs/controller.cpp
+# )
 add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/BaseMoveGroup.cpp
-  ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/GroupMover.cpp
+  ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/RobotMover.cpp
+)
+add_library(Control_libs
+  ${PROJECT_SOURCE_DIR}/src/TargetObject/TargetObject.cpp
+  ${PROJECT_SOURCE_DIR}/src/Grasp/QbHandPub.cpp
 )
 
 add_executable(controller_node 
@@ -77,16 +86,19 @@ add_executable(controller_node
 )
 
 add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(Controller_libs ${catkin_EXPORTED_TARGETS})
+# add_dependencies(Controller_libs ${catkin_EXPORTED_TARGETS})
+add_dependencies(Control_libs ${catkin_EXPORTED_TARGETS})
 add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(MoveGroup_libs
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   ${moveit_ros_planning_interface_LIBRARIES}
+  ${PCL_LIBRARIES}
 )
 target_link_libraries(controller_node
-  Controller_libs
+  # Controller_libs
+  Control_libs
   MoveGroup_libs
 )
 

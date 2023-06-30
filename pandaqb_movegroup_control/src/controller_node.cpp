@@ -1,15 +1,34 @@
 #include <ros/ros.h>
+#include <geometry_msgs/Pose.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <pandaqb_movegroup_control/ControllerAPIs/controller.h>
-#include <pandaqb_movegroup_control/MoveGroup/RobotMover.h>
+#include <pandaqb_movegroup_control/TargetObject/ObjectBase.h>
 
 int main(int argc, char** argv){
     // Initialize the node
     ros::init(argc, argv, "controller_node");
-    
-    // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
-    ros::AsyncSpinner spinner(1);
-    spinner.start();
+    // Create an instance of the ObjectBase class
+    ObjectBase object("cpsduck");
+
+    // Define the pose for adding the object to the world
+    geometry_msgs::Pose pose;
+    pose.orientation.w = 1;
+    pose.orientation.x = 0;
+    pose.orientation.y = 0;
+    pose.orientation.z = 0;
+    pose.position.x =  0.3;
+    pose.position.y =  -0.25;
+    pose.position.z =  0.0;
+    // Set the pose values as needed
+
+    // Add the object to the world
+    object.add_to_world(pose);
+
+    // Spin and process ROS callbacks
+    ros::spin();
+    // // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
+    // ros::AsyncSpinner spinner(1);
+    // spinner.start();
 
 // ################################################################################################################
     //GROUP MOVE  TESTS
@@ -26,17 +45,17 @@ int main(int argc, char** argv){
     // std::vector<double> closed_hand = {0.0};
     // hand_mover.moveTo(closed_hand);
 
-    RobotMover robot_mover;
-    geometry_msgs::Pose target_pose = robot_mover.getCurrentPose();
-    target_pose.position.x += 0.1;
-    target_pose.position.y += 0.1;
-    target_pose.position.z -= 0.1;   
-    target_pose.orientation.x = 5.5511e-17;
-    target_pose.orientation.y = -0.2474;
-    target_pose.orientation.z = -5.5511e-17;
-    target_pose.orientation.w = 0.96891;
+    // RobotMover robot_mover;
+    // geometry_msgs::Pose target_pose = robot_mover.getCurrentPose();
+    // target_pose.position.x += 0.1;
+    // target_pose.position.y += 0.1;
+    // target_pose.position.z -= 0.1;   
+    // target_pose.orientation.x = 5.5511e-17;
+    // target_pose.orientation.y = -0.2474;
+    // target_pose.orientation.z = -5.5511e-17;
+    // target_pose.orientation.w = 0.96891;
     
-    robot_mover.move(target_pose);
+    // robot_mover.move(target_pose);
 
 // ################################################################################################################
     //CONTROLLER  TESTS
