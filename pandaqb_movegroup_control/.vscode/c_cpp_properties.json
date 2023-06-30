@@ -9,7 +9,11 @@
                 "/opt/ros/noetic/include/**",
                 "/home/oscar/catkin_ws/devel/include/**",
                 "/home/oscar/catkin_ws/src/thesis/pandaqb_movegroup_control/include/**",
-                "/usr/include/**"
+                "/usr/include/**",
+                "${workspaceFolder}/include",
+                "/usr/include/pcl-1.10",
+                "/opt/ros/noetic/include",
+                "/usr/include/eigen3"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",

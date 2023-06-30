@@ -1,13 +1,13 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
+#include <pandaqb_movegroup_control/Target/TargetObject.h>
 #include <moveit/move_group_interface/move_group_interface.h>
-#include <pandaqb_movegroup_control/TargetObject/ObjectBase.h>
 
 int main(int argc, char** argv){
     // Initialize the node
     ros::init(argc, argv, "controller_node");
     // Create an instance of the ObjectBase class
-    ObjectBase object("cpsduck");
+    TargetObject object("cpsduck");
 
     // Define the pose for adding the object to the world
     geometry_msgs::Pose pose;

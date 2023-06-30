@@ -2,8 +2,7 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <pcl/io/ply_io.h>
 
-class ObjectBase
-{
+class TargetObject{
 private:
     std::string object_name_, mesh_path;
     shape_msgs::Mesh moveit_mesh;
@@ -18,8 +17,8 @@ private:
     void create_collision_object(geometry_msgs::Pose pose);
 
 public:
-    ObjectBase(const std::string& object_name);
-    ~ObjectBase();
+    TargetObject(const std::string& object_name);
+    ~TargetObject();
 
     void add_to_world(geometry_msgs::Pose pose);
 };

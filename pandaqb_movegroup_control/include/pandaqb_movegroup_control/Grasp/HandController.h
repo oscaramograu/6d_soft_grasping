@@ -1,4 +1,4 @@
-#include <pandaqb_movegroup_control/Grasp/QbHandPub.h>
+#include <pandaqb_movegroup_control/Grasp/HandControllerBase.h>
 
 class GraspExecuter: public HandControllerBase{
 public:

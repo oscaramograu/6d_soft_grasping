@@ -1,16 +1,16 @@
-#include <pandaqb_movegroup_control/TargetObject/ObjectBase.h>
+#include <pandaqb_movegroup_control/Target/TargetObject.h>
 
-ObjectBase::ObjectBase(const std::string& object_name): object_name_(object_name){
+TargetObject::TargetObject(const std::string& object_name): object_name_(object_name){
     planning_scene_diff_publisher = nh.advertise<moveit_msgs::PlanningScene>(
         "planning_scene", 1);
     set_mesh_path();
     load_moveit_mesh();
 }
 
-ObjectBase::~ObjectBase(){
+TargetObject::~TargetObject(){
 }
 
-void ObjectBase::add_to_world(geometry_msgs::Pose pose){
+void TargetObject::add_to_world(geometry_msgs::Pose pose){
     create_collision_object(pose);
     
     planning_scene.world.collision_objects.push_back(collision_object);
@@ -19,7 +19,7 @@ void ObjectBase::add_to_world(geometry_msgs::Pose pose){
     ROS_INFO_STREAM(object_name_ << " added to world");
 }
 
-void ObjectBase::set_mesh_path(){
+void TargetObject::set_mesh_path(){
     std::string impose_grasp_path, mesh_folder, file_name;
 
     impose_grasp_path = ros::package::getPath("impose_grasp");
@@ -29,7 +29,7 @@ void ObjectBase::set_mesh_path(){
     mesh_path = mesh_folder + file_name;
 }
 
-void ObjectBase::load_moveit_mesh(){
+void TargetObject::load_moveit_mesh(){
     // Load the mesh file using PCL
     pcl::PolygonMesh pcl_mesh;
     if (pcl::io::loadPLYFile(mesh_path, pcl_mesh) == -1) {
@@ -63,7 +63,7 @@ void ObjectBase::load_moveit_mesh(){
     }
 }
 
-void ObjectBase::create_collision_object(geometry_msgs::Pose pose){
+void TargetObject::create_collision_object(geometry_msgs::Pose pose){
     // Create a collision object from the mesh
     collision_object.header.frame_id = "/world";
     collision_object.header.stamp = ros::Time::now();

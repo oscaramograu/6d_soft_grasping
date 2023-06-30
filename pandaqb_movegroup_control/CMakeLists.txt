@@ -53,8 +53,8 @@ include_directories(
   # ${moveit_ros_planning_interface_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
-# link_directories(${PCL_LIBRARY_DIRS})
-# add_definitions(${PCL_DEFINITIONS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 # ======================================== Controller Node ========================================
 add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/BaseMoveGroup.cpp
@@ -62,8 +62,8 @@ add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
 )
 add_library(Control_libs
-  ${PROJECT_SOURCE_DIR}/src/TargetObject/TargetObject.cpp
-  ${PROJECT_SOURCE_DIR}/src/Grasp/QbHandPub.cpp
+  ${PROJECT_SOURCE_DIR}/src/Target/TargetObject.cpp
+  ${PROJECT_SOURCE_DIR}/src/Grasp/HandControllerBase.cpp
   ${PROJECT_SOURCE_DIR}/src/Grasp/HandController.cpp
 )
 
