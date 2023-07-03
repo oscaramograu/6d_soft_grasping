@@ -17,9 +17,7 @@ protected:
     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_;
     moveit::planning_interface::PlanningSceneInterface planning_scene_;
     moveit::planning_interface::MoveGroupInterface::Plan plan;
-    void add_collision_object(std::string name, 
-            shape_msgs::SolidPrimitive primitive, geometry_msgs::Pose box_pose);
-
+    
     std::string PLANNING_GROUP;
     std::vector<double> home;
 
