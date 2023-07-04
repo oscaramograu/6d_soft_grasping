@@ -16,8 +16,9 @@ class ObjectBroadcaster(TransformBroadcaster):
         self.rate = rospy.Rate(10)  # publishing rate in Hz
 
         self._build_cam_and_det(target_obj)
-   
-        
+        self.num = 0
+        self.rgb = None
+
     def broadcast_obj_tf(self):
         """
             - Grabs a frame using cam attribute.
@@ -30,12 +31,26 @@ class ObjectBroadcaster(TransformBroadcaster):
             and a new 'target'_frame.
         """
         frame = self.cam.grab_frame()
-
         self.det.set_frame(frame)
         self.det.compute_bbox()
         self.det.compute_affine()
 
+        self.rgb = frame.rgb
+
         affine_matrix = self.det.get_affine()
+        last_column = affine_matrix[:, -1]
+
+        # Change the symbol of the last column (except the last value)
+        last_column[:-1] *= -1
+
+        # Assign the modified column back to the array
+        affine_matrix[:, -1] = last_column
+        if self.num<3:
+            self.num+=1
+            
+            print(affine_matrix)
+
+
 
         self.broadcast_transform(affine_matrix)
         self.rate.sleep()
@@ -60,7 +75,9 @@ class ObjectBroadcaster(TransformBroadcaster):
         try:
             self.cam = D415(name="realsense_D415")
             self.cam.start()
-            self.det = Detector(target_obj)
-
         except:
-            print("Camera could not be found")     
+            print("Camera could not be found")  
+        try:
+            self.det = Detector(target_obj)
+        except:
+            print("Detector could not be created")  

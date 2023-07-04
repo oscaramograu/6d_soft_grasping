@@ -69,7 +69,7 @@ class Camera(TargetModel, ABC):
 
         # load matrices from self or saved config
         self.cal_path = os.path.join(
-            PATH_TO_IMPOSE_GRASP, "data", "calibration", self.get_unique_id())
+            PATH_TO_IMPOSE_GRASP, "data", "camera", self.get_unique_id())
         self.img_path = os.path.join(
             PATH_TO_IMPOSE_GRASP, "data", "images", self.get_unique_id())
 
