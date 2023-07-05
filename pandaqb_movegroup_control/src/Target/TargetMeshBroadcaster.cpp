@@ -9,9 +9,9 @@ TargetMeshBr::~TargetMeshBr(){
 void TargetMeshBr::listen(){
     tf::StampedTransform transform;
     try {
-        listener.waitForTransform("/world", "/" + object_name_ + "_frame", 
+        listener.waitForTransform("/panda_link0", "/" + object_name_ + "_frame", 
             ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/world", "/" + object_name_ + "_frame", 
+        listener.lookupTransform("/panda_link0", "/" + object_name_ + "_frame", 
             ros::Time(0), transform);
     } catch (tf::TransformException ex) {
         ROS_ERROR("%s",ex.what());

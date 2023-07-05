@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv){
     // Initialize the node
-    ros::init(argc, argv, "controller_node");
+    ros::init(argc, argv, "object_publisher_node");
 
     // Create an instance of the object class
     TargetMeshBr object("cpsduck");

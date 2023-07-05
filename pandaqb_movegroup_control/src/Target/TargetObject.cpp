@@ -67,7 +67,7 @@ void TargetObject::load_moveit_mesh(){
 
 void TargetObject::create_collision_object(geometry_msgs::Pose pose){
     // Create a collision object from the mesh
-    collision_object.header.frame_id = "/world";
+    collision_object.header.frame_id = "/panda_link0";
     collision_object.header.stamp = ros::Time::now();
 
     collision_object.id = object_name_;

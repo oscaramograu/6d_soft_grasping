@@ -7,9 +7,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   # message_generation
-  # moveit_core 
-  # moveit_ros_planning 
-  # moveit_ros_planning_interface
+  moveit_core 
+  moveit_ros_planning 
+  moveit_ros_planning_interface
   # moveit_ros_perception
   moveit_visual_tools
   # cv_bridge
@@ -36,9 +36,9 @@ catkin_package(
     # rospy
     roscpp 
     std_msgs
-    # moveit_core 
-    # moveit_ros_planning 
-    # moveit_ros_planning_interface
+    moveit_core 
+    moveit_ros_planning 
+    moveit_ros_planning_interface
     # moveit_ros_perception
     moveit_visual_tools
     # cv_bridge
