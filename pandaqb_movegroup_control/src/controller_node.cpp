@@ -1,27 +1,26 @@
 #include <ros/ros.h>
-#include <geometry_msgs/Pose.h>
-#include <pandaqb_movegroup_control/Target/TargetObject.h>
+// #include <pandaqb_movegroup_control/Target/TargetMeshBroadcaster.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 
 int main(int argc, char** argv){
     // Initialize the node
-    ros::init(argc, argv, "controller_node");
+    // ros::init(argc, argv, "controller_node");
     // Create an instance of the ObjectBase class
-    TargetObject object("cpsduck");
-
+    // TargetMeshBr object("cpsduck");
+    // object.add_target_mesh();
     // Define the pose for adding the object to the world
-    geometry_msgs::Pose pose;
-    pose.orientation.w = 1;
-    pose.orientation.x = 0;
-    pose.orientation.y = 0;
-    pose.orientation.z = 0;
-    pose.position.x =  0.3;
-    pose.position.y =  -0.25;
-    pose.position.z =  0.0;
+    // geometry_msgs::Pose pose;
+    // pose.orientation.w = 1;
+    // pose.orientation.x = 0;
+    // pose.orientation.y = 0;
+    // pose.orientation.z = 0;
+    // pose.position.x =  0.3;
+    // pose.position.y =  -0.25;
+    // pose.position.z =  0.0;
     // Set the pose values as needed
 
     // Add the object to the world
-    object.add_to_world(pose);
+    // object.add_to_world(pose);
 
     // Spin and process ROS callbacks
     ros::spin();

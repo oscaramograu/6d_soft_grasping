@@ -38,19 +38,6 @@ class ObjectBroadcaster(TransformBroadcaster):
         self.rgb = frame.rgb
 
         affine_matrix = self.det.get_affine()
-        last_column = affine_matrix[:, -1]
-
-        # Change the symbol of the last column (except the last value)
-        last_column[:-1] *= -1
-
-        # Assign the modified column back to the array
-        affine_matrix[:, -1] = last_column
-        if self.num<3:
-            self.num+=1
-            
-            print(affine_matrix)
-
-
 
         self.broadcast_transform(affine_matrix)
         self.rate.sleep()

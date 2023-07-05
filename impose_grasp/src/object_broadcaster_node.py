@@ -23,8 +23,6 @@ if __name__ == '__main__':
             # Swap the blue and red channels
             swapped_image = cv2.merge((red_channel, green_channel, blue_channel))
             cv2.imshow("Image Stream", swapped_image)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
 
     cv2.destroyAllWindows()
     rospy.spin()
