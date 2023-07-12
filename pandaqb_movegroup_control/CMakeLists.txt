@@ -2,14 +2,14 @@ cmake_minimum_required(VERSION 3.0.2)
 project(pandaqb_movegroup_control)
 
 find_package(catkin REQUIRED COMPONENTS
-  # tf
-  # tf_conversions
+  tf
+  tf_conversions
   roscpp
   std_msgs
   # message_generation
-  # moveit_core 
-  # moveit_ros_planning 
-  # moveit_ros_planning_interface
+  moveit_core 
+  moveit_ros_planning 
+  moveit_ros_planning_interface
   # moveit_ros_perception
   moveit_visual_tools
   # cv_bridge
@@ -31,14 +31,14 @@ catkin_package(
     Control_libs
     MoveGroup_libs
   CATKIN_DEPENDS 
-    # tf
-    # tf_conversions
+    tf
+    tf_conversions
     # rospy
     roscpp 
     std_msgs
-    # moveit_core 
-    # moveit_ros_planning 
-    # moveit_ros_planning_interface
+    moveit_core 
+    moveit_ros_planning 
+    moveit_ros_planning_interface
     # moveit_ros_perception
     moveit_visual_tools
     # cv_bridge
@@ -62,7 +62,6 @@ add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
 )
 add_library(Control_libs
-  ${PROJECT_SOURCE_DIR}/src/Target/TargetObject.cpp
   ${PROJECT_SOURCE_DIR}/src/Grasp/HandControllerBase.cpp
   ${PROJECT_SOURCE_DIR}/src/Grasp/HandController.cpp
 )
@@ -84,4 +83,24 @@ target_link_libraries(MoveGroup_libs
 target_link_libraries(controller_node
   Control_libs
   MoveGroup_libs
+)
+# ======================================== Object Publisher Node ========================================
+add_library(Object_libs
+  ${PROJECT_SOURCE_DIR}/src/Target/TargetObject.cpp
+  ${PROJECT_SOURCE_DIR}/src/Target/TargetMeshBroadcaster.cpp
+)
+
+add_executable(object_publisher_node 
+  ${PROJECT_SOURCE_DIR}/src/object_publisher_node.cpp
+)
+
+add_dependencies(object_publisher_node ${object_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(Object_libs ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(Object_libs
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+)
+target_link_libraries(object_publisher_node
+  Object_libs
 )

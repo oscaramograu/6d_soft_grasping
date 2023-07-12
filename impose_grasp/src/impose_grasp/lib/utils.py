@@ -6,8 +6,10 @@ import json
 import sys
 from impose_grasp.lib.gripping_pose import GrippingPose
 
-SIX_IMPOSE_PATH = "/home/oscar/Desktop/code/6IMPOSE" 
-PATH_TO_IMPOSE_GRASP = "/home/oscar/catkin_ws/src/thesis/impose_grasp"
+# SIX_IMPOSE_PATH = "/home/oscar/Desktop/code/6IMPOSE" 
+# PATH_TO_IMPOSE_GRASP = "/home/oscar/catkin_ws/src/thesis/impose_grasp"
+SIX_IMPOSE_PATH = "/home/neurolab/Desktop/code/6IMPOSE" 
+PATH_TO_IMPOSE_GRASP = "/home/neurolab/catkin_ws/src/thesis/impose_grasp"
 
 class HiddenPrints:
     def __enter__(self):

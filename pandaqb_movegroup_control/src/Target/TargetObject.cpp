@@ -16,7 +16,7 @@ void TargetObject::add_to_world(geometry_msgs::Pose pose){
     planning_scene.world.collision_objects.push_back(collision_object);
     planning_scene.is_diff = true;
     planning_scene_diff_publisher.publish(planning_scene);
-    ROS_INFO_STREAM(object_name_ << " added to world");
+    ROS_INFO_STREAM(object_name_ << "Object added to world");
 }
 
 void TargetObject::set_mesh_path(){
@@ -61,11 +61,13 @@ void TargetObject::load_moveit_mesh(){
         face.vertex_indices[2] = polygon.vertices[2];
         moveit_mesh.triangles.push_back(face);
     }
+
+    ROS_INFO_STREAM("Mesh was loaded without errors");
 }
 
 void TargetObject::create_collision_object(geometry_msgs::Pose pose){
     // Create a collision object from the mesh
-    collision_object.header.frame_id = "/world";
+    collision_object.header.frame_id = "/panda_link0";
     collision_object.header.stamp = ros::Time::now();
 
     collision_object.id = object_name_;
@@ -73,4 +75,5 @@ void TargetObject::create_collision_object(geometry_msgs::Pose pose){
     collision_object.mesh_poses.push_back(pose);
 
     collision_object.operation = collision_object.ADD;   
+    ROS_INFO_STREAM("Collision object created");
 }

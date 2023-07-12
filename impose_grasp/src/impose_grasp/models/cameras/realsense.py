@@ -78,7 +78,7 @@ class Realsense(Camera):
         return self.rgb_shape[::-1]
 
     def get_model(self):
-        mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP, 'src', 'impose_grasp', 'data', 
+        mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP, 'data', 
                                  'models', f"realsense_{self.device_name}.ply")
         return load_mesh(mesh_path) 
 

@@ -1,38 +1,46 @@
 #include <ros/ros.h>
-#include <geometry_msgs/Pose.h>
-#include <pandaqb_movegroup_control/Target/TargetObject.h>
-#include <moveit/move_group_interface/move_group_interface.h>
+// #include <pandaqb_movegroup_control/Target/TargetMeshBroadcaster.h>
+#include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
+#include <tf/transform_listener.h>
 
 int main(int argc, char** argv){
     // Initialize the node
     ros::init(argc, argv, "controller_node");
-    // Create an instance of the ObjectBase class
-    TargetObject object("cpsduck");
-
-    // Define the pose for adding the object to the world
-    geometry_msgs::Pose pose;
-    pose.orientation.w = 1;
-    pose.orientation.x = 0;
-    pose.orientation.y = 0;
-    pose.orientation.z = 0;
-    pose.position.x =  0.3;
-    pose.position.y =  -0.25;
-    pose.position.z =  0.0;
-    // Set the pose values as needed
-
-    // Add the object to the world
-    object.add_to_world(pose);
 
     // Spin and process ROS callbacks
-    ros::spin();
-    // // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
-    // ros::AsyncSpinner spinner(1);
-    // spinner.start();
+    // ros::spin();
+    // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
+    ros::AsyncSpinner spinner(1);
+    spinner.start();
 
 // ################################################################################################################
     //GROUP MOVE  TESTS
 // ################################################################################################################
-    // GroupMover arm_mover("panda_arm");
+    GroupMover arm_mover("panda_arm");
+    arm_mover.set_EEF_link("panda_link8");
+    geometry_msgs::Pose pose;
+    tf::StampedTransform transform;
+    tf::TransformListener listener;
+
+    try {
+        listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
+            ros::Time(0), ros::Duration(50.0));
+        listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
+            ros::Time(0), transform);
+    } catch (tf::TransformException ex) {
+        ROS_ERROR("%s",ex.what());
+    }
+
+    tf::Vector3 position = transform.getOrigin();
+    pose.position.x = position.getX();
+    pose.position.y = position.getY();
+    pose.position.z = position.getZ() + 0.1;
+
+    pose.orientation = arm_mover.getCurrentPose().orientation;
+    ROS_INFO_STREAM( "Moving to pose: " <<
+        pose);
+    arm_mover.moveTo(pose);
+
     // geometry_msgs::Pose pose = arm_mover.getCurrentPose();
     // pose.position.z += 0.1;
 

@@ -40,7 +40,7 @@ void BaseMoveGroup::load_params(){
     ros::param::get(path + "planning_attempts", planning_attempts);
     ros::param::get(path + "velocity_scaling", velocity_scaling);
     ros::param::get(path + "acceleration_scaling", acceleration_scaling);
-
+    ROS_INFO_STREAM("The planning time has been set to: " << planning_time);
     move_group_->setPlanningTime(planning_time);
     move_group_->setNumPlanningAttempts(planning_attempts);
     move_group_->setMaxVelocityScalingFactor(velocity_scaling);

@@ -111,12 +111,12 @@ class PvnDetector:
         inputs = [pcld, sampled_index_, rgb_crop_resnet, crop_factor]
         kp_pre_ofst, seg_pre, cp_pre_ofst = self.model(inputs, training=False)
 
-        R, t, kpts_voted, S = self.initial_pose_model(
+        R, t, kpts_voted = self.initial_pose_model(
             [pcld_xyz_, kp_pre_ofst, cp_pre_ofst, seg_pre, tf.expand_dims(self.mesh_kpts, 0)], training=False)
 
-        confidence = np.linalg.norm(S.numpy(), axis=-1)[0]
-        if confidence < self.score_threshold:
-            return False, None
+        # confidence = np.linalg.norm(S.numpy(), axis=-1)[0]
+        # if confidence < self.score_threshold:
+        #     return False, None
 
         seg_pre = np.argmax(seg_pre[0], axis=1).squeeze()
 

@@ -1,0 +1,8 @@
+<launch>
+  <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/move_group_params.yaml" />
+
+  <node name="controller_node" pkg="pandaqb_movegroup_control" type="controller_node" output="screen">
+    <rosparam command="load" file="$(find pandaqb_movegroup_control)/config/move_group_params.yaml" />
+  </node>
+
+</launch>
