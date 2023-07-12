@@ -6,8 +6,6 @@ from typing import List
 class TfPoseListener:
     def __init__(self, target_object_name):
         self._target = target_object_name
-
-        rospy.init_node('tf_pose_listener_node')
         
         self._tf_listener = tf.TransformListener()
         
@@ -23,24 +21,32 @@ class TfPoseListener:
         - Converts the tf to a pose msg.
         - Saves them into attribute values. _cam_pose and _obj_pose.
         """
-        while not rospy.is_shutdown():
+        object_frame = '/' + self._target + '_frame'
+        duration = rospy.Duration(4.0)
+
+        while (self._cam_pose is None) and (self._obj_pose is None):
             try:
                 time = rospy.Time(0)
-                camera_tf = self._tf_listener.lookupTransform(
-                    '/camera_frame', '/panda_link0', time)
-                object_tf = self._tf_listener.lookupTransform(
-                    '/' + self._target + '_frame', '/panda_link0', time)
+                camera_tf = self._listen_tf('/camera_frame', time, duration)
+                object_tf = self._listen_tf(object_frame, time, duration)
+                
             except (tf.LookupException, tf.ConnectivityException, 
                     tf.ExtrapolationException):
                 continue
-
-            self._cam_pose = self._tf_to_pose(camera_tf, "camera_frame")
-            self._obj_pose = self._tf_to_pose(object_tf, "object_frame")
+            
+            self._cam_pose = self._tf_to_pose(camera_tf)
+            self._obj_pose = self._tf_to_pose(object_tf)
             
             self._rate.sleep()
 
-            if (self._cam_pose is not None) and (self._obj_pose is not None):
-                rospy.signal_shutdown()
+    def _listen_tf(self, frame, time, duration):
+        self._tf_listener.waitForTransform(
+            '/panda_link0', frame, time, duration)
+        
+        tf = self._tf_listener.lookupTransform(
+            '/panda_link0', frame, time)
+        
+        return tf
 
     def _tf_to_pose(self, tf: List[List]):
         t = tf[0]

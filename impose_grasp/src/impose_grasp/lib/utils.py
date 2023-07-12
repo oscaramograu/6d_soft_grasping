@@ -102,6 +102,6 @@ def numpy_to_multiarray(np_arr: np.ndarray)-> Float32MultiArray:
 
 def multiarray_to_numpy(multiarray: Float32MultiArray)-> np.ndarray:
     dims = tuple(map(lambda x: x.size, multiarray.layout.dim))
-    np_arr = np.array(multiarray.data)
-    np_arr = np_arr.reshape(dims) #.astype(dtype) 
-    return 
+    data = np.array(multiarray.data, dtype=float)
+    np_arr = data.reshape(dims).astype(np.float32) 
+    return np_arr

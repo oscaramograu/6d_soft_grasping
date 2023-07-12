@@ -6,7 +6,7 @@ from ros_numpy.geometry import pose_to_numpy
 from geometry_msgs.msg import Pose
 from impose_grasp.nodes.grasp_choosing.tf_pose_listener import TfPoseListener
 from impose_grasp.models.cameras.base_camera import CamFrame
-from impose_grasp.models.cameras.realsense_D415 import D415
+from impose_grasp.nodes.grasp_choosing.frame_builder import FrameBuilder
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 
 MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP,
@@ -20,11 +20,9 @@ class GraspChooserBase(TfPoseListener):
             target_obj_name, "gripping_poses.json")
         self._EEF_mesh_path = os.path.join(MODELS_PATH,
             "gripper_collision_d415.stl")
-        
-        self._cam = D415(name="realsense_D415")
-        self._cam.start()
 
         self._build_atributes()
+
 
     def _build_atributes(self):
         """
@@ -33,10 +31,10 @@ class GraspChooserBase(TfPoseListener):
         self._get_pose_from_tf()
         self._build_object_and_griper_poses(
             self._cam_pose, self._obj_pose)
-        
-        # self._build_gripping_poses_and_offsets()
 
-        # frame = self._cam.grab_frame()
+        self._build_gripping_poses_and_offsets()
+
+        fb = FrameBuilder()
         # self._build_obstruction_pcl(frame)
 
         # self._build_scene()

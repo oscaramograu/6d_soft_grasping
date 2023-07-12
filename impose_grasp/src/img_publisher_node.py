@@ -5,11 +5,12 @@ from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32MultiArray
 from impose_grasp.lib.utils import numpy_to_multiarray
 from cv_bridge import CvBridge
+import numpy as np
 import cv2
 
 from impose_grasp.models.cameras.realsense_D415 import D415
 
-def depth_numpy_to_ros(depth_image):
+def depth_numpy_to_ros_img(depth_image):
     bridge = CvBridge()
     depth_image_msg = bridge.cv2_to_imgmsg(depth_image, encoding="passthrough")
 
@@ -78,7 +79,7 @@ def main():
         image_pub_rgb.publish(rgb_image_msg)
 
         # Convert the depth numpy image to ROS Image message
-        d_img_msg = depth_numpy_to_ros(frame.depth)
+        d_img_msg = depth_numpy_to_ros_img(frame.depth)
         d_img_msg.header.stamp = time
         # Publish the depth image
         image_pub_d.publish(d_img_msg)
