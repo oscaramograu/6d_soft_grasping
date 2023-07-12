@@ -4,6 +4,6 @@
     <node pkg="impose_grasp" type="object_broadcaster_node.py" 
         name="object_broadcaster_node" output="screen" />
         
-    <node pkg="img_publisher_node" type="img_publisher_node.py" 
+    <node pkg="impose_grasp" type="img_publisher_node.py" 
         name="image_publisher" output="screen" />
 </launch>
