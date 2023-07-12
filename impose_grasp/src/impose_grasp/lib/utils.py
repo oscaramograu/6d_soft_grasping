@@ -5,11 +5,13 @@ from datetime import datetime
 import json
 import sys
 from impose_grasp.lib.gripping_pose import GrippingPose
+from std_msgs.msg import Float32MultiArray, MultiArrayDimension
 
-# SIX_IMPOSE_PATH = "/home/oscar/Desktop/code/6IMPOSE" 
-# PATH_TO_IMPOSE_GRASP = "/home/oscar/catkin_ws/src/thesis/impose_grasp"
-SIX_IMPOSE_PATH = "/home/neurolab/Desktop/code/6IMPOSE" 
-PATH_TO_IMPOSE_GRASP = "/home/neurolab/catkin_ws/src/thesis/impose_grasp"
+
+SIX_IMPOSE_PATH = "/home/oscar/Desktop/code/6IMPOSE" 
+PATH_TO_IMPOSE_GRASP = "/home/oscar/catkin_ws/src/thesis/impose_grasp"
+# SIX_IMPOSE_PATH = "/home/neurolab/Desktop/code/6IMPOSE" 
+# PATH_TO_IMPOSE_GRASP = "/home/neurolab/catkin_ws/src/thesis/impose_grasp"
 
 class HiddenPrints:
     def __enter__(self):
@@ -88,3 +90,18 @@ def load_mesh(meshpath, tensor=False, debug=False):
         pass
 
     return mesh
+
+def numpy_to_multiarray(np_arr: np.ndarray)-> Float32MultiArray: 
+    multiarr = Float32MultiArray()
+    multiarr.layout.dim = [MultiArrayDimension('dim%d' % i,
+                        np_arr.shape[i],
+                        np_arr.shape[i] * np_arr.dtype.itemsize) 
+                        for i in range(np_arr.ndim)]
+    multiarr.data = np_arr.reshape([1, -1])[0].tolist()
+    return multiarr
+
+def multiarray_to_numpy(multiarray: Float32MultiArray)-> np.ndarray:
+    dims = tuple(map(lambda x: x.size, multiarray.layout.dim))
+    np_arr = np.array(multiarray.data)
+    np_arr = np_arr.reshape(dims) #.astype(dtype) 
+    return 

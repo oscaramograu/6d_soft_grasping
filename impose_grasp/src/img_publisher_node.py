@@ -2,6 +2,8 @@
 
 import rospy
 from sensor_msgs.msg import Image, CameraInfo
+from std_msgs.msg import Float32MultiArray
+from impose_grasp.lib.utils import numpy_to_multiarray
 from cv_bridge import CvBridge
 import cv2
 
@@ -48,10 +50,18 @@ def main():
     camera.start()
 
     bridge = CvBridge()
-    image_pub_rgb = rospy.Publisher('/camera/rgb/image_raw', Image, queue_size=10)
-    image_pub_d = rospy.Publisher('/camera/depth/image_raw', Image, queue_size=10)
-    camera_info_pub = rospy.Publisher('/camera/depth/camera_info', CameraInfo, queue_size=10)
-
+    image_pub_rgb = rospy.Publisher(
+        '/camera/rgb/image_raw', Image, queue_size=10)
+    image_pub_d = rospy.Publisher(
+        '/camera/depth/image_raw', Image, queue_size=10)
+    
+    camera_info_pub = rospy.Publisher(
+        '/camera/depth/camera_info', CameraInfo, queue_size=10)
+    
+    rgb_np_pub = rospy.Publisher(
+        '/camera/rgb/numpy', Float32MultiArray, queue_size=10)
+    d_np_pub = rospy.Publisher(
+        '/camera/depth/numpy', Float32MultiArray, queue_size=10)
 
     rate = rospy.Rate(10)  # Publish at 10Hz
 
@@ -63,20 +73,28 @@ def main():
 
         # Convert the RGB image to ROS message
         rgb_image_msg = bridge.cv2_to_imgmsg(bgr_image, "bgr8")
-        rgb_image_msg.header.stamp = rospy.Time.now()
+        rgb_image_msg.header.stamp = time
         # Publish the RGB image
         image_pub_rgb.publish(rgb_image_msg)
 
         # Convert the depth numpy image to ROS Image message
         d_img_msg = depth_numpy_to_ros(frame.depth)
-        d_img_msg.header.stamp = rospy.Time.now()
+        d_img_msg.header.stamp = time
         # Publish the depth image
         image_pub_d.publish(d_img_msg)
 
         # Setup camera info msg
         camera_info_msg = set_up_camera_info()
-        camera_info_msg.header.stamp = rospy.Time.now()
+        camera_info_msg.header.stamp = time
         camera_info_pub.publish(camera_info_msg)
+
+        # Setup the numpy msg
+        depth_multiarr = numpy_to_multiarray(frame.depth)
+        rgb_multiarr = numpy_to_multiarray(frame.rgb)
+
+        d_np_pub.publish(depth_multiarr)
+        rgb_np_pub.publish(rgb_multiarr)
+
         rate.sleep()
     
     camera.stop()

@@ -34,12 +34,12 @@ class GraspChooserBase(TfPoseListener):
         self._build_object_and_griper_poses(
             self._cam_pose, self._obj_pose)
         
-        self._build_gripping_poses_and_offsets()
+        # self._build_gripping_poses_and_offsets()
 
-        frame = self._cam.grab_frame()
-        self._build_obstruction_pcl(frame)
+        # frame = self._cam.grab_frame()
+        # self._build_obstruction_pcl(frame)
 
-        self._build_scene()
+        # self._build_scene()
 
     def _build_obstruction_pcl(self, frame: CamFrame):
         """
