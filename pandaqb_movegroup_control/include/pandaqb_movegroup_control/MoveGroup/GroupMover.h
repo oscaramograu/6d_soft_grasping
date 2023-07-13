@@ -1,5 +1,5 @@
 #include <pandaqb_movegroup_control/MoveGroup/InfoTriggerMG.h>
-
+#include <string>   // for string manipulation
 
 class GroupMover : public InfoTriggerMoveGroup{
 public:

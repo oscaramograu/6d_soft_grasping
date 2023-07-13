@@ -51,6 +51,9 @@ void GroupMover::planExecute(){
 
     if (success){
         ROS_INFO_STREAM("Planning succeeded");
+        ROS_INFO_STREAM("Press keyboard to execute it");
+        std::string user_input;
+        std::getline(std::cin, user_input);
         move_group_->execute(plan);
         ROS_INFO_STREAM("Plan executed.");
     }

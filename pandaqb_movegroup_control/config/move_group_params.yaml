@@ -1,5 +1,5 @@
 move_group:
-  panda_arm:
+  arm:
     # Velocity and acceleration scaling for manipulator planning in MoveIt
     planning_time: 50
     planning_attempts: 5

@@ -26,4 +26,8 @@
   <include if = "$(arg load_gripper)" file="$(find movit_config_pandaqb)/launch/moveit_planning_execution.launch">
     <arg name="rviz_file" default="$(arg rviz_file)"/>
   </include>
+
+  <!-- Launch image publisher node -->
+  <node pkg="impose_grasp" type="img_publisher_node.py" 
+    name="image_publisher" output="screen"/>
 </launch>

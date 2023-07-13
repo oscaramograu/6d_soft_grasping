@@ -2,6 +2,36 @@
 // #include <pandaqb_movegroup_control/Target/TargetMeshBroadcaster.h>
 #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 #include <tf/transform_listener.h>
+#include <tf/transform_broadcaster.h>
+
+void rotate_aroundZ(tf::StampedTransform &tf, float theta){
+    tf::Quaternion tf_rot;
+    tf_rot.setW(cos(theta/2));
+    tf_rot.setX(0);
+    tf_rot.setY(0);
+    tf_rot.setZ(sin(theta/2));
+    
+    tf::StampedTransform tf_Z;
+    tf_Z.setRotation(tf_rot);
+    tf*=tf_Z;
+}
+
+geometry_msgs::Pose tf_to_pose(tf::StampedTransform transform){
+    geometry_msgs::Pose pose;
+    tf::Vector3 position = transform.getOrigin();
+    pose.position.x = position.getX();
+    pose.position.y = position.getY();
+    pose.position.z = position.getZ() + 0.4;
+
+    
+    tf::Quaternion rotation = transform.getRotation();
+    pose.orientation.w = rotation.getW();
+    pose.orientation.x = rotation.getX();
+    pose.orientation.y = rotation.getY();
+    pose.orientation.z = rotation.getZ();
+
+    return pose;
+}
 
 int main(int argc, char** argv){
     // Initialize the node
@@ -16,30 +46,36 @@ int main(int argc, char** argv){
 // ################################################################################################################
     //GROUP MOVE  TESTS
 // ################################################################################################################
-    GroupMover arm_mover("panda_arm");
-    arm_mover.set_EEF_link("panda_link8");
+    GroupMover arm_mover("arm");
+    arm_mover.set_EEF_link("qbhand2m_end_effector_link");
     geometry_msgs::Pose pose;
     tf::StampedTransform transform;
     tf::TransformListener listener;
 
     try {
-        listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
+        listener.waitForTransform("/panda_link0", "/target_grasp", 
             ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
+        listener.lookupTransform("/panda_link0", "/target_grasp", 
             ros::Time(0), transform);
     } catch (tf::TransformException ex) {
         ROS_ERROR("%s",ex.what());
     }
+    pose = tf_to_pose(transform);
+    ROS_INFO_STREAM("Pose before rotating: " << pose);
 
-    tf::Vector3 position = transform.getOrigin();
-    pose.position.x = position.getX();
-    pose.position.y = position.getY();
-    pose.position.z = position.getZ() + 0.1;
+    rotate_aroundZ(transform, -M_PI_2);
+    pose = tf_to_pose(transform);
+    ROS_INFO_STREAM("Pose before rotating: " << pose);
 
-    pose.orientation = arm_mover.getCurrentPose().orientation;
-    ROS_INFO_STREAM( "Moving to pose: " <<
-        pose);
-    arm_mover.moveTo(pose);
+    static tf::TransformBroadcaster br;
+    while (true)
+    {
+        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "panda_link0", "eef"));
+
+    }
+    
+    // arm_mover.moveTo(pose);
+    // ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
 
     // geometry_msgs::Pose pose = arm_mover.getCurrentPose();
     // pose.position.z += 0.1;
