@@ -17,28 +17,13 @@ class FrameBuilder:
                         os.path.join(cal_path, "intrinsic_matrix.txt"))        
                     
     def get_actual_frame(self):
-        rgb_msg = rospy.wait_for_message(
-            '/camera/rgb/numpy', Float32MultiArray, timeout=10)
-        rgb = multiarray_to_numpy(rgb_msg)
-        self.frame.rgb = rgb
+        self.frame.rgb = self.get_numpy_img('/camera/rgb/numpy')
 
-        depth_msg = rospy.wait_for_message(
-            '/camera/depth/numpy', Float32MultiArray, timeout=10)
-        depth = multiarray_to_numpy(depth_msg)
-        self.frame.depth = depth
+        self.frame.depth = self.get_numpy_img('/camera/depth/numpy')
 
         return self.frame
-        
-        # self.rgb_np_sub = rospy.Subscriber(
-        #     '/camera/rgb/numpy', Float32MultiArray, self.rgb_callback)
-        # self.d_np_sub = rospy.Subscriber(
-        #     '/camera/depth/numpy', Float32MultiArray, self.depth_callback)
 
-
-    # def rgb_callback(self, msg):
-    #     rgb = multiarray_to_numpy(msg)
-    #     self.frame.rgb = rgb
-
-    # def depth_callback(self, msg):
-    #     depth = multiarray_to_numpy(msg)
-    #     self.frame.depth = depth
+    def get_numpy_img(self, multiarr_topic):
+        msg = rospy.wait_for_message(
+            multiarr_topic, Float32MultiArray, timeout=10)
+        return multiarray_to_numpy(msg)
