@@ -9,7 +9,6 @@ from impose_grasp.lib.geometry import invert_homogeneous
 
 class GraspChooser(GraspChooserBase):
     def __init__(self, target_obj_name):
-        super().__init__(target_obj_name)
 
         self.obj_pose: np.ndarray # in global frame
         self.gripper_pose: np.ndarray  # in global frame
@@ -17,6 +16,8 @@ class GraspChooser(GraspChooserBase):
         self.grasp_offsets: List[float]  # in m from closed position
         self.obstruction_pcl: o3d.t.geometry.PointCloud = None # in global frame
         self.scene: o3d.t.geometry.RaycastingScene 
+
+        super().__init__(target_obj_name)
 
     def compute_best_grasp_pose(self):
         """
@@ -35,6 +36,7 @@ class GraspChooser(GraspChooserBase):
         position is retrieved.
         """
         if  self.obstruction_pcl is None:
+            print("Obstruction point cloud is none")
             return None
 
         inds = range(len(self.gripping_poses))
@@ -46,10 +48,11 @@ class GraspChooser(GraspChooserBase):
 
         rel_angle = [np.dot(gripper_z, gpose[:3, 2]) for gpose in poses]
         angle_thr = np.cos(60/180*np.pi)
+        # print("The relative angles are:")
+        # print("The theshold angle is:", "\n", angle_thr)
         inds = [x for x in inds if rel_angle[x] > angle_thr]
 
         # find distances to obstruction pointcloud
-
         best_i = None
         best_score = math.inf
 

@@ -1,6 +1,7 @@
 import os
 import json
 import open3d as o3d
+import numpy as np
 from ros_numpy.geometry import pose_to_numpy
 
 from geometry_msgs.msg import Pose
@@ -8,6 +9,7 @@ from impose_grasp.nodes.grasp_choosing.tf_pose_listener import TfPoseListener
 from impose_grasp.models.cameras.base_camera import CamFrame
 from impose_grasp.nodes.grasp_choosing.frame_builder import FrameBuilder
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
+from impose_grasp.lib.gripping_pose import GrippingPose
 
 MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP,
             "data", "models")
@@ -35,9 +37,10 @@ class GraspChooserBase(TfPoseListener):
         self._build_gripping_poses_and_offsets()
 
         fb = FrameBuilder()
-        # self._build_obstruction_pcl(frame)
+        frame = fb.get_actual_frame()
+        self._build_obstruction_pcl(frame)
 
-        # self._build_scene()
+        self._build_scene()
 
     def _build_obstruction_pcl(self, frame: CamFrame):
         """
@@ -54,7 +57,6 @@ class GraspChooserBase(TfPoseListener):
             frame.depth))#.to(gpu)
         rgbd = o3d.t.geometry.RGBDImage(rgb, depth)
         intr_mat = o3d.core.Tensor(frame.intrinsic)
-
         pcd = o3d.t.geometry.PointCloud.create_from_rgbd_image(
             rgbd, intr_mat, depth_scale=1.0, stride=max(stride_, 1))
 
@@ -63,7 +65,7 @@ class GraspChooserBase(TfPoseListener):
             pcd = pcd.voxel_down_sample(voxel_size)
 
         self.obstruction_pcl = pcd.cpu().clone()
-
+        
     def _build_gripping_poses_and_offsets(self):
         """
         builds the lists of possible gripping poses of the target object
@@ -74,12 +76,9 @@ class GraspChooserBase(TfPoseListener):
         if os.path.isfile(self._grasps_path):
             with open(self._grasps_path) as F:
                 json_load = json.load(F)
-                for x in json_load:
-                    self.grasp_offsets.append(x["width"])
-                    self.gripping_poses.append(x["pose"])
-                # grasps = [GrippingPose(eval(
-                #     'np.array(' + x["pose"] + ')'), x["width"])
-                #     for x in json_load]
+            for x in json_load:     
+                self.gripping_poses.append(eval('np.array(' + x["pose"] + ')'))
+                self.grasp_offsets.append(x["width"])
 
     def _build_object_and_griper_poses(self, 
                     camera_pose: Pose, target_pose: Pose):
@@ -96,5 +95,5 @@ class GraspChooserBase(TfPoseListener):
         """
         gripper_bbox = load_mesh(
         self._EEF_mesh_path, tensor=True)
-        scene = o3d.t.geometry.RaycastingScene()
-        _ = scene.add_triangles(gripper_bbox)
+        self.scene = o3d.t.geometry.RaycastingScene()
+        _ = self.scene.add_triangles(gripper_bbox)

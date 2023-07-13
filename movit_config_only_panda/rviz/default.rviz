@@ -6,9 +6,8 @@ Panels:
       Expanded:
         - /MotionPlanning1/Planning Request1
         - /TF1/Frames1
-        - /Image1/Status1
+        - /Image1
         - /PointCloud21
-        - /PointCloud21/Status1
       Splitter Ratio: 0.5
     Tree Height: 502
   - Class: rviz/Selection
@@ -85,15 +84,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          camera_support_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -103,6 +93,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link1:
             Alpha: 1
             Show Axes: false
@@ -112,6 +103,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link2:
             Alpha: 1
             Show Axes: false
@@ -121,6 +113,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link3:
             Alpha: 1
             Show Axes: false
@@ -130,6 +123,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link4:
             Alpha: 1
             Show Axes: false
@@ -139,6 +133,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link5:
             Alpha: 1
             Show Axes: false
@@ -148,6 +143,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link6:
             Alpha: 1
             Show Axes: false
@@ -157,6 +153,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link7:
             Alpha: 1
             Show Axes: false
@@ -166,11 +163,8 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          world:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -220,15 +214,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          camera_support_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -238,6 +223,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link1:
             Alpha: 1
             Show Axes: false
@@ -247,6 +233,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link2:
             Alpha: 1
             Show Axes: false
@@ -256,6 +243,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link3:
             Alpha: 1
             Show Axes: false
@@ -265,6 +253,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link4:
             Alpha: 1
             Show Axes: false
@@ -274,6 +263,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link5:
             Alpha: 1
             Show Axes: false
@@ -283,6 +273,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link6:
             Alpha: 1
             Show Axes: false
@@ -292,6 +283,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link7:
             Alpha: 1
             Show Axes: false
@@ -301,11 +293,8 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+            Value: true
           panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          world:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -323,8 +312,6 @@ Visualization Manager:
         All Enabled: false
         camera_frame:
           Value: true
-        camera_support_link:
-          Value: false
         panda_EE:
           Value: false
         panda_K:
@@ -365,8 +352,6 @@ Visualization Manager:
           Value: false
         panda_link8:
           Value: false
-        world:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -374,44 +359,42 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        world:
-          panda_link0:
-            panda_link0_sc:
+        panda_link0:
+          panda_link0_sc:
+            {}
+          panda_link1:
+            panda_link1_sc:
               {}
-            panda_link1:
-              panda_link1_sc:
+            panda_link2:
+              panda_link2_sc:
                 {}
-              panda_link2:
-                panda_link2_sc:
+              panda_link3:
+                panda_link3_sc:
                   {}
-                panda_link3:
-                  panda_link3_sc:
+                panda_link4:
+                  panda_link4_sc:
                     {}
-                  panda_link4:
-                    panda_link4_sc:
+                  panda_link5:
+                    panda_link5_sc:
                       {}
-                    panda_link5:
-                      panda_link5_sc:
+                    panda_link6:
+                      panda_link6_sc:
                         {}
-                      panda_link6:
-                        panda_link6_sc:
+                      panda_link7:
+                        panda_link7_sc:
                           {}
-                        panda_link7:
-                          panda_link7_sc:
+                        panda_link8:
+                          camera_frame:
                             {}
-                          panda_link8:
-                            camera_support_link:
-                              camera_frame:
+                          panda_NE:
+                            panda_EE:
+                              panda_K:
                                 {}
-                            panda_NE:
-                              panda_EE:
-                                panda_K:
-                                  {}
       Update Interval: 0
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /rgb_image
+      Image Topic: /camera/rgb/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
