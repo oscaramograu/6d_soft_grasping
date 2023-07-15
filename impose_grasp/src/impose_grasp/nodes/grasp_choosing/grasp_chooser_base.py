@@ -5,11 +5,10 @@ import numpy as np
 from ros_numpy.geometry import pose_to_numpy
 
 from geometry_msgs.msg import Pose
-from impose_grasp.nodes.grasp_choosing.tf_pose_listener import TfPoseListener
+from impose_grasp.lib.tf_pose_listener import TfPoseListener
 from impose_grasp.models.cameras.base_camera import CamFrame
-from impose_grasp.nodes.grasp_choosing.frame_builder import FrameBuilder
+from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
-from impose_grasp.lib.gripping_pose import GrippingPose
 
 MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP,
             "data", "models")

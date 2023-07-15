@@ -1,0 +1,12 @@
+<launch>
+  <!-- Launch fake robot n the scene -->
+  <include file="$(find panda_qb_description)/launch/sim_panda.launch"/>
+
+  <!-- Fake object broadcaster node -->
+  <node pkg="impose_grasp" type="fake_obj_broadcaster.py" 
+      name="fake_obj_broadcaster" output="screen" />  
+
+  <!-- Object mesh publisher -->
+  <node pkg="pandaqb_movegroup_control" type="object_publisher_node" 
+      name="object_publisher_node" output="screen" />  
+</launch>

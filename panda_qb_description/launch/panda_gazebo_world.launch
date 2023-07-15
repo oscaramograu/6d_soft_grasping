@@ -16,20 +16,20 @@
   />
 
 <!--  Launch the empty gazebo world -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="worlds/empty.world"/>
     <arg name="paused" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="use_sim_time" value="true"/>
-  </include>
+  </include> -->
 
 <!-- Load the robot description, controllers, and simulation params -->
   <param name="robot_description"
-         command="xacro $(find panda_qb_description)/urdf/only_panda_description.urdf.xacro
-                  gazebo:=$(arg gazebo)">
+         command="xacro $(find panda_qb_description)/urdf/pandaqb_description.urdf.xacro
+                  gazebo:=false">
   </param>
 
-  <rosparam file="$(find franka_gazebo)/config/franka_hw_sim.yaml" subst_value="true" />
+  <!-- <rosparam file="$(find franka_gazebo)/config/franka_hw_sim.yaml" subst_value="true" /> -->
   <rosparam file="$(find movit_config_only_panda)/config/default_controllers.yaml" subst_value="true" />
 
 <!-- Spawn the robot model -->

@@ -13,17 +13,18 @@ public:
     ~BaseMoveGroup();
 
 protected: 
-    // Move Group attributes
     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_;
     moveit::planning_interface::PlanningSceneInterface planning_scene_;
     moveit::planning_interface::MoveGroupInterface::Plan plan;
-    
+
     std::string PLANNING_GROUP;
     std::vector<double> home;
 
 private:
+    /**
+     * 
+     **/
     void load_params();
 
-    // Ros param attributes
     double planning_time, planning_attempts, velocity_scaling, acceleration_scaling;
 };

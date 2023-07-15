@@ -1,29 +1,32 @@
 <launch>
-  <arg name="sim" default = "true" />
-  <arg name="gazebo" default = "true" />
+  <!-- <arg name="sim" default = "true" />
+  <arg name="gazebo" default = "true" /> -->
   <arg name="load_gripper" default = "true" />
   <arg name="rviz_file" default="default"/>
 
   <!-- Launch the robot in Gazebo launch file if simulation -->
-  <group if="$(arg sim)">
+  <!-- <group if="$(arg sim)">
     <include if="$(arg gazebo)"
     file="$(find panda_qb_description)/launch/panda_gazebo_world.launch" />
-  </group>
+  </group> -->
 
-  <include file="$(find panda_qb_description)/launch/camera_link_broadcaster.launch" />
 
   <!-- Launch the franka robot controllers for the real robot -->
-  <include unless="$(arg sim)" 
-    file="$(find panda_qb_description)/launch/franka_control.launch">
+  <include file="$(find panda_qb_description)/launch/franka_control.launch">
     <arg name="robot_ip" value="172.16.0.2"/>
     <arg name="load_gripper" value="$(arg load_gripper)"/>
   </include>
+  
+  <include file="$(find panda_qb_description)/launch/camera_link_broadcaster.launch" />
 
   <!-- Launch moveit planning execution -->
-  <include unless = "$(arg load_gripper)" file="$(find movit_config_only_panda)/launch/moveit_planning_execution.launch">
+  <include unless = "$(arg load_gripper)" 
+    file="$(find movit_config_only_panda)/launch/moveit_planning_execution.launch">
     <arg name="rviz_file" default="$(arg rviz_file)"/>
   </include>
-  <include if = "$(arg load_gripper)" file="$(find movit_config_pandaqb)/launch/moveit_planning_execution.launch">
+
+  <include if = "$(arg load_gripper)" 
+    file="$(find movit_config_pandaqb)/launch/moveit_planning_execution.launch">
     <arg name="rviz_file" default="$(arg rviz_file)"/>
   </include>
 </launch>
