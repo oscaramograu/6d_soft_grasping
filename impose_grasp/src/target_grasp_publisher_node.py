@@ -1,7 +1,7 @@
 #!/usr/bin/env python  
 import rospy
 from impose_grasp.nodes.grasp_choosing.grasp_chooser import GraspChooser
-from impose_grasp.nodes.transform_broadcaster import TransformBroadcaster
+from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
 
 if __name__ == "__main__":
     rospy.init_node('tf_pose_listener_node')

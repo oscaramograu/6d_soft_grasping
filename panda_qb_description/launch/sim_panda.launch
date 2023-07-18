@@ -4,10 +4,9 @@
   <arg name="moveit_controller_manager" default="fake" />
   <arg name="fake_execution_type" default="interpolate" />
 
-
 <!-- Load the robot description -->
   <param name="robot_description"
-        command="xacro $(find panda_qb_description)/urdf/pandaqb_description.urdf.xacro">
+    command="xacro $(find panda_qb_description)/urdf/pandaqb_description.urdf.xacro">
   </param>
 
 <!-- Run robot and joint state publishers -->
@@ -15,7 +14,6 @@
         <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
   </node>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
-
 
 <!-- Launch moveit planning execution -->
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->

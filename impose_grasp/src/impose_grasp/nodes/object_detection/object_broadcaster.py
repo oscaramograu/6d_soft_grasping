@@ -1,10 +1,9 @@
 import rospy
 import numpy as np
 
-from impose_grasp.nodes.grasp_choosing.frame_builder import FrameBuilder
+from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.networks.detector import Detector
-from impose_grasp.nodes.transform_broadcaster import TransformBroadcaster
-from impose_grasp.models.cameras.realsense_D415 import D415
+from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
 
 class ObjectBroadcaster(TransformBroadcaster):
     def __init__(self, target_obj: str):
@@ -24,14 +23,14 @@ class ObjectBroadcaster(TransformBroadcaster):
 
     def broadcast_obj_tf(self):
         """
-            - Grabs a frame using cam attribute.
-            - Sets that frame in the det attribute.
-            - A bounding box is computed using darknet.
-            - The frame is cropped within the bbox region. 
-            And PVN estimates the 6D pose affine matrix 
-            (from the camera to the targeted object)
-            - The tf frame is broadcasted between the camera_frame,
-            and a new 'target'_frame.
+        - Grabs a frame using cam attribute.
+        - Sets that frame in the det attribute.
+        - A bounding box is computed using darknet.
+        - The frame is cropped within the bbox region. 
+        And PVN estimates the 6D pose affine matrix 
+        (from the camera to the targeted object)
+        - The tf frame is broadcasted between the camera_frame,
+        and a new 'target'_frame.
         """
         frame = self.fb.get_actual_frame()
         self.det.set_frame(frame)

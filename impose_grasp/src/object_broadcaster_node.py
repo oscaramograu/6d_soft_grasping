@@ -2,7 +2,7 @@
 
 import rospy
 from std_msgs.msg import Bool  # Import the ROS message type for the stop broadcasting flag
-from impose_grasp.nodes.object_broadcaster import ObjectBroadcaster  # Replace "your_package" with the actual package name containing ObjectBroadcaster
+from impose_grasp.nodes.object_detection.object_broadcaster import ObjectBroadcaster  # Replace "your_package" with the actual package name containing ObjectBroadcaster
 
 class ObjectBroadcasterNode:
     def __init__(self, target_obj):
