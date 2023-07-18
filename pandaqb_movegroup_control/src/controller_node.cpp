@@ -21,9 +21,8 @@ geometry_msgs::Pose tf_to_pose(tf::StampedTransform transform){
     tf::Vector3 position = transform.getOrigin();
     pose.position.x = position.getX();
     pose.position.y = position.getY();
-    pose.position.z = position.getZ() + 0.4;
+    pose.position.z = position.getZ();
 
-    
     tf::Quaternion rotation = transform.getRotation();
     pose.orientation.w = rotation.getW();
     pose.orientation.x = rotation.getX();
@@ -61,21 +60,29 @@ int main(int argc, char** argv){
         ROS_ERROR("%s",ex.what());
     }
     pose = tf_to_pose(transform);
-    ROS_INFO_STREAM("Pose before rotating: " << pose);
+    ROS_INFO_STREAM("Target pose: " << pose);
+// grasp detection pose
+// 0.42754; 0.18872; 0.25229
+// -0.32689; 0.8196; 0.32044; -0.34455
+    pose.position.x -= 0.1;
+    pose.position.z += 0.1;
+    arm_mover.moveTo(pose);
 
-    rotate_aroundZ(transform, -M_PI_2);
-    pose = tf_to_pose(transform);
-    ROS_INFO_STREAM("Pose before rotating: " << pose);
+    pose.position.x += 0.1;
+    pose.position.z -= 0.09;
+    arm_mover.moveTo(pose);
 
-    static tf::TransformBroadcaster br;
-    while (true)
-    {
-        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "panda_link0", "eef"));
+    ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
 
-    }
+
     
-    // arm_mover.moveTo(pose);
-    // ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
+    // static tf::TransformBroadcaster br;
+    // while (true)
+    // {
+    //     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "panda_link0", "eef"));
+    // }
+    
+
 
     // geometry_msgs::Pose pose = arm_mover.getCurrentPose();
     // pose.position.z += 0.1;

@@ -1,6 +1,8 @@
 #!/usr/bin/env python  
 
 import rospy
+import ros_numpy
+
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32MultiArray
 from impose_grasp.lib.utils import numpy_to_multiarray
@@ -20,13 +22,10 @@ def depth_numpy_to_ros_img(depth_image):
     return depth_image_msg
 
 def set_up_camera_info():
-    D = [0.11310159563080885, -0.25086810996017317, 0.00035361841864570614, -0.005393722121755429, 0.0]
-    
-    K = [1.354081845631475744e+03, 0.000000000000000000e+00, 9.710950536910352184e+02, 0.000000000000000000e+00, 1.354081845631475744e+03, 5.606642250597724342e+02,
-0.000000000000000000e+00, 0.000000000000000000e+00, 1.000000000000000000e+00]
-    
-    R = [0.37215665516088925, -0.020097006977225797, -0.9279523340829615, 0.05043420784283281, 0.998726400003529, -0.0014030735037909468, 0.9267986915715435, -0.04627837774326621, 0.37269625307309795]
-    P = [297.70310942771675, 0.0, -4253.122383117676, 0.0, 0.0, 297.70310942771675, -228.14882278442383, 0.0, 0.0, 0.0, 1.0, 0.0]
+    D = [0.07338830833962308, -0.14779608743594305, 0.0018903176017166922, 0.0009634899351246804, 0.0]
+    K = [1361.2194795600453, 0.0, 950.8232073178983, 0.0, 1363.8946615215057, 534.6843603624786, 0.0, 0.0, 1.0]
+    R = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+    P = [1361.2236734776159, 0.0, 952.2484344586607, 0.0, 0.0, 1377.0898584361362, 536.1885389587065, 0.0, 0.0, 0.0, 1.0, 0.0]
     
     camera_info_msg = CameraInfo()
     camera_info_msg.header.frame_id = 'camera_frame'
@@ -57,7 +56,7 @@ def main():
         '/camera/depth/image_raw', Image, queue_size=10)
     
     camera_info_pub = rospy.Publisher(
-        '/camera/depth/camera_info', CameraInfo, queue_size=10)
+        '/camera/rgb/camera_info', CameraInfo, queue_size=10)
     
     rgb_np_pub = rospy.Publisher(
         '/camera/rgb/numpy', Float32MultiArray, queue_size=10)
@@ -68,18 +67,23 @@ def main():
 
     while not rospy.is_shutdown():
         frame = camera.grab_frame()
-        bgr_image = cv2.cvtColor(frame.rgb, cv2.COLOR_RGB2BGR)
 
         time = rospy.Time.now()
 
         # Convert the RGB image to ROS message
-        rgb_image_msg = bridge.cv2_to_imgmsg(bgr_image, "bgr8")
+        rgb_image_msg:Image
+        rgb_image_msg = ros_numpy.msgify(Image, frame.rgb, "rgb8")
         rgb_image_msg.header.stamp = time
+        rgb_image_msg.header.frame_id = "camera_frame"
+    
         # Publish the RGB image
         image_pub_rgb.publish(rgb_image_msg)
 
         # Convert the depth numpy image to ROS Image message
-        d_img_msg = depth_numpy_to_ros_img(frame.depth)
+        d_img_msg:Image
+        d_img_msg = ros_numpy.msgify(Image, frame.depth, "32FC1")
+
+        # d_img_msg = depth_numpy_to_ros_img(frame.depth)
         d_img_msg.header.stamp = time
         # Publish the depth image
         image_pub_d.publish(d_img_msg)

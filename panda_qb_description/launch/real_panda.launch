@@ -17,7 +17,7 @@
     <arg name="load_gripper" value="$(arg load_gripper)"/>
   </include>
   
-  <include file="$(find panda_qb_description)/launch/camera_link_broadcaster.launch" />
+  <include file="$(find panda_qb_description)/launch/camera_pose.launch" />
 
   <!-- Launch moveit planning execution -->
   <include unless = "$(arg load_gripper)" 
