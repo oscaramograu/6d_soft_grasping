@@ -7,6 +7,6 @@
       name="fake_obj_broadcaster" output="screen" />  
 
   <!-- Object mesh publisher -->
-  <node pkg="pandaqb_movegroup_control" type="object_publisher_node" 
-      name="object_publisher_node" output="screen" />  
+  <!-- <node pkg="pandaqb_movegroup_control" type="object_publisher_node" 
+      name="object_publisher_node" output="screen" />   -->
 </launch>

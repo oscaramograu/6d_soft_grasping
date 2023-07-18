@@ -1,6 +1,5 @@
 #include <ros/ros.h>
 #include <pandaqb_movegroup_control/Target/TargetMeshBroadcaster.h>
-#include <moveit/move_group_interface/move_group_interface.h>
 
 int main(int argc, char** argv){
     // Initialize the node

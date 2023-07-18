@@ -4,7 +4,7 @@ BaseMoveGroup::BaseMoveGroup(std::string planning_group){
     PLANNING_GROUP = planning_group;
     try {
         move_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(PLANNING_GROUP);
-
+        
         load_params();
         }
     catch (const ros::InvalidNameException& e) {

@@ -104,3 +104,9 @@ target_link_libraries(Object_libs
 target_link_libraries(object_publisher_node
   Object_libs
 )
+
+add_executable(scene_object_publisher_node 
+  ${PROJECT_SOURCE_DIR}/src/scene_objects_publisher.cpp
+)
+add_dependencies(scene_object_publisher_node ${scene_object_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(scene_object_publisher_node Object_libs)
