@@ -13,35 +13,33 @@ def build_affine_mat()->np.ndarray:
     ])
     return array
 
+
 def rotate_around_x(array: np.ndarray):
-    R_arr = array[:3, :3]
     rot = np.array([
-        [1, 0, 0],
-        [0, 0, -1],
-        [0, 1, 0]
+        [1, 0, 0, 0],
+        [0, 0, -1, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 1],
     ])
-    array[:3, :3] = R_arr @ rot
-    return array
+    return array@rot
 
 def rotate_around_y(array: np.ndarray):
-    R_arr = array[:3, :3]
     rot = np.array([
-        [0, 0, 1],
-        [0, 1, 0],
-        [-1, 0, 0]
+        [0, 0, 1, 0],
+        [0, 1, 0, 0],
+        [-1, 0, 0, 0],
+        [0, 0, 0, 1]
     ])
-    array[:3, :3] = R_arr @ rot
-    return array
+    return array@rot
 
 def rotate_aroudn_z(array: np.ndarray):
-    R_arr = array[:3, :3]
     rot = np.array([
-        [0, -1, 0],
-        [1, 0, 0],
-        [0, 0, 1]
+        [0, -1, 0, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
     ])
-    array[:3, :3] = R_arr @ rot
-    return array
+    return array@rot
 
 def run(tf_br: TransformBroadcaster):
     fake_obj_pose = build_affine_mat()
