@@ -12,7 +12,7 @@
     <xacro:if value="$(arg hand)">
       <!-- Import the QB Hand and connect it to the created link -->
       <xacro:include filename="$(find qb_hand_description)/urdf/qbhand.utils.xacro"/>
-      <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m" parent="camera_support">
+      <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m1" parent="camera_support">
         <origin xyz="0 0 0.01" rpy="0 0 ${3*pi/4}"/>
       </xacro:build_hand_2m_from_yaml>
     </xacro:if>

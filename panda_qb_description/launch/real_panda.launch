@@ -11,7 +11,7 @@
   </group> -->
 
 
-  <!-- Launch the franka robot controllers for the real robot -->
+  <!-- Launch the robot and controllers for the real robot -->
   <include file="$(find panda_qb_description)/launch/franka_control.launch">
     <arg name="robot_ip" value="172.16.0.2"/>
     <arg name="load_gripper" value="$(arg load_gripper)"/>
@@ -26,7 +26,8 @@
   </include>
 
   <include if = "$(arg load_gripper)" 
-    file="$(find movit_config_pandaqb)/launch/moveit_planning_execution.launch">
+    file="$(find movit_config_panda_qb_2)/launch/moveit_planning_execution.launch">
+    <remap from="joint_states" to="robot/joint_states"/>
     <arg name="rviz_file" default="$(arg rviz_file)"/>
   </include>
 
