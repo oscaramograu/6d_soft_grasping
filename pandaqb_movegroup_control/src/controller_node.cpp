@@ -107,7 +107,12 @@ int main(int argc, char** argv){
 //     pose.position.z -= 0.09;
 //     arm_mover.moveTo(pose);
 
-//     ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
+    // ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
+
+
+    
+
+
 
 
 
