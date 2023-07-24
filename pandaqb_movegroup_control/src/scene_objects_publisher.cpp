@@ -33,7 +33,7 @@ int main(int argc, char **argv){
     box_pose.orientation.w = 1.0;
     box_pose.position.x = 0.0;
     box_pose.position.y = 0.0;
-    box_pose.position.z = -0.03;
+    box_pose.position.z = -0.06;
 
     collision_object.primitives.push_back(primitive);
     collision_object.primitive_poses.push_back(box_pose);

@@ -40,7 +40,7 @@ if __name__ == "__main__":
     grasp_pose = rotate_90x(grasp_pose)
     grasp_pose = rotate_90x(grasp_pose)
     grasp_pose = rotate_90z(grasp_pose)
-
+    grasp_pose[2,3]-=0.02
 
     tf_br = TransformBroadcaster(obj_frame, "target_grasp")
     print(grasp_pose)

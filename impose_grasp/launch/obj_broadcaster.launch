@@ -6,7 +6,4 @@
 
     <node pkg="impose_grasp" type="object_broadcaster_node.py" 
         name="object_broadcaster_node" output="screen" />
-        
-    <!-- <node pkg="pandaqb_movegroup_control" type="object_publisher_node" 
-        name="object_publisher_node" output="screen" />   -->
 </launch>

@@ -1,3 +1,6 @@
+#ifndef GROUPMOVER
+#define GROUPMOVER
+
 #include <pandaqb_movegroup_control/MoveGroup/InfoTriggerMG.h>
 #include <string>   // for string manipulation
 
@@ -16,3 +19,4 @@ public:
 private:
     void planExecute();
 };
+#endif // GROUPMOVER

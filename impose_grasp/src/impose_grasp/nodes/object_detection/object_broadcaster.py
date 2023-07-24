@@ -1,6 +1,7 @@
 import rospy
 import numpy as np
 
+from impose_grasp.lib.tf_listener import TfListener
 from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.networks.detector import Detector
 from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
@@ -10,7 +11,7 @@ class ObjectBroadcaster(TransformBroadcaster):
         obj_frame = target_obj + "_frame"
         node_name = target_obj + "_tf_broadcaster"
 
-        super().__init__("camera_frame", obj_frame)
+        super().__init__("panda_link0", obj_frame)
 
         rospy.init_node(node_name)
         self.rate = rospy.Rate(10)  # publishing rate in Hz
@@ -21,7 +22,9 @@ class ObjectBroadcaster(TransformBroadcaster):
         self.det = Detector(target_obj)
         self.fb = FrameBuilder()
 
-    def broadcast_obj_tf(self):
+        self.obj_world: np.ndarray = None
+
+    def broadcast_obj_tf(self, stop: bool):
         """
         - Grabs a frame using cam attribute.
         - Sets that frame in the det attribute.
@@ -32,13 +35,20 @@ class ObjectBroadcaster(TransformBroadcaster):
         - The tf frame is broadcasted between the camera_frame,
         and a new 'target'_frame.
         """
-        frame = self.fb.get_actual_frame()
-        self.det.set_frame(frame)
-        self.det.compute_bbox()
-        self.det.compute_affine()
+        if not stop:
+            frame = self.fb.get_actual_frame()
+            self.det.set_frame(frame)
+            self.det.compute_bbox()
+            self.det.compute_affine()
 
-        affine = self.det.get_affine()
-        self.broadcast_transform(affine)
+            obj_cam = self.det.get_affine()
+            cam_world = self.get_cam_world_affine()
+            if obj_cam is not None:
+                self.obj_world = cam_world@obj_cam
+                
+        if obj_cam is not None:
+            self.broadcast_transform(self.obj_world)
+
         self.rate.sleep()
 
     def test_broadcaster(self):
@@ -49,3 +59,9 @@ class ObjectBroadcaster(TransformBroadcaster):
 
         self.broadcast_transform(affine_matrix)
         self.rate.sleep()
+
+    def get_cam_world_affine(self):
+        tf_listener = TfListener("camera_frame")
+        tf_listener.listen_tf()
+        CamWorld = tf_listener.get_np_frame()
+        return CamWorld

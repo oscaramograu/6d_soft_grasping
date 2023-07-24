@@ -3,7 +3,7 @@
 // #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
-// #include <pandaqb_movegroup_control/Control/HandController.h>
+#include <pandaqb_movegroup_control/Control/HandController.h>
 #include <pandaqb_movegroup_control/Control/ArmController.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
@@ -67,34 +67,50 @@ int main(int argc, char** argv){
 // ################################################################################################################
 //     GroupMover arm_mover("arm");
 //     arm_mover.set_EEF_link("qbhand2m_end_effector_link");
-    // geometry_msgs::Pose pose;
-    // tf::StampedTransform transform;
-    // tf::TransformListener listener;
+    geometry_msgs::Pose target_pose;
+    tf::StampedTransform transform;
+    tf::TransformListener listener;
 
-    // try {
-    //     listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
-    //         ros::Time(0), ros::Duration(50.0));
-    //     listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
-    //         ros::Time(0), transform);
-    // } catch (tf::TransformException ex) {
-    //     ROS_ERROR("%s",ex.what());
-    // }
-
-    // pose = tf_to_pose(transform);
-    // ROS_INFO_STREAM("Target pose: " << pose);
+    try {
+        listener.waitForTransform("/panda_link0", "/target_grasp", 
+            ros::Time(0), ros::Duration(50.0));
+        listener.lookupTransform("/panda_link0", "/target_grasp", 
+            ros::Time(0), transform);
+    } catch (tf::TransformException ex) {
+        ROS_ERROR("%s",ex.what());
+    }
 
 
-    GroupMover arm("arm");
-    arm.set_EEF_link("qbhand2m_end_effector_link");
-    geometry_msgs::Pose test_pose = arm.getCurrentPose();
-    test_pose.position.x += 0.01;
-    arm.moveTo(test_pose);
+    target_pose = tf_to_pose(transform);
+    ROS_INFO_STREAM("Target pose: " << target_pose);
+
+
+    // GroupMover arm("arm");
+    // bool theta = M_PI;
+    // arm.set_EEF_link("qbhand2m1_end_effector_link");
+
+    // target_pose = arm.getCurrentPose();
+    // target_pose.orientation.w = cos(theta/2);
+    // target_pose.orientation.x = sin(theta/2);
+    // target_pose.orientation.y = 0;
+    // target_pose.orientation.z = 0;
+
+    // arm.moveTo(target_pose);
 
 
 
-    // ArmController ac;
-    // ac.set_grasp_pose(pose);
-    // ac.approach_grasp();
+    ArmController ac;
+    HandController hc;
+
+    ac.set_grasp_pose(target_pose);
+    ac.approach_grasp();
+
+    hc.power();
+    ac.pick_up();
+
+
+
+
 
 // // grasp detection pose
 // // 0.42754; 0.18872; 0.25229

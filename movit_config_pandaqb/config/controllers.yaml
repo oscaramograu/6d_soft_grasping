@@ -32,21 +32,21 @@ qbhand2m1_synergies_trajectory_controller:
   action_monitor_rate: 120
   stop_trajectory_duration: 0
 
-# control the qbhand 2 with motor positions
-qbhand2m1_motor_positions_trajectory_controller:
- type: position_controllers/JointTrajectoryController
- joints:
-   - qbhand2m1_motor_1_joint
-   - qbhand2m1_motor_2_joint
- constraints:  # fake values due to the adaptability
-   goal_time: 10.0
-   stopped_velocity_tolerance: 10.0
-   qbhand2m1_motor_1_joint:
-     trajectory: 10.0
-     goal: 10.0
-   qbhand2m1_motor_2_joint:
-     trajectory: 10.0
-     goal: 10.0
- state_publish_rate: 100
- action_monitor_rate: 120
- stop_trajectory_duration: 0
+# # control the qbhand 2 with motor positions
+# qbhand2m1_motor_positions_trajectory_controller:
+#  type: position_controllers/JointTrajectoryController
+#  joints:
+#    - qbhand2m1_motor_1_joint
+#    - qbhand2m1_motor_2_joint
+#  constraints:  # fake values due to the adaptability
+#    goal_time: 10.0
+#    stopped_velocity_tolerance: 10.0
+#    qbhand2m1_motor_1_joint:
+#      trajectory: 10.0
+#      goal: 10.0
+#    qbhand2m1_motor_2_joint:
+#      trajectory: 10.0
+#      goal: 10.0
+#  state_publish_rate: 100
+#  action_monitor_rate: 120
+#  stop_trajectory_duration: 0

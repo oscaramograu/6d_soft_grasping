@@ -48,8 +48,6 @@ hand_controller:
   type: effort_controllers/JointTrajectoryController
   joints:
     - qbhand2m1_manipulation_joint
-    - qbhand2m1_motor_1_joint
-    - qbhand2m1_motor_2_joint
     - qbhand2m1_synergy_joint
   gains:
     qbhand2m1_manipulation_joint:

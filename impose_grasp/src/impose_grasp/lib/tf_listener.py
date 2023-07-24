@@ -16,6 +16,7 @@ class TfListener:
         self.target_pose: Pose
 
     def listen_tf(self):
+        self.target_tf = None
         while (self.target_tf is None):
             try:
                 time = rospy.Time(0)

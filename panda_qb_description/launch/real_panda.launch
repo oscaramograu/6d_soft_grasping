@@ -26,12 +26,8 @@
   </include>
 
   <include if = "$(arg load_gripper)" 
-    file="$(find movit_config_panda_qb_2)/launch/moveit_planning_execution.launch">
+    file="$(find movit_config_panda_qb_4)/launch/moveit_planning_execution.launch">
     <remap from="joint_states" to="robot/joint_states"/>
     <arg name="rviz_file" default="$(arg rviz_file)"/>
   </include>
-
-  <!-- Launch image publisher node -->
-  <node pkg="impose_grasp" type="img_publisher_node.py" 
-    name="image_publisher" output="screen"/>
 </launch>

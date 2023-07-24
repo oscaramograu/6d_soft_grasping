@@ -20,10 +20,32 @@ class ObjectBroadcasterNode:
             self.stop_flag = True
 
     def run(self):
-        while not rospy.is_shutdown() and not self.stop_flag:
-            self.object_broadcaster.broadcast_obj_tf()
+        n=0
+        while not rospy.is_shutdown():
+            self.object_broadcaster.broadcast_obj_tf(self.stop_flag)
+            if n < 20:
+                print("object has been fixed")
+
+                n+=1
+            if(n==20):
+                print("object has been fixed")
+                self.stop_flag == True
+
 
 if __name__ == "__main__":
-    target_object_name = "cpsduck"  # Replace with the name of your target object
-    object_broadcaster_node = ObjectBroadcasterNode(target_object_name)
-    object_broadcaster_node.run()
+
+    target_obj = "cpsduck"  # Replace with the name of your target object
+    object_br = ObjectBroadcaster(target_obj)
+
+    n=0
+    stop_flag = False
+
+    while not rospy.is_shutdown():
+        object_br.broadcast_obj_tf(stop_flag)
+        if n < 20:
+            print("object has been found")
+
+            n+=1
+        if(n==20):
+            print("object has been fixed")
+            stop_flag == True
