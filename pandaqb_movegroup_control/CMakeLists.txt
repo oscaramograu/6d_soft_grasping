@@ -62,8 +62,8 @@ add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
 )
 add_library(Control_libs
-  ${PROJECT_SOURCE_DIR}/src/Grasp/HandControllerBase.cpp
-  ${PROJECT_SOURCE_DIR}/src/Grasp/HandController.cpp
+  ${PROJECT_SOURCE_DIR}/src/Control/HandController.cpp
+  ${PROJECT_SOURCE_DIR}/src/Control/ArmController.cpp
 )
 
 add_executable(controller_node 
@@ -105,8 +105,8 @@ target_link_libraries(object_publisher_node
   Object_libs
 )
 
-add_executable(scene_object_publisher_node 
+add_executable(scene_objects_publisher_node 
   ${PROJECT_SOURCE_DIR}/src/scene_objects_publisher.cpp
 )
-add_dependencies(scene_object_publisher_node ${scene_object_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(scene_object_publisher_node Object_libs)
+add_dependencies(scene_objects_publisher_node ${scene_objects_publisher_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(scene_objects_publisher_node Object_libs)

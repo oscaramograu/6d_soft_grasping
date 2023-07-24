@@ -12,14 +12,16 @@ InfoTriggerMoveGroup::InfoTriggerMoveGroup(std::string planning_group):
     visual_tools->publishText(text_pose, "Robot controller started", rvt::WHITE, rvt::XLARGE);
     visual_tools->trigger();
 
-    ROS_INFO_NAMED("tutorial", "Planning frame: %s", move_group_->getPlanningFrame().c_str());
-    ROS_INFO_NAMED("tutorial", "End effector link: %s", move_group_->getEndEffectorLink().c_str());
+    ROS_INFO_STREAM( "Planning frame: " << move_group_->getPlanningFrame().c_str());
+    ROS_INFO_STREAM("End effector link: " << move_group_->getEndEffectorLink().c_str());
 
-    ROS_INFO_NAMED("tutorial", "Available Planning Groups:");
+    ROS_INFO_STREAM("Available Planning Groups:");
     std::copy(move_group_->getJointModelGroupNames().begin(),
         move_group_->getJointModelGroupNames().end(), 
         std::ostream_iterator<std::string>(std::cout, ", "));
-}
+    std::cout << std::endl;
+}    
+
 
 InfoTriggerMoveGroup::~InfoTriggerMoveGroup(){
 }

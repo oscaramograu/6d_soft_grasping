@@ -1,9 +1,9 @@
-#include <pandaqb_movegroup_control/Grasp/HandControllerBase.h>
+#include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 
-class GraspExecuter: public HandControllerBase{
+class HandController{
 public:
-    GraspExecuter();
-    ~GraspExecuter();
+    HandController();
+    ~HandController();
 
     /**
      * Makes the robot qb soft hand execute a pinch grasp. 
@@ -26,10 +26,9 @@ public:
     bool is_open();
 
 private:
-    std::vector<float> motor_pinch;
-    std::vector<float> motor_power;
-    std::vector<float> motor_open;
+    void send_trajectory(std::vector<double> motor_command);
 
+    GroupMover hand_mover;
     bool open_flag;
     float duration;
 };    

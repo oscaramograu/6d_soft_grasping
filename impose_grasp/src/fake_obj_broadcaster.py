@@ -55,7 +55,7 @@ def run(tf_br: TransformBroadcaster):
 if __name__ == "__main__":
     rospy.init_node("fake_obj_broadcaster")
 
-    obj_frame_name = "cpsduck_frame"
+    obj_frame_name = "/cpsduck_frame"
     tf_br = TransformBroadcaster("/panda_link0", obj_frame_name)
 
     run(tf_br)

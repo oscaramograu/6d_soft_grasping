@@ -1,8 +1,10 @@
 #include <ros/ros.h>
 // #include <pandaqb_movegroup_control/Target/TargetMeshBroadcaster.h>
-#include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
+// #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
+// #include <pandaqb_movegroup_control/Control/HandController.h>
+#include <pandaqb_movegroup_control/Control/ArmController.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -15,6 +17,19 @@ void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf_Z.setRotation(tf_rot);
     tf*=tf_Z;
 }
+
+void rotate_aroundX(tf::StampedTransform &tf, float theta){
+    tf::Quaternion tf_rot;
+    tf_rot.setW(cos(theta/2));
+    tf_rot.setX(sin(theta/2));
+    tf_rot.setY(0);
+    tf_rot.setZ(0);
+    
+    tf::StampedTransform tf_X;
+    tf_X.setRotation(tf_rot);
+    tf*=tf_X;
+}
+
 
 geometry_msgs::Pose tf_to_pose(tf::StampedTransform transform){
     geometry_msgs::Pose pose;
@@ -42,40 +57,60 @@ int main(int argc, char** argv){
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
+    // HandController hc;
+    // hc.pinch();
+
+
+
 // ################################################################################################################
     //GROUP MOVE  TESTS
 // ################################################################################################################
-    GroupMover arm_mover("arm");
-    arm_mover.set_EEF_link("qbhand2m_end_effector_link");
-    geometry_msgs::Pose pose;
-    tf::StampedTransform transform;
-    tf::TransformListener listener;
+//     GroupMover arm_mover("arm");
+//     arm_mover.set_EEF_link("qbhand2m_end_effector_link");
+    // geometry_msgs::Pose pose;
+    // tf::StampedTransform transform;
+    // tf::TransformListener listener;
 
-    try {
-        listener.waitForTransform("/panda_link0", "/target_grasp", 
-            ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/panda_link0", "/target_grasp", 
-            ros::Time(0), transform);
-    } catch (tf::TransformException ex) {
-        ROS_ERROR("%s",ex.what());
-    }
-    pose = tf_to_pose(transform);
-    ROS_INFO_STREAM("Target pose: " << pose);
-// grasp detection pose
-// 0.42754; 0.18872; 0.25229
-// -0.32689; 0.8196; 0.32044; -0.34455
-    pose.position.x -= 0.1;
-    pose.position.z += 0.1;
-    arm_mover.moveTo(pose);
+    // try {
+    //     listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
+    //         ros::Time(0), ros::Duration(50.0));
+    //     listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
+    //         ros::Time(0), transform);
+    // } catch (tf::TransformException ex) {
+    //     ROS_ERROR("%s",ex.what());
+    // }
 
-    pose.position.x += 0.1;
-    pose.position.z -= 0.09;
-    arm_mover.moveTo(pose);
-
-    ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
+    // pose = tf_to_pose(transform);
+    // ROS_INFO_STREAM("Target pose: " << pose);
 
 
-    
+    GroupMover arm("arm");
+    arm.set_EEF_link("qbhand2m_end_effector_link");
+    geometry_msgs::Pose test_pose = arm.getCurrentPose();
+    test_pose.position.x += 0.01;
+    arm.moveTo(test_pose);
+
+
+
+    // ArmController ac;
+    // ac.set_grasp_pose(pose);
+    // ac.approach_grasp();
+
+// // grasp detection pose
+// // 0.42754; 0.18872; 0.25229
+// // -0.32689; 0.8196; 0.32044; -0.34455
+//     pose.position.x -= 0.1;
+//     pose.position.z += 0.1;
+//     arm_mover.moveTo(pose);
+
+//     pose.position.x += 0.1;
+//     pose.position.z -= 0.09;
+//     arm_mover.moveTo(pose);
+
+//     ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
+
+
+
     // static tf::TransformBroadcaster br;
     // while (true)
     // {

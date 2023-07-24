@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv){
     // Initialize the node
-    ros::init(argc, argv, "scene_object_publisher_node");
+    ros::init(argc, argv, "scene_objects_publisher_node");
 
     ros::NodeHandle n;
 

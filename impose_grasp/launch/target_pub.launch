@@ -4,7 +4,7 @@
     <node pkg="impose_grasp" type="target_grasp_publisher_node.py" 
         name="target_grasp_publisher_node" output="screen" />
         
-    <node name="object_publisher_node" pkg="pandaqb_movegroup_control"
-        type="object_publisher_node" output="screen"/>
+    <!-- <node name="object_publisher_node" pkg="pandaqb_movegroup_control"
+        type="object_publisher_node" output="screen"/> -->
 
 </launch>

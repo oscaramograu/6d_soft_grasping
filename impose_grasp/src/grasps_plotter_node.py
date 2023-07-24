@@ -1,9 +1,37 @@
 #!/usr/bin/env python  
 import rospy
+import numpy as np
+import random
 from impose_grasp.nodes.grasp_choosing.grasp_filterer import GraspFilterer
 from impose_grasp.lib.grasp_marker_plotter import MarkerPlotter
 from impose_grasp.lib.tf_listener import TfListener
 from geometry_msgs.msg import Pose
+from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
+
+def rotate_90x(pose:np.ndarray):
+    rotation = np.array(
+        [[1, 0, 0, 0],
+        [0, 0, -1, 0],
+        [0, 1, 0, 0],
+        [0, 0, 0, 1]])
+    return pose@rotation
+    
+def rotate_90y(pose:np.ndarray):
+    rotation = np.array(
+        [[0, 0, 1, 0],
+        [0, 1, 0, 0],
+        [1, 0, 0, 0],
+        [0, 0, 0, 1]])
+    return pose@rotation
+
+
+def rotate_90z(pose:np.ndarray):
+    rotation = np.array(
+        [[0, -1, 0, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]])
+    return pose@rotation
 
 if __name__ == "__main__":
     rospy.init_node('grasp_plotter_node')
@@ -32,11 +60,20 @@ if __name__ == "__main__":
         gpose = bad_grasps[i][0]
         marker_plotter.add_marker(gpose, False)
 
-    marker_plotter.visualize_array()
-    # pose1 = Pose()
-    # pose1.position.x = 1.0
-    # marker_plotter.add_marker(pose1, True)
+    rand_ind = random.randrange(0, len(good_grasps))
+    target_grasp = good_grasps[rand_ind][0]
 
-    # pose2 = Pose()
-    # pose2.position.x += 1.5
-    # marker_plotter.add_marker(pose2, False)
+    # The lines below will plot a random valid grasp
+    grasp_pose = rotate_90x(target_grasp)
+    grasp_pose = rotate_90x(grasp_pose)
+    grasp_pose = rotate_90x(grasp_pose)
+    grasp_pose = rotate_90z(grasp_pose)
+    
+    print("Target grasp: \n", target_grasp)
+    tf_br = TransformBroadcaster("/panda_link0", "/target_grasp")
+    while not rospy.is_shutdown():
+        tf_br.broadcast_transform(target_grasp)
+
+    # Delete the lines above to visualize array
+    marker_plotter.visualize_array()
+

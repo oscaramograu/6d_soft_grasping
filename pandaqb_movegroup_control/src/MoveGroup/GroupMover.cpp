@@ -1,10 +1,6 @@
 #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 
 GroupMover::GroupMover(std::string planning_group): InfoTriggerMoveGroup(planning_group){
-    // if(planning_group == "panda_arm"){
-    //     std::string eef_frame = "qbhand2m_palm_link";
-    //     set_EEF_link(eef_frame);
-    // }
 }
 
 GroupMover::~GroupMover(){

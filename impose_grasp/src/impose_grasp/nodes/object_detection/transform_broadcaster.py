@@ -20,7 +20,7 @@ class TransformBroadcaster:
             transform_msg.header.stamp = rospy.Time.now()
 
             transform_msg.header.frame_id = self.parent_frame
-            transform_msg.child_frame_id = '/'+ self.child_frame
+            transform_msg.child_frame_id = self.child_frame
 
             rotation, translation = self._extratc_Rt(affine_matrix)
             transform_msg.transform.translation = self._translation_to_tf(translation)

@@ -10,7 +10,7 @@ move_group:
     # home: [0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785]
     home: [-0.000076, -0.715166, 0.000062, -2.275858, 1.569985, 2.316859, 0.000053]
   
-  qb_hand:
+  hand:
     planning_time: 50
     planning_attempts: 5
     velocity_scaling: 0.2
