@@ -4,7 +4,7 @@ import numpy as np
 from impose_grasp.lib.tf_listener import TfListener
 from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.networks.detector import Detector
-from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
+from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
 
 class ObjectBroadcaster(TransformBroadcaster):
     def __init__(self, target_obj: str):

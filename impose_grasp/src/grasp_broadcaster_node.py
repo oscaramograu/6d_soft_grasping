@@ -2,7 +2,7 @@
 import rospy
 import numpy as np
 from impose_grasp.nodes.grasp_choosing.grasp_chooser import GraspChooser
-from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
+from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
 
 def rotate_90x(pose:np.ndarray):
     rotation = np.array(
