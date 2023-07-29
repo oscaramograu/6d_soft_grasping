@@ -31,7 +31,7 @@ class GraspsBroadcasater(Grasps):
         rand_ind = random.randrange(0, self.num_grasps)
         gpose = self.rel_poses[rand_ind]
 
-        tf_br = TransformBroadcaster("/cpsduck_frame", "/grasp")
+        tf_br = TransformBroadcaster("/cpsduck_frame", "/target_grasp")
 
         while not rospy.is_shutdown():
             tf_br.broadcast_transform(gpose)

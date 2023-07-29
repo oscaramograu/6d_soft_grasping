@@ -19,4 +19,4 @@ if __name__ == "__main__":
     good_grasps = g_filt.get_good_grasps()
 
     g_br = GraspsBroadcasater(good_grasps)
-    g_br.broadcast_grasps()
+    g_br.broadcast_random_grasp()

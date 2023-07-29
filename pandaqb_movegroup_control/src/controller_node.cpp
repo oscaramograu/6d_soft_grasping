@@ -65,48 +65,41 @@ int main(int argc, char** argv){
 // ################################################################################################################
     //GROUP MOVE  TESTS
 // ################################################################################################################
-//     GroupMover arm_mover("arm");
-//     arm_mover.set_EEF_link("qbhand2m_end_effector_link");
     geometry_msgs::Pose target_pose;
-    tf::StampedTransform transform;
-    tf::TransformListener listener;
+    // tf::StampedTransform transform;
+    // tf::TransformListener listener;
 
-    try {
-        listener.waitForTransform("/panda_link0", "/target_grasp", 
-            ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/panda_link0", "/target_grasp", 
-            ros::Time(0), transform);
-    } catch (tf::TransformException ex) {
-        ROS_ERROR("%s",ex.what());
-    }
+    // try {
+    //     listener.waitForTransform("/panda_link0", "/target_grasp", 
+    //         ros::Time(0), ros::Duration(50.0));
+    //     listener.lookupTransform("/panda_link0", "/target_grasp", 
+    //         ros::Time(0), transform);
+    // } catch (tf::TransformException ex) {
+    //     ROS_ERROR("%s",ex.what());
+    // }
 
-
-    target_pose = tf_to_pose(transform);
-    ROS_INFO_STREAM("Target pose: " << target_pose);
-
-
-    // GroupMover arm("arm");
-    // bool theta = M_PI;
-    // arm.set_EEF_link("qbhand2m1_end_effector_link");
-
-    // target_pose = arm.getCurrentPose();
-    // target_pose.orientation.w = cos(theta/2);
-    // target_pose.orientation.x = sin(theta/2);
-    // target_pose.orientation.y = 0;
-    // target_pose.orientation.z = 0;
-
-    // arm.moveTo(target_pose);
+    // target_pose = tf_to_pose(transform);
+    // ROS_INFO_STREAM("Target pose: " << target_pose);
 
 
+    GroupMover arm("arm");
+    bool theta = M_PI;
+    arm.set_EEF_link("qbhand2m1_end_effector_link");
 
-    ArmController ac;
-    HandController hc;
+    target_pose = arm.getCurrentPose();
+    target_pose.position.z -= 0.2;
 
-    ac.set_grasp_pose(target_pose);
-    ac.approach_grasp();
+    arm.moveTo(target_pose);
 
-    hc.power();
-    ac.pick_up();
+
+    // ArmController ac;
+    // HandController hc;
+
+    // ac.set_grasp_pose(target_pose);
+    // ac.approach_grasp();
+
+    // hc.power();
+    // ac.pick_up();
 
 
 
