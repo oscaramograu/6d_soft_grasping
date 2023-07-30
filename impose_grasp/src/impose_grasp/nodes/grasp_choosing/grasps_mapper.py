@@ -4,11 +4,13 @@ from typing import List
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 
 class GraspMapper(Grasps):
-    def __init__(self, theta: float = 30, offsets: np.ndarray = np.array([0,0,0])):
+    def __init__(self, width_proportion_th:float = 0.3,
+                theta: float = 30, offsets: np.ndarray = np.array([0,0,0])):
         super().__init__()
 
         self.theta = theta*pi/180
         self.offsets = offsets
+        self.prop_th = width_proportion_th
 
     def map_grasps(self):
         for ind in range(len(self.rel_poses)):
@@ -30,3 +32,14 @@ class GraspMapper(Grasps):
         new_arr[:3,3] += conv_offsets
         
         return new_arr        
+
+    def _with_to_power_g(self, grasp) -> bool:
+        max_width = max(self.widths)
+        min_widht = min(self.widths)
+
+        width_prop = (grasp[0] - min_widht)/(max_width - min_widht)
+
+        if width_prop > self.prop_th:
+            return True
+        else:
+            return False

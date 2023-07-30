@@ -37,11 +37,11 @@ class GraspsBroadcasater(Grasps):
 
     def broadcast_target_grasp(self):
         gr_chooser = GraspChooser("cpsduck")
-        grasp_pose = gr_chooser.compute_best_grasp_pose()
 
         tf_br = TransformBroadcaster("/cpsduck_frame", "/grasp")
 
         while not rospy.is_shutdown():
+            grasp_pose = gr_chooser.compute_best_grasp_pose()
             tf_br.broadcast_transform(grasp_pose)     
     
     def set_up_br(self, grasps: Grasps):
