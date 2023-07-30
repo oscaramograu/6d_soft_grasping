@@ -1,4 +1,3 @@
-import numpy as np
 import rospy
 
 import random
@@ -16,7 +15,7 @@ class GraspsBroadcasater(Grasps):
             self.set_up_br(grasps)
         self.broadcasters: List[TransformBroadcaster] 
 
-        self._rate = rospy.Rate(0.5)  # Hz
+        self._rate = rospy.Rate(10)  # Hz
 
     def broadcast_grasps(self):
         while not rospy.is_shutdown():
