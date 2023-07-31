@@ -1,5 +1,6 @@
 import rospy
 import numpy as np
+from datetime import datetime
 
 from impose_grasp.lib.tf_listener import TfListener
 from impose_grasp.lib.frame_builder import FrameBuilder
@@ -9,11 +10,9 @@ from impose_grasp.nodes.object_detection.transform_broadcaster import TransformB
 class ObjectBroadcaster(TransformBroadcaster):
     def __init__(self, target_obj: str):
         obj_frame = target_obj + "_frame"
-        node_name = target_obj + "_tf_broadcaster"
 
         super().__init__("panda_link0", obj_frame)
 
-        rospy.init_node(node_name)
         self.rate = rospy.Rate(10)  # publishing rate in Hz
 
         self.num = 0
@@ -45,11 +44,9 @@ class ObjectBroadcaster(TransformBroadcaster):
             cam_world = self.get_cam_world_affine()
             if obj_cam is not None:
                 self.obj_world = cam_world@obj_cam
-                
-        if obj_cam is not None:
-            self.broadcast_transform(self.obj_world)
 
-        self.rate.sleep()
+        if self.obj_world is not None:
+            self.broadcast_transform(self.obj_world)
 
     def test_broadcaster(self):
         affine_matrix = np.array([[1.0, 0.0, 0.0, 0.0],

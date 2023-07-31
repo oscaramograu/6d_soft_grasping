@@ -30,6 +30,14 @@ void rotate_aroundX(tf::StampedTransform &tf, float theta){
     tf*=tf_X;
 }
 
+void offset_Z(tf::StampedTransform &tf, float offset){
+    tf::Vector3 tf_pose(0, 0, offset);
+    
+    tf::StampedTransform tf_Z;
+    tf_Z.setOrigin(tf_pose);
+    tf*=tf_Z;
+}
+
 
 geometry_msgs::Pose tf_to_pose(tf::StampedTransform transform){
     geometry_msgs::Pose pose;
@@ -72,33 +80,33 @@ int main(int argc, char** argv){
     tf::TransformListener listener;
 
     try {
-        listener.waitForTransform("/panda_link0", "/target_grasp", 
+        listener.waitForTransform("/panda_link0", "/target_grasp2", 
             ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/panda_link0", "/target_grasp", 
+        listener.lookupTransform("/panda_link0", "/target_grasp2", 
             ros::Time(0), transform);
     } catch (tf::TransformException ex) {
         ROS_ERROR("%s",ex.what());
     }
 
-
     target_pose = tf_to_pose(transform);
     ROS_INFO_STREAM("Target pose: " << target_pose);
 
+// ================= TESTING ===========================
 
-    // GroupMover arm("arm");
+    // GroupMover arm("panda_arm");
+    // arm.set_EEF_link("panda_link8");
+    // arm.moveTo(target_pose);
+
     // bool theta = M_PI;
-    // arm.set_EEF_link("qbhand2m1_end_effector_link");
-
     // target_pose = arm.getCurrentPose();
     // target_pose.orientation.w = cos(theta/2);
     // target_pose.orientation.x = sin(theta/2);
     // target_pose.orientation.y = 0;
     // target_pose.orientation.z = 0;
 
-    // arm.moveTo(target_pose);
 
 
-
+// ================= REAL CODE ===========================
     ArmController ac;
     HandController hc;
 
@@ -108,118 +116,6 @@ int main(int argc, char** argv){
     hc.power();
     ac.pick_up();
 
-
-
-
-
-// // grasp detection pose
-// // 0.42754; 0.18872; 0.25229
-// // -0.32689; 0.8196; 0.32044; -0.34455
-//     pose.position.x -= 0.1;
-//     pose.position.z += 0.1;
-//     arm_mover.moveTo(pose);
-
-//     pose.position.x += 0.1;
-//     pose.position.z -= 0.09;
-//     arm_mover.moveTo(pose);
-
-    // ROS_INFO_STREAM( "eef link: " << arm_mover.getCurrentPose());
-
-
-    
-
-
-
-
-
-    // static tf::TransformBroadcaster br;
-    // while (true)
-    // {
-    //     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "panda_link0", "eef"));
-    // }
-    
-
-
-    // geometry_msgs::Pose pose = arm_mover.getCurrentPose();
-    // pose.position.z += 0.1;
-
-    // arm_mover.moveTo(pose);
-    // arm_mover.moveHome();
-
-    // GroupMover hand_mover("qb_hand");
-    // hand_mover.printCurrentJointPosition();
-    // std::vector<double> closed_hand = {0.0};
-    // hand_mover.moveTo(closed_hand);
-
-    // RobotMover robot_mover;
-    // geometry_msgs::Pose target_pose = robot_mover.getCurrentPose();
-    // target_pose.position.x += 0.1;
-    // target_pose.position.y += 0.1;
-    // target_pose.position.z -= 0.1;   
-    // target_pose.orientation.x = 5.5511e-17;
-    // target_pose.orientation.y = -0.2474;
-    // target_pose.orientation.z = -5.5511e-17;
-    // target_pose.orientation.w = 0.96891;
-    
-    // robot_mover.move(target_pose);
-
-// ################################################################################################################
-    //CONTROLLER  TESTS
-// ################################################################################################################
-    // Controller controller;
-    // controller.routine();
-    
-// ################################################################################################################
-    //GRASPER  TESTS
-// ################################################################################################################
-    // std::vector<float> graspPosition;
-    // float w, theta;
-
-    // ros::param::get("move_group_params/grasp_position", graspPosition);
-    // ros::param::get("move_group_params/theta", theta);
-    // ros::param::get("move_group_params/w", w);    
-    
-    // Manipulator targetApproacher;
-
-    // targetApproacher.setGraspParams(theta,w,graspPosition);
-
-    // targetApproacher.moveToHomePose();
-    // targetApproacher.approach();
-    // targetApproacher.moveToHomePose();
-
-// ################################################################################################################
-    //MOVEGROUP TESTS:
-// ################################################################################################################
-    // MoveGroup mg;
-    // mg.printCurrentJointPosition();
-    // std::vector<geometry_msgs::Pose> waypoints;
-    // geometry_msgs::Pose target_pose1, target_pose2, target_pose3, target_pose4;
-    // target_pose1 = targetApproacher.getCurrentPose();
-    // target_pose1.position.z -= .1;
-
-    // target_pose2 = target_pose1;
-    // target_pose2.position.y -= .1;
-
-    // target_pose3 = target_pose2;
-    // target_pose3.position.y += .1;
-    // target_pose3.position.z += .1;
-
-    // waypoints.push_back(targetApproacher.getCurrentPose());
-    // waypoints.push_back(target_pose1);
-    // waypoints.push_back(target_pose2);
-    // waypoints.push_back(target_pose3);
-
-    // targetApproacher.cartesianSpaceMotion(waypoints);
-
-    // target_pose4 = target_pose3;
-    // target_pose4.position.y -= .3;
-    // targetApproacher.moveArmToPose(target_pose4);
-
-// ################################################################################################################
-    //HANDGROUP TESTS:
-// ################################################################################################################
-    // HandGroup hg;
-    // hg.grasp(0.3);
 
     ros::shutdown();
     return 0;

@@ -29,6 +29,13 @@ def rotate_90z(pose:np.ndarray):
         [0, 0, 0, 1]])
     return pose@rotation
 
+def apply_offsets(Rt:np.ndarray, offsets_hand_frame: np.ndarray):
+    pose = Rt.copy()
+    rotation = pose[:3,:3]
+    offsets_world_frame = rotation@offsets_hand_frame
+    pose[:3, 3]+=offsets_world_frame
+    return pose
+
 if __name__ == "__main__":
     rospy.init_node('tf_pose_listener_node')
 
@@ -40,9 +47,17 @@ if __name__ == "__main__":
     grasp_pose = rotate_90x(grasp_pose)
     grasp_pose = rotate_90x(grasp_pose)
     grasp_pose = rotate_90z(grasp_pose)
-    grasp_pose[2,3]-=0.02
 
-    tf_br = TransformBroadcaster(obj_frame, "target_grasp")
-    print(grasp_pose)
+    offsets = np.array([0.004, 0.0002, 0])
+    off_grasp_pose = apply_offsets(grasp_pose, offsets)
+
+    tf_br1 = TransformBroadcaster(obj_frame, "target_grasp")
+    tf_br2 = TransformBroadcaster(obj_frame, "target_grasp2")
+    
+
+    print(grasp_pose, )
+    print(off_grasp_pose)
+
     while not rospy.is_shutdown():
-        tf_br.broadcast_transform(grasp_pose)
+        tf_br1.broadcast_transform(grasp_pose)
+        tf_br2.broadcast_transform(off_grasp_pose)
