@@ -12,7 +12,8 @@ class Grasps:
     def __init__(self) -> None:
         self.rel_poses: List[np.ndarray] = []
         self.abs_poses: List[np.ndarray] = []
-        self.widths: List[float] = []
+        self.widths: List [float] = []
+        self.power_gr: List [bool] = []
         
     def load_from_file(self, obj_name):
         MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models")
@@ -30,6 +31,9 @@ class Grasps:
 
     def set_widths(self, widths: List[float]):
         self.widths = widths
+
+    def set_power_gr(self, power_gr: List [bool]):
+        self.power_gr = power_gr
 
     def set_abs_poses(self, obj_pose:np.ndarray):
         self.abs_poses = [obj_pose@gpose for gpose in self.rel_poses]

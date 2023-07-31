@@ -17,6 +17,7 @@ class GraspFilterer(Grasps):
         else:
             self.set_rel_poses(grasps.rel_poses)
             self.set_widths(grasps.widths)
+            self.set_power_gr(grasps.power_gr)
 
     def filter(self):
         """
@@ -72,15 +73,18 @@ class GraspFilterer(Grasps):
     def get_good_grasps(self):
         poses = []
         widths = []
+        power_gr = []
 
         for i in self._good_grasps_ids:
             poses.append(self.rel_poses[i])
             widths.append(self.widths[i])
+            power_gr.append(self.power_gr)
 
         good_grasps = Grasps()
         good_grasps.set_rel_poses(poses)
         good_grasps.set_widths(widths)
-
+        good_grasps.set_power_gr(power_gr)
+        
         return good_grasps
 
     def get_bad_grasps(self):

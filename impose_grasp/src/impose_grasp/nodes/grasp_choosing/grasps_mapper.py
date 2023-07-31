@@ -15,14 +15,15 @@ class GraspMapper(Grasps):
     def map_grasps(self):
         for ind in range(len(self.rel_poses)):
             grasp = [self.rel_poses[ind], self.widths[ind]]
-            self.rel_poses[ind], self.widths[ind] = self._map_grasp(grasp)
+            self.rel_poses[ind], power_graps_flag = self._map_grasp(grasp)
+            self.power_gr.append(power_graps_flag)
 
     def _map_grasp(self, grasp)->List[np.ndarray]:
         gpose, w = grasp
         mapped_g = self._rotate_around_Z(gpose, self.theta)
         offseted_g = self._offset(mapped_g)
-
-        return offseted_g, w
+        power_grasp = self._with_to_power_g(w)
+        return offseted_g, power_grasp
 
     def _offset(self, arr: np.ndarray):
         new_arr = arr.copy()
@@ -33,11 +34,11 @@ class GraspMapper(Grasps):
         
         return new_arr        
 
-    def _with_to_power_g(self, grasp) -> bool:
+    def _with_to_power_g(self, width) -> bool:
         max_width = max(self.widths)
         min_widht = min(self.widths)
 
-        width_prop = (grasp[0] - min_widht)/(max_width - min_widht)
+        width_prop = (width - min_widht)/(max_width - min_widht)
 
         if width_prop > self.prop_th:
             return True

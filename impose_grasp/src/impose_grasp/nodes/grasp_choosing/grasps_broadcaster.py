@@ -1,52 +1,37 @@
 import rospy
-
-import random
 from typing import List
+from std_msgs.msg import Bool
 
 from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
-from impose_grasp.nodes.grasp_choosing.grasp_chooser import GraspChooser
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 
 
 class GraspsBroadcasater(Grasps):
-    def __init__(self, grasps: Grasps = None) -> None:
+    def __init__(self, grasps: Grasps) -> None:
         super().__init__()
-        if grasps is not None:
-            self.set_up_br(grasps)
+        self.set_up_br(grasps)
+
+        self.pow_gr_pub = rospy.Publisher('power_gr', Bool, queue_size=10)
         self.broadcasters: List[TransformBroadcaster] 
 
-        self._rate = rospy.Rate(10)  # Hz
-
     def broadcast_grasps(self):
-        while not rospy.is_shutdown():
-            for i in range(self.num_grasps):
-                pose = self.rel_poses[i]
-                broadcaster = self.broadcasters[i]
-                broadcaster.broadcast_transform(pose)
-            
-            self._rate.sleep()  
+        for i in range(self.num_grasps):
+            self.broadcast_grasp(i)
 
-    def broadcast_random_grasp(self):
-        rand_ind = random.randrange(0, self.num_grasps)
-        gpose = self.rel_poses[rand_ind]
+    def broadcast_grasp(self, ind):
+        gpose = self.rel_poses[ind]
+        br = self.broadcasters[ind]
+        br.broadcast_transform(gpose)  
 
-        tf_br = TransformBroadcaster("/cpsduck_frame", "/target_grasp")
-
-        while not rospy.is_shutdown():
-            tf_br.broadcast_transform(gpose)
-
-    def broadcast_target_grasp(self):
-        gr_chooser = GraspChooser("cpsduck")
-
-        tf_br = TransformBroadcaster("/cpsduck_frame", "/grasp")
-
-        while not rospy.is_shutdown():
-            grasp_pose = gr_chooser.compute_best_grasp_pose()
-            tf_br.broadcast_transform(grasp_pose)     
+        pow_gr_msg = Bool()
+        pow_gr_msg.data = self.power_gr[ind]
+        self.pow_gr_pub.publish(pow_gr_msg)
     
     def set_up_br(self, grasps: Grasps):
         self.set_rel_poses(grasps.rel_poses)
         self.set_widths(grasps.widths)
+        self.set_power_gr(grasps.power_gr)
+
         self.num_grasps = len(self.widths)
 
         self.broadcasters = []

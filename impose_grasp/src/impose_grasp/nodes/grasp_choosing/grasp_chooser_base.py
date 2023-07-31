@@ -1,24 +1,24 @@
 import os
-import json
 import open3d as o3d
-import numpy as np
 from ros_numpy.geometry import pose_to_numpy
 
-from geometry_msgs.msg import Pose
-from impose_grasp.lib.tf_pose_listener import TfPoseListener
+from impose_grasp.lib.tf_listener import TfListener
 from impose_grasp.models.cameras.base_camera import CamFrame
 from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
+from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 
 MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP,
             "data", "models")
 
-class GraspChooserBase(TfPoseListener):
-    def __init__(self, target_obj_name):
-        super().__init__(target_obj_name)
+class GraspChooserBase(Grasps):
+    def __init__(self, grasps: Grasps):
+        super().__init__()
+        self.set_rel_poses(grasps.rel_poses)
+        self.set_widths(grasps.widths)
+        self.set_power_gr(grasps.power_gr)
 
-        self._grasps_path = os.path.join(MODELS_PATH,
-            target_obj_name, "gripping_poses.json")
+        
         self._EEF_mesh_path = os.path.join(MODELS_PATH,
             "gripper_collision_d415.stl")
 
@@ -29,17 +29,17 @@ class GraspChooserBase(TfPoseListener):
         """
         Builds all the attributes that are necessary to choose the best grasp.
         """
-        self._get_pose_from_tf()
-        self._build_object_and_griper_poses(
-            self._cam_pose, self._obj_pose)
-
-        self._build_gripping_poses_and_offsets()
-
         fb = FrameBuilder()
         frame = fb.get_actual_frame()
-        self._build_obstruction_pcl(frame)
 
+        self._build_camera_pose()
+        self._build_obstruction_pcl(frame)
         self._build_scene()
+
+    def _build_camera_pose(self):
+        cam_listener = TfListener("/camera_frame")
+        cam_listener.listen_tf()
+        self.cam_pose = cam_listener.get_np_frame()
 
     def _build_obstruction_pcl(self, frame: CamFrame):
         """
@@ -64,29 +64,6 @@ class GraspChooserBase(TfPoseListener):
             pcd = pcd.voxel_down_sample(voxel_size)
 
         self.obstruction_pcl = pcd.cpu().clone()
-        
-    def _build_gripping_poses_and_offsets(self):
-        """
-        builds the lists of possible gripping poses of the target object
-        """
-        self.grasp_offsets = []
-        self.gripping_poses = []
-
-        if os.path.isfile(self._grasps_path):
-            with open(self._grasps_path) as F:
-                json_load = json.load(F)
-            for x in json_load:     
-                self.gripping_poses.append(eval('np.array(' + x["pose"] + ')'))
-                self.grasp_offsets.append(x["width"])
-
-    def _build_object_and_griper_poses(self, 
-                    camera_pose: Pose, target_pose: Pose):
-        """
-        Builds the positions of the gripper pose (camera tf frame)
-        and the object pose (object tf frame)
-        """
-        self.gripper_pose = pose_to_numpy(camera_pose)
-        self.obj_pose = pose_to_numpy(target_pose)
 
     def _build_scene(self):
         """
