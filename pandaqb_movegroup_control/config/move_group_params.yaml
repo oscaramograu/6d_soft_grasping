@@ -8,7 +8,8 @@ move_group:
 
     # Home joint positions for the panda robot
     # home: [0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785]
-    home: [-0.000076, -0.715166, 0.000062, -2.275858, 1.569985, 2.316859, 0.000053]
+    # Joint values: [0.000036, -0.639937, 0.000053, -2.104961, -0.000080, 1.500014, -0.707087]
+    home: [0.000000, -0.639900, 0.000000, -2.105000, 0.000000, 1.500000, -0.707000]
 
   panda_arm:
     # Velocity and acceleration scaling for manipulator planning in MoveIt

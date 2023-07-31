@@ -28,7 +28,7 @@ class GraspFilterer(Grasps):
         self.set_abs_poses(obj_pose)
 
         obj_to_base = -obj_pose[:3,3]/np.linalg.norm(-obj_pose[:3,3])
-        good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base, tr_ang=110, axis=1)
+        good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base, tr_ang=90, axis=1)
         self._invert_opposite_Ys(good_gps_y_inds)
 
         z_vec =  np.array([0,0,-1])
@@ -49,9 +49,9 @@ class GraspFilterer(Grasps):
         the grasp gets rotated 180 degrees.
         """
         inds = range(len(self.abs_poses))
-        inverted_g_y_inds = [x for x in inds if x not in good_g_inds]
+        inverted_gr_y_inds = [x for x in inds if x not in good_g_inds]
 
-        for ind in inverted_g_y_inds:
+        for ind in inverted_gr_y_inds:
             self.rel_poses[ind] = self._rotate_around_Z(self.rel_poses[ind], pi)
        
     def _select_grasp_inds_by_ang(self, vect:np.ndarray, tr_ang: float, axis: int):
@@ -78,7 +78,7 @@ class GraspFilterer(Grasps):
         for i in self._good_grasps_ids:
             poses.append(self.rel_poses[i])
             widths.append(self.widths[i])
-            power_gr.append(self.power_gr)
+            power_gr.append(self.power_gr[i])
 
         good_grasps = Grasps()
         good_grasps.set_rel_poses(poses)

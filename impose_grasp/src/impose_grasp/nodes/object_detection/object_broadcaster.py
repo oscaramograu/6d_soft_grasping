@@ -26,7 +26,7 @@ class ObjectBroadcaster(TransformBroadcaster):
 
         self.filter = PoseFilter(10)
 
-    def broadcast_obj_tf(self, stop: bool):
+    def broadcast_tf(self, stop: bool):
         """
         - Grabs a frame using cam attribute.
         - Sets that frame in the det attribute.
@@ -37,20 +37,19 @@ class ObjectBroadcaster(TransformBroadcaster):
         - The tf frame is broadcasted between the camera_frame,
         and a new 'target'_frame.
         """
+        f_obj_cam = None
         if not stop:
             frame = self.fb.get_actual_frame()
             
             f_obj_cam = self.compute_filtered_affine(frame)
             cam_world = self.get_cam_world_affine()
 
-            if f_obj_cam is not None:
+            if f_obj_cam is not None and cam_world is not None:
                 self.obj_world = cam_world@f_obj_cam
                 
-        if f_obj_cam is not None:
-            self.broadcast_transform(self.obj_world)
-
         if self.obj_world is not None:
             self.broadcast_transform(self.obj_world)
+            
 
     def test_broadcaster(self):
         affine_matrix = np.array([[1.0, 0.0, 0.0, 0.0],
@@ -73,6 +72,8 @@ class ObjectBroadcaster(TransformBroadcaster):
         self.det.compute_affine()
 
         raw_obj_cam = self.det.get_affine()
-        self.filter.filter_pose(raw_obj_cam)
-
-        return self.filter.get_filtered_pose()
+        if raw_obj_cam is not None:
+            self.filter.filter_pose(raw_obj_cam)
+            return self.filter.get_filtered_pose()
+        else:
+            return None

@@ -5,7 +5,7 @@ public:
     ArmController();
     ~ArmController();
 
-    void set_grasp_pose(geometry_msgs::Pose grasp);
+    void set_grasp(geometry_msgs::Pose pose);
     void approach_grasp();
     void pick_up();
     geometry_msgs::Pose get_current_pose();

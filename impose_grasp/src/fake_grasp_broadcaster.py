@@ -10,20 +10,21 @@ from impose_grasp.nodes.grasp_choosing.grasps_broadcaster import GraspsBroadcasa
 obj = "cpsduck"
 
 def map_grasps():
-    g_map = GraspMapper()
+    g_map = GraspMapper(width_proportion_th=0.9)
     g_map.load_from_file(obj)
     g_map.map_grasps()
+
     return g_map
 
 def filter_grasps(grasps):
     g_filt = GraspFilterer(grasps, obj)
     g_filt.filter()
-    good_grasps = g_filt.get_good_grasps()
 
+    good_grasps = g_filt.get_good_grasps()
     return good_grasps
 
 def select_target_ind(good_grasps):
-    gr_chooser = GraspChooser("cpsduck")
+    gr_chooser = GraspChooser(good_grasps)
     return gr_chooser.compute_best_grasp_ind()
 
 if __name__ == "__main__":
@@ -38,5 +39,5 @@ if __name__ == "__main__":
 
     g_br = GraspsBroadcasater(good_grasps)
     while not rospy.is_shutdown():
-        g_br.broadcast_grasp(ind)
+        g_br.broadcast_target(ind)
         rate.sleep() 

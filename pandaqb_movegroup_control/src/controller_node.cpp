@@ -5,6 +5,7 @@
 #include <tf/transform_broadcaster.h>
 #include <pandaqb_movegroup_control/Control/HandController.h>
 #include <pandaqb_movegroup_control/Control/ArmController.h>
+#include <pandaqb_movegroup_control/Target/GraspListener.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -68,47 +69,14 @@ int main(int argc, char** argv){
     // HandController hc;
     // hc.pinch();
 
-
-
 // ################################################################################################################
     //GROUP MOVE  TESTS
 // ################################################################################################################
-    geometry_msgs::Pose target_pose;
-<<<<<<< HEAD
-    tf::StampedTransform transform;
-    tf::TransformListener listener;
+    ros::NodeHandle nh;
+    GraspListener gr(&nh);
+    geometry_msgs::Pose target_pose = gr.get_grasp_pose();
+    bool pow_gr_flag = gr.get_power_gr_flag();
 
-    try {
-        listener.waitForTransform("/panda_link0", "/target_grasp2", 
-            ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/panda_link0", "/target_grasp2", 
-            ros::Time(0), transform);
-    } catch (tf::TransformException ex) {
-        ROS_ERROR("%s",ex.what());
-    }
-
-    target_pose = tf_to_pose(transform);
-    ROS_INFO_STREAM("Target pose: " << target_pose);
-
-// ================= TESTING ===========================
-
-    // GroupMover arm("panda_arm");
-    // arm.set_EEF_link("panda_link8");
-    // arm.moveTo(target_pose);
-
-    // bool theta = M_PI;
-    // target_pose = arm.getCurrentPose();
-    // target_pose.orientation.w = cos(theta/2);
-    // target_pose.orientation.x = sin(theta/2);
-    // target_pose.orientation.y = 0;
-    // target_pose.orientation.z = 0;
-
-
-
-// ================= REAL CODE ===========================
-    ArmController ac;
-    HandController hc;
-=======
     // tf::StampedTransform transform;
     // tf::TransformListener listener;
 
@@ -121,29 +89,43 @@ int main(int argc, char** argv){
     //     ROS_ERROR("%s",ex.what());
     // }
 
-    // target_pose = tf_to_pose(transform);
     // ROS_INFO_STREAM("Target pose: " << target_pose);
+    // target_pose = tf_to_pose(transform);
 
+// ================= TESTING ===========================
+    // tf::Quaternion rotation;
+    // rotation.setW(0);
+    // rotation.setX(0);
+    // rotation.setY(0);
+    // rotation.setZ(1);
 
-    GroupMover arm("arm");
-    bool theta = M_PI;
-    arm.set_EEF_link("qbhand2m1_end_effector_link");
+    // transform.setRotation(rotation);
+    // rotate_aroundX(transform, M_PI);
+    // target_pose = tf_to_pose(transform);
 
-    target_pose = arm.getCurrentPose();
-    target_pose.position.z -= 0.2;
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("panda_link8");
+    // arm.printCurrentJointPosition();
+    // target_pose.position.z += 0.05;
 
-    arm.moveTo(target_pose);
+    // ROS_INFO_STREAM("The target pose is: " << target_pose);
+    // arm.moveTo(target_pose);
 
+// ================= REAL CODE ===========================
+    ArmController ac;
+    HandController hc;
 
-    // ArmController ac;
-    // HandController hc;
->>>>>>> 9d92cebe22312458c1c90bebf2b2e6f30b1f7828
+    ac.set_grasp(target_pose);
+    ac.approach_grasp();
 
-    // ac.set_grasp_pose(target_pose);
-    // ac.approach_grasp();
-
-    // hc.power();
-    // ac.pick_up();
+    if(pow_gr_flag){
+        hc.power();
+    }
+    else{
+        hc.pinch();
+    }
+    
+    ac.pick_up();
 
 
     ros::shutdown();

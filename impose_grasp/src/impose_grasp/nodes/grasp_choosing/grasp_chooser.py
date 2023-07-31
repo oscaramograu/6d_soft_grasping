@@ -18,7 +18,7 @@ class GraspChooser(GraspChooserBase):
 
         super().__init__(grasps)
 
-    def compute_best_grasp_pose(self):
+    def compute_best_grasp_ind(self):
         """
         It selects the best grasping pose for the target 
         object between all the possible candidates:
@@ -61,4 +61,4 @@ class GraspChooser(GraspChooserBase):
                     best_i = i
                     best_score = dist_score
 
-        return self.gripping_poses[best_i]
+        return best_i

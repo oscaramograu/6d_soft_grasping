@@ -13,19 +13,25 @@ class GraspsBroadcasater(Grasps):
 
         self.pow_gr_pub = rospy.Publisher('power_gr', Bool, queue_size=10)
         self.broadcasters: List[TransformBroadcaster] 
+        self.target_gr_br = TransformBroadcaster("/cpsduck_frame", "/target_grasp")
 
     def broadcast_grasps(self):
         for i in range(self.num_grasps):
             self.broadcast_grasp(i)
+
+    def broadcast_target(self, target_ind):
+        gpose = self.rel_poses[target_ind]
+        self.target_gr_br.broadcast_transform(gpose) 
+
+        self._publish_flag(target_ind)
 
     def broadcast_grasp(self, ind):
         gpose = self.rel_poses[ind]
         br = self.broadcasters[ind]
         br.broadcast_transform(gpose)  
 
-        pow_gr_msg = Bool()
-        pow_gr_msg.data = self.power_gr[ind]
-        self.pow_gr_pub.publish(pow_gr_msg)
+        self._publish_flag(ind)
+
     
     def set_up_br(self, grasps: Grasps):
         self.set_rel_poses(grasps.rel_poses)
@@ -38,3 +44,9 @@ class GraspsBroadcasater(Grasps):
         for i in range(self.num_grasps):
             grasp_name = "/grasp_n_" + str(i)
             self.broadcasters.append(TransformBroadcaster("/cpsduck_frame", grasp_name))
+
+    def _publish_flag(self, ind):
+        pow_gr_msg = Bool()
+        pow_gr_msg.data = self.power_gr[ind]
+        self.pow_gr_pub.publish(pow_gr_msg)
+        print("The power grasp flag is: ", pow_gr_msg)
