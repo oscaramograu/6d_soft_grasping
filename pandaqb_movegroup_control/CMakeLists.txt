@@ -10,7 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_core 
   moveit_ros_planning 
   moveit_ros_planning_interface
-  # moveit_ros_perception
+  moveit_ros_perception
   moveit_visual_tools
   # cv_bridge
   # urdf  
@@ -39,7 +39,7 @@ catkin_package(
     moveit_core 
     moveit_ros_planning 
     moveit_ros_planning_interface
-    # moveit_ros_perception
+    moveit_ros_perception
     moveit_visual_tools
     # cv_bridge
  
@@ -49,10 +49,11 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  # ${Boost_INCLUDE_DIR}
-  # ${moveit_ros_planning_interface_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
+  ${moveit_ros_planning_interface_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
+
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 # ======================================== Controller Node ========================================
@@ -76,8 +77,8 @@ add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(MoveGroup_libs
   ${catkin_LIBRARIES}
-  # ${Boost_LIBRARIES}
-  # ${moveit_ros_planning_interface_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${moveit_ros_planning_interface_LIBRARIES}
   ${PCL_LIBRARIES}
 )
 target_link_libraries(controller_node

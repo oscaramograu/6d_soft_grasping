@@ -2,11 +2,11 @@
 
 import rospy
 import numpy as np
-from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
+from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
 
 def build_affine_mat()->np.ndarray:
     array = np.array([
-        [1, 0, 0, 0.75],
+        [1, 0, 0, .75],
         [0, 1, 0, 0],
         [0, 0, 1, 0],
         [0, 0, 0, 1]

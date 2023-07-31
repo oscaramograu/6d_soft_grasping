@@ -5,7 +5,8 @@ from datetime import datetime
 from impose_grasp.lib.tf_listener import TfListener
 from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.networks.detector import Detector
-from impose_grasp.nodes.object_detection.transform_broadcaster import TransformBroadcaster
+from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
+from impose_grasp.nodes.object_detection.pose_filter import PoseFilter
 
 class ObjectBroadcaster(TransformBroadcaster):
     def __init__(self, target_obj: str):
@@ -23,6 +24,8 @@ class ObjectBroadcaster(TransformBroadcaster):
 
         self.obj_world: np.ndarray = None
 
+        self.filter = PoseFilter(10)
+
     def broadcast_obj_tf(self, stop: bool):
         """
         - Grabs a frame using cam attribute.
@@ -36,14 +39,15 @@ class ObjectBroadcaster(TransformBroadcaster):
         """
         if not stop:
             frame = self.fb.get_actual_frame()
-            self.det.set_frame(frame)
-            self.det.compute_bbox()
-            self.det.compute_affine()
-
-            obj_cam = self.det.get_affine()
+            
+            f_obj_cam = self.compute_filtered_affine(frame)
             cam_world = self.get_cam_world_affine()
-            if obj_cam is not None:
-                self.obj_world = cam_world@obj_cam
+
+            if f_obj_cam is not None:
+                self.obj_world = cam_world@f_obj_cam
+                
+        if f_obj_cam is not None:
+            self.broadcast_transform(self.obj_world)
 
         if self.obj_world is not None:
             self.broadcast_transform(self.obj_world)
@@ -62,3 +66,13 @@ class ObjectBroadcaster(TransformBroadcaster):
         tf_listener.listen_tf()
         CamWorld = tf_listener.get_np_frame()
         return CamWorld
+
+    def compute_filtered_affine(self, frame):
+        self.det.set_frame(frame)
+        self.det.compute_bbox()
+        self.det.compute_affine()
+
+        raw_obj_cam = self.det.get_affine()
+        self.filter.filter_pose(raw_obj_cam)
+
+        return self.filter.get_filtered_pose()
