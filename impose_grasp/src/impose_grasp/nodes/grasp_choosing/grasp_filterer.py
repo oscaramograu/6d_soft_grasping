@@ -32,7 +32,7 @@ class GraspFilterer(Grasps):
         self._invert_opposite_Ys(good_gps_y_inds)
 
         z_vec =  np.array([0,0,-1])
-        self._good_grasps_ids  = self._select_grasp_inds_by_ang(z_vec, tr_ang=70, axis=2)
+        self._good_grasps_ids  = self._select_grasp_inds_by_ang(z_vec, tr_ang=60, axis=2)
 
         inds = range(len(self.abs_poses))
         self._bad_grasps = [x for x in inds if x not in self._good_grasps_ids]
@@ -52,7 +52,9 @@ class GraspFilterer(Grasps):
         inverted_gr_y_inds = [x for x in inds if x not in good_g_inds]
 
         for ind in inverted_gr_y_inds:
+            original_pose = self.rel_poses[ind][:3, 3].copy()
             self.rel_poses[ind] = self._rotate_around_Z(self.rel_poses[ind], pi)
+            self.rel_poses[ind][:3, 3] = original_pose
        
     def _select_grasp_inds_by_ang(self, vect:np.ndarray, tr_ang: float, axis: int):
         """

@@ -12,7 +12,7 @@ HandController::~HandController(){
 void HandController::pinch(){
     ROS_INFO_STREAM("STARTING PINCH PROCESS");
 
-    std::vector<double> motor_pinch{0.5, 0.8};  // Values in degrees
+    std::vector<double> motor_pinch{0.8, 0.8};  // from 0 to 1
     send_trajectory(motor_pinch);
 
     open_flag = false;

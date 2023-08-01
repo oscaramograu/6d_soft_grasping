@@ -11,6 +11,7 @@ class GraspMapper(Grasps):
         self.theta = theta*pi/180
         self.offsets = offsets
         self.prop_th = width_proportion_th
+        self.mapped_poses = List[np.ndarray]
 
     def map_grasps(self):
         for ind in range(len(self.rel_poses)):

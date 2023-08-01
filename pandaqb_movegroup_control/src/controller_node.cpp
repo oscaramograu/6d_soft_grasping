@@ -103,9 +103,9 @@ int main(int argc, char** argv){
     // rotate_aroundX(transform, M_PI);
     // target_pose = tf_to_pose(transform);
 
-    // GroupMover arm("arm");
-    // arm.set_EEF_link("panda_link8");
-    // arm.printCurrentJointPosition();
+    GroupMover arm("arm");
+    arm.set_EEF_link("panda_link8");
+    arm.printCurrentJointPosition();
     // target_pose.position.z += 0.05;
 
     // ROS_INFO_STREAM("The target pose is: " << target_pose);

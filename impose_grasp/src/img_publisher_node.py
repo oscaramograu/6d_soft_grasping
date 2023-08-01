@@ -48,19 +48,17 @@ def set_up_camera_info():
 class Flag:
     def __init__(self) -> None:
         self.flag = True
-        rospy.Subscriber("stop_flag", String, self.callback)
+        rospy.Subscriber("stop_camera", String, self.callback)
 
     def callback(self,data):
         print(self.flag)
 
-        self.flag = False
+        self.flag *= False
         print(self.flag)
 
 def main():
     rospy.init_node('img_publisher_node', anonymous=True)
     camera = D415(name="realsense_D415")
-    camera.start()
-
     bridge = CvBridge()
     image_pub_rgb = rospy.Publisher(
         '/camera/rgb/image_raw', Image, queue_size=10)
@@ -78,9 +76,13 @@ def main():
     rate = rospy.Rate(2)  # Publish at 10Hz
     flag = Flag()
     print(flag.flag)
-
+    n = 0
     while not rospy.is_shutdown():
         if flag.flag:
+            if n == 0:
+                camera.start()
+                n+=1
+
             frame = camera.grab_frame()
 
             # time = rospy.Time.now()
@@ -114,10 +116,12 @@ def main():
             d_np_pub.publish(depth_multiarr)
             rgb_np_pub.publish(rgb_multiarr)
 
-        
+
         else:
-            camera.close()
-            camera.start()
+            if n == 1:
+                camera.close()
+                n = 0
+                
             flag.flag = True
 
         rate.sleep()

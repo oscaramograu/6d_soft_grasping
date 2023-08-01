@@ -8,13 +8,15 @@ class Flag:
     def __init__(self) -> None:
         self.flag = False
         rospy.Subscriber("stop_flag", String, self.callback)
+        self.pub = rospy.Publisher("stop_camera", String,queue_size=10)
 
-    def callback(self,data):
-        print("sdhjknld")
-        print(self.flag)
+    def publish_msg(self):
+        msg = String()
+        self.pub.publish(msg)
 
+    def callback(self, data):
+        print("Stop flag has been called")
         self.flag = False
-        print(self.flag)
 
 
 if __name__ == "__main__":
@@ -24,6 +26,7 @@ if __name__ == "__main__":
     object_br = ObjectBroadcaster("cpsduck")
 
     n=0
+    m=0
     old = datetime.now()
     cycles = 10
     r = rospy.Rate(5) # 10Hz
@@ -41,7 +44,13 @@ if __name__ == "__main__":
 
         else:
             r.sleep()
+            if m == 1:
+                m+=1
+                flag.publish_msg()
+
             if not flag.flag:
                 n = 0
+                m = 0
                 print("Start detecting again")
+                flag.publish_msg()
 

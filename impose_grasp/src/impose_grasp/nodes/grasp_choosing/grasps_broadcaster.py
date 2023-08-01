@@ -49,4 +49,3 @@ class GraspsBroadcasater(Grasps):
         pow_gr_msg = Bool()
         pow_gr_msg.data = self.power_gr[ind]
         self.pow_gr_pub.publish(pow_gr_msg)
-        print("The power grasp flag is: ", pow_gr_msg)

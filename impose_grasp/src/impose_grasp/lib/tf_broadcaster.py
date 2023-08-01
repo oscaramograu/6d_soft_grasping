@@ -1,5 +1,7 @@
 import rospy
 import tf
+import math
+
 from tf.transformations import quaternion_from_matrix, translation_from_matrix
 from geometry_msgs.msg import TransformStamped, Vector3, Quaternion
 import numpy as np
@@ -34,14 +36,19 @@ class TransformBroadcaster:
         return rotation, translation
     
     def _rotation_to_tf(self, rotation):
-        rotation_msg = Quaternion()
 
-        rotation_msg.x = rotation[0]
-        rotation_msg.y = rotation[1]
-        rotation_msg.z = rotation[2]
-        rotation_msg.w = rotation[3]
+        magnitude = math.sqrt(
+            rotation[0]**2 + rotation[1]**2 +
+            rotation[2]**2 + rotation[3]**2
+        )
 
-        return rotation_msg
+        normalized_quaternion = Quaternion()
+        normalized_quaternion.x = rotation[0] / magnitude
+        normalized_quaternion.y = rotation[1] / magnitude
+        normalized_quaternion.z = rotation[2] / magnitude
+        normalized_quaternion.w = rotation[3] / magnitude
+        
+        return normalized_quaternion
     
     def _translation_to_tf(self, translation):
         translation_msg = Vector3()

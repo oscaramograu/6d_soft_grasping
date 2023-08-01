@@ -356,7 +356,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-        Loop Animation: false
+        Loop Animation: true
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
         Show Robot Collision: false
@@ -686,7 +686,8 @@ Visualization Manager:
       Marker Topic: /rviz_visual_tools
       Name: MarkerArray
       Namespaces:
-        {}
+        Text: true
+        target_pose: true
       Queue Size: 100
       Value: true
     - Class: rviz/Image
@@ -711,6 +712,8 @@ Visualization Manager:
         camera_frame:
           Value: false
         camera_support_link:
+          Value: false
+        cpsduck_frame:
           Value: false
         panda_EE:
           Value: true
@@ -834,6 +837,8 @@ Visualization Manager:
           Value: false
         root_link:
           Value: false
+        target_grasp:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -842,6 +847,9 @@ Visualization Manager:
       Show Names: true
       Tree:
         panda_link0:
+          cpsduck_frame:
+            target_grasp:
+              {}
           panda_link0_sc:
             {}
           panda_link1:
@@ -955,7 +963,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.258751392364502
+      Distance: 1.6192071437835693
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -963,17 +971,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.6208159923553467
+        Y: 0.0804002434015274
+        Z: 0.25895169377326965
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.26539814472198486
+      Pitch: 0.5603982210159302
       Target Frame: <Fixed Frame>
-      Yaw: 1.6554114818572998
+      Yaw: 2.0254158973693848
     Saved: ~
 Window Geometry:
   Displays:
