@@ -23,12 +23,17 @@ void ArmController::approach_grasp(){
 
         arm_mover.moveTo(left_pose);
     }
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    target_pose.position.z -= 0.2;
 
-    ROS_INFO_STREAM("Approaching to left preparation pose");
-    arm_mover.moveTo(pre_grasp_pose);
+    arm_mover.apend_waypt(target_pose);
 
-    ROS_INFO_STREAM("Approaching to grasp pose");
-    arm_mover.moveTo(grasp_pose);
+    // ROS_INFO_STREAM("Approaching to left preparation pose");
+    arm_mover.apend_waypt(pre_grasp_pose);
+
+    // ROS_INFO_STREAM("Approaching to grasp pose");
+    arm_mover.apend_waypt(grasp_pose);
+    arm_mover.build_cart_plan();
 }
 
 void ArmController::set_grasp(geometry_msgs::Pose pose){

@@ -131,4 +131,22 @@ int main(int argc, char** argv){
 
     ros::shutdown();
     return 0;
+
+// ================= WAYPOINTS TESTING ===========================
+//     geometry_msgs::Pose target_pose = arm.getCurrentPose();
+//     target_pose.position.x += 0.0;
+//     target_pose.position.y += 0.05;
+//     target_pose.position.z -= 0.02;
+
+//     arm.apend_waypt(target_pose); 
+
+//     target_pose.position.y -= 0.0;
+//     arm.apend_waypt(target_pose);
+
+//     target_pose.position.z -= 0.08;
+//     target_pose.position.y += 0.0;
+//     target_pose.position.x -= 0.0;
+//     arm.apend_waypt(target_pose);
+
+//     arm.build_cart_plan();
 }

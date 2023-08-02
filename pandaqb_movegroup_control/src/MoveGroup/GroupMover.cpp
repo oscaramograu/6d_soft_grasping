@@ -58,3 +58,47 @@ void GroupMover::planExecute(){
     }
 }
 
+void GroupMover::apend_waypt(geometry_msgs::Pose pose){
+    waypoints.push_back(pose);
+}
+
+void GroupMover::build_cart_plan(){
+    moveit_msgs::RobotTrajectory trajectory_msg;
+
+    double fraction = move_group_->computeCartesianPath(
+        waypoints, 0.01,  // eef_step
+        0.0,   // jump_threshold
+        trajectory_msg, false);
+    
+    robot_trajectory::RobotTrajectory rt(
+        move_group_->getCurrentState()->getRobotModel(), PLANNING_GROUP);
+
+    rt.setRobotTrajectoryMsg(*move_group_->getCurrentState(), trajectory_msg);
+
+    trajectory_processing::IterativeParabolicTimeParameterization iptp;
+    bool success = iptp.computeTimeStamps(rt);
+
+    ROS_INFO("Computed time stamp %s",success?"SUCCEDED":"FAILED");
+
+    // Get RobotTrajectory_msg from RobotTrajectory
+    rt.getRobotTrajectoryMsg(trajectory_msg);
+
+
+    plan.trajectory_ = trajectory_msg;
+
+    ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)",fraction * 100.0);   
+
+    if (fraction == 1){
+        ROS_INFO_STREAM("Press keyboard to execute the planned waypoints");
+
+        std::string user_input;
+        std::getline(std::cin, user_input);
+
+        move_group_->execute(plan);
+        ROS_INFO_STREAM("Plan executed.");
+    }
+
+    else{
+        ROS_WARN("Planning failed");
+    }
+}
