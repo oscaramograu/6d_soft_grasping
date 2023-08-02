@@ -13,8 +13,16 @@ public:
 private:
     void compute_pre_grasp_pose();
     void compute_normal_offset(geometry_msgs::Quaternion orient);
+    bool check_right_grasp();
 
+    Eigen::Quaterniond orient_msg_to_eigen(geometry_msgs::Quaternion orient);
+    Eigen::Vector3d pose_msg_to_eigen(geometry_msgs::Point position);
+    Eigen::Vector3d projectVectorOntoPlane(Eigen::Vector3d v);
+    
     GroupMover arm_mover;
     geometry_msgs::Pose grasp_pose, pre_grasp_pose;
     Eigen::Vector3d offsets;
+
+    std::vector<double> left_pose, right_pose;
+
 };

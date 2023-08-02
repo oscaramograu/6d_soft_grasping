@@ -32,11 +32,19 @@ class GraspFilterer(Grasps):
         self._invert_opposite_Ys(good_gps_y_inds)
 
         z_vec =  np.array([0,0,-1])
-        self._good_grasps_ids  = self._select_grasp_inds_by_ang(z_vec, tr_ang=60, axis=2)
+        good_grasps_ids  = self._select_grasp_inds_by_ang(z_vec, tr_ang=60, axis=2)
+
+        self._good_grasps_ids = self._exclude_lower_grasps(good_grasps_ids, obj_pose)
 
         inds = range(len(self.abs_poses))
         self._bad_grasps = [x for x in inds if x not in self._good_grasps_ids]
         print("The number of filtered grasps is: ", len(self._good_grasps_ids))
+
+    def _exclude_lower_grasps(self, good_g_inds, obj_pose):
+        z_th =  obj_pose[2,3] + 0.01     
+        new_inds = [ind for ind in good_g_inds if 
+                    self.abs_poses[ind][2,3] > z_th]
+        return new_inds
 
     def _listen_obj_pose(self)-> np.ndarray:
         self._tf_listener.listen_tf()

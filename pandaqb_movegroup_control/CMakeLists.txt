@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf_conversions
   roscpp
+  # system_lib
   std_msgs
   # message_generation
   moveit_core 
