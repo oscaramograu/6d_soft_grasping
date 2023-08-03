@@ -119,15 +119,12 @@ int main(int argc, char** argv){
     ac.set_grasp(target_pose);
     ac.approach_grasp();
 
-    if(pow_gr_flag){
-        hc.power();
-    }
-    else{
-        hc.pinch();
-    }
+    hc.grasp(pow_gr_flag);
     
     ac.pick_up();
 
+    ac.approach_grasp();
+    hc.open();
 
     ros::shutdown();
     return 0;

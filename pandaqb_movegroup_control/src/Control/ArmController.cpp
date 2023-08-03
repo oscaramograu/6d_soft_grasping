@@ -11,9 +11,21 @@ ArmController::ArmController(): arm_mover("arm"){
 ArmController::~ArmController(){
 }
 void ArmController::approach_grasp(){
-    // arm_mover.moveHome(); 
+    move_to_pre_pose();
 
-    bool right_gr_flag = check_right_grasp();
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    target_pose.position.z -= 0.2;
+
+    arm_mover.apend_waypt(target_pose);
+    arm_mover.apend_waypt(pre_grasp_pose);
+    arm_mover.apend_waypt(grasp_pose);
+
+    arm_mover.build_cart_plan();
+    arm_mover.clear_waypt();
+}
+
+void ArmController::move_to_pre_pose(){
+    right_gr_flag = check_right_grasp();
     if(right_gr_flag){
         ROS_INFO_STREAM("Approaching right pre grasp pose");
         arm_mover.moveTo(right_pose);
@@ -23,17 +35,6 @@ void ArmController::approach_grasp(){
 
         arm_mover.moveTo(left_pose);
     }
-    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
-    target_pose.position.z -= 0.2;
-
-    arm_mover.apend_waypt(target_pose);
-
-    // ROS_INFO_STREAM("Approaching to left preparation pose");
-    arm_mover.apend_waypt(pre_grasp_pose);
-
-    // ROS_INFO_STREAM("Approaching to grasp pose");
-    arm_mover.apend_waypt(grasp_pose);
-    arm_mover.build_cart_plan();
 }
 
 void ArmController::set_grasp(geometry_msgs::Pose pose){

@@ -16,6 +16,7 @@ public:
 
     void set_EEF_link(std::string arm_eef_frame);
 
+    void clear_waypt();
     void apend_waypt(geometry_msgs::Pose pose);
     void build_cart_plan();
     

@@ -22,11 +22,25 @@ class GraspMapper(Grasps):
     def _map_grasp(self, grasp)->List[np.ndarray]:
         gpose, w = grasp
         mapped_g = self._rotate_around_Z(gpose, self.theta)
-        offseted_g = self._offset(mapped_g)
         power_grasp = self._with_to_power_g(w)
+
+        if power_grasp:
+            offseted_g = self._pow_offset(mapped_g)
+        else:
+            offseted_g = self._pinch_offset(mapped_g)
+
         return offseted_g, power_grasp
 
-    def _offset(self, arr: np.ndarray):
+    def _pow_offset(self, arr: np.ndarray):
+        new_arr = arr.copy()
+        offsets = self.offsets.copy()
+
+        conv_offsets = new_arr[:3,:3]@offsets
+        new_arr[:3,3] += conv_offsets
+        
+        return new_arr  
+          
+    def _pinch_offset(self, arr: np.ndarray):
         new_arr = arr.copy()
         offsets = self.offsets.copy()
 
@@ -34,6 +48,7 @@ class GraspMapper(Grasps):
         new_arr[:3,3] += conv_offsets
         
         return new_arr        
+
 
     def _with_to_power_g(self, width) -> bool:
         max_width = max(self.widths)

@@ -58,6 +58,10 @@ void GroupMover::planExecute(){
     }
 }
 
+void GroupMover::clear_waypt(){
+    waypoints.clear();
+}
+
 void GroupMover::apend_waypt(geometry_msgs::Pose pose){
     waypoints.push_back(pose);
 }
