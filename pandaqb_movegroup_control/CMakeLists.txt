@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(PCL REQUIRED)
+find_package(nlohmann_json 3.2.0 REQUIRED)
 
 # generate_messages(
 #   DEPENDENCIES
@@ -49,6 +50,7 @@ catkin_package(
 
 include_directories(
   include
+  include/third_party
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
   ${moveit_ros_planning_interface_INCLUDE_DIRS}
@@ -81,12 +83,24 @@ target_link_libraries(MoveGroup_libs
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
   ${moveit_ros_planning_interface_LIBRARIES}
-  ${PCL_LIBRARIES}
+  ${PCL_LIBRARIES} 
+  nlohmann_json::nlohmann_json
 )
+
 target_link_libraries(controller_node
   Control_libs
   MoveGroup_libs
 )
+# ======================================== Grasps Registerer Node ========================================
+add_executable(grasps_registerer_node 
+  ${PROJECT_SOURCE_DIR}/src/grasps_register_node.cpp)
+
+add_dependencies(grasps_registerer_node 
+  ${grasps_registerer_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(grasps_registerer_node
+  MoveGroup_libs)
+
 # ======================================== Object Publisher Node ========================================
 add_library(Object_libs
   ${PROJECT_SOURCE_DIR}/src/Target/TargetObject.cpp

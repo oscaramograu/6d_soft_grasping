@@ -14,6 +14,7 @@ class GraspFilterer(Grasps):
 
         if grasps == None:
             self.load_from_file(obj_name)
+            self.set_power_gr([1 for _ in range(len(self.widths))])
         else:
             self.set_rel_poses(grasps.rel_poses)
             self.set_widths(grasps.widths)
@@ -94,7 +95,7 @@ class GraspFilterer(Grasps):
         good_grasps.set_rel_poses(poses)
         good_grasps.set_widths(widths)
         good_grasps.set_power_gr(power_gr)
-        
+    
         return good_grasps
 
     def get_bad_grasps(self):

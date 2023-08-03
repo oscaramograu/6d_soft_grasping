@@ -12,6 +12,8 @@
                 "/usr/include/**",
                 "${workspaceFolder}/include",
                 "/usr/include/pcl-1.10",
+                "./anaconda3/envs/impo/include/nlohmann/json.hpp",
+
                 "/opt/ros/noetic/include",
                 "/usr/include/eigen3"
             ],

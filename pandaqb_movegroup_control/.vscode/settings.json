@@ -76,7 +76,9 @@
         "bit": "cpp",
         "dense": "cpp",
         "*.ipp": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "codecvt": "cpp",
+        "valarray": "cpp"
     },
     "python.analysis.extraPaths": [
         "/home/neurolab/catkin_ws/devel/lib/python3/dist-packages",
