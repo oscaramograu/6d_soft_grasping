@@ -60,72 +60,66 @@ int main(int argc, char** argv){
     // Initialize the node
     ros::init(argc, argv, "controller_node");
 
-    // Spin and process ROS callbacks
-    // ros::spin();
-    // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
+// ================= REAL CODE ===========================
+    // ros::NodeHandle nh;
+    // GraspListener gr(&nh);
+    // geometry_msgs::Pose target_pose = gr.get_grasp_pose();
+    // bool pow_gr_flag = gr.get_power_gr_flag();
+
+    // ArmController ac;
     // HandController hc;
-    // hc.pinch();
 
-// ################################################################################################################
-    //GROUP MOVE  TESTS
-// ################################################################################################################
-    ros::NodeHandle nh;
-    GraspListener gr(&nh);
-    geometry_msgs::Pose target_pose = gr.get_grasp_pose();
-    bool pow_gr_flag = gr.get_power_gr_flag();
+    // ac.set_grasp(target_pose);
+    // ac.approach_grasp();
 
-    // tf::StampedTransform transform;
-    // tf::TransformListener listener;
-
-    // try {
-    //     listener.waitForTransform("/panda_link0", "/target_grasp", 
-    //         ros::Time(0), ros::Duration(50.0));
-    //     listener.lookupTransform("/panda_link0", "/target_grasp", 
-    //         ros::Time(0), transform);
-    // } catch (tf::TransformException ex) {
-    //     ROS_ERROR("%s",ex.what());
+    // if(pow_gr_flag){
+    //     hc.power();
     // }
+    // else{
+    //     hc.pinch();
+    // }
+    
+    // ac.pick_up();
 
-    // ROS_INFO_STREAM("Target pose: " << target_pose);
-    // target_pose = tf_to_pose(transform);
+// ================= TESTING POSE WITHOUT EEF ===========================
+    tf::StampedTransform transform;
+    tf::TransformListener listener;
 
-// ================= TESTING ===========================
-    // tf::Quaternion rotation;
-    // rotation.setW(0);
-    // rotation.setX(0);
-    // rotation.setY(0);
-    // rotation.setZ(1);
+    try {
+        listener.waitForTransform("/panda_link0", "/target_grasp", 
+            ros::Time(0), ros::Duration(50.0));
+        listener.lookupTransform("/panda_link0", "/target_grasp", 
+            ros::Time(0), transform);
+    } catch (tf::TransformException ex) {
+        ROS_ERROR("%s",ex.what());
+    }
 
-    // transform.setRotation(rotation);
-    // rotate_aroundX(transform, M_PI);
-    // target_pose = tf_to_pose(transform);
+    tf::Quaternion rotation;
+    rotation.setW(0);
+    rotation.setX(0);
+    rotation.setY(0);
+    rotation.setZ(1);
+
+    transform.setRotation(rotation);
+    rotate_aroundX(transform, M_PI);
+
+    geometry_msgs::Pose  target_pose = tf_to_pose(transform);
+    target_pose.position.z += 0.20;
 
     GroupMover arm("arm");
     arm.set_EEF_link("panda_link8");
-    arm.printCurrentJointPosition();
-    // target_pose.position.z += 0.05;
 
-    // ROS_INFO_STREAM("The target pose is: " << target_pose);
-    // arm.moveTo(target_pose);
+    ROS_INFO_STREAM("The target pose is: " << target_pose);
+    arm.moveTo(target_pose);
 
-// ================= REAL CODE ===========================
-    ArmController ac;
-    HandController hc;
+// ================= PRINT CURRENT JOINT STATES ===========================
 
-    ac.set_grasp(target_pose);
-    ac.approach_grasp();
-
-    if(pow_gr_flag){
-        hc.power();
-    }
-    else{
-        hc.pinch();
-    }
-    
-    ac.pick_up();
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("panda_link8");
+    // arm.printCurrentJointPosition();
 
 
     ros::shutdown();

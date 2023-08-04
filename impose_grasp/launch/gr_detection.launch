@@ -5,4 +5,7 @@
     <node pkg="pandaqb_movegroup_control" type= "object_publisher_node"
     name="scene_objects_publisher_node" output="screen"/>
 
+    <node pkg="pandaqb_movegroup_control" type= "scene_objects_publisher_node"
+    name="target_obj_publisher_node" output="screen"/>
+
 </launch>
