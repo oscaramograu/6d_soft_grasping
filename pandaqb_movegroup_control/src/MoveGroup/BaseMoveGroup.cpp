@@ -6,6 +6,7 @@ BaseMoveGroup::BaseMoveGroup(std::string planning_group){
         move_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(PLANNING_GROUP);
         
         load_params();
+        print_params();
         }
     catch (const ros::InvalidNameException& e) {
     // Invalid param name
@@ -45,4 +46,11 @@ void BaseMoveGroup::load_params(){
     move_group_->setNumPlanningAttempts(planning_attempts);
     move_group_->setMaxVelocityScalingFactor(velocity_scaling);
     move_group_->setMaxAccelerationScalingFactor(acceleration_scaling);
+}
+
+void BaseMoveGroup::print_params(){
+    ROS_INFO_STREAM("Planning time: " << planning_time);
+    ROS_INFO_STREAM("Planning attempts:" << planning_attempts);
+    ROS_INFO_STREAM("Velocity scaling: " << velocity_scaling);
+    ROS_INFO_STREAM("Acceleration scaling: " << acceleration_scaling);
 }

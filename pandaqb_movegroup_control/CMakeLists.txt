@@ -59,7 +59,6 @@ include_directories(
 
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
-# ======================================== Controller Node ========================================
 add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/BaseMoveGroup.cpp
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/GroupMover.cpp
@@ -71,14 +70,6 @@ add_library(Control_libs
   ${PROJECT_SOURCE_DIR}/src/Target/GraspListener.cpp
 )
 
-add_executable(controller_node 
-  ${PROJECT_SOURCE_DIR}/src/controller_node.cpp
-)
-
-add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(Control_libs ${catkin_EXPORTED_TARGETS})
-add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
-
 target_link_libraries(MoveGroup_libs
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
@@ -86,6 +77,16 @@ target_link_libraries(MoveGroup_libs
   ${PCL_LIBRARIES} 
   nlohmann_json::nlohmann_json
 )
+
+add_dependencies(Control_libs ${catkin_EXPORTED_TARGETS})
+add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
+
+# ======================================== Controller Node ========================================
+add_executable(controller_node 
+  ${PROJECT_SOURCE_DIR}/src/controller_node.cpp
+)
+
+add_dependencies(controller_node ${controller_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(controller_node
   Control_libs
@@ -100,6 +101,17 @@ add_dependencies(grasps_registerer_node
 
 target_link_libraries(grasps_registerer_node
   MoveGroup_libs)
+
+# ======================================== Camera Calibration Control Node ========================================
+add_executable(camera_callibration_control_node 
+  ${PROJECT_SOURCE_DIR}/src/camera_callibration_control.cpp)
+
+add_dependencies(camera_callibration_control_node 
+  ${camera_callibration_control_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(camera_callibration_control_node
+  MoveGroup_libs)
+
 
 # ======================================== Object Publisher Node ========================================
 add_library(Object_libs

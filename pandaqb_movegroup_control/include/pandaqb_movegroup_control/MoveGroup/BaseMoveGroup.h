@@ -30,7 +30,7 @@ private:
      * 
      **/
     void load_params();
-
+    void print_params();
 
     double planning_time, planning_attempts, velocity_scaling, acceleration_scaling;
 };
