@@ -17,7 +17,7 @@ def map_grasps():
 
     return g_map
 
-def filter_grasps(grasps):
+def filter_grasps(grasps=None):
     g_filt = GraspFilterer(grasps, obj)
     g_filt.filter()
 
@@ -33,15 +33,16 @@ if __name__ == "__main__":
     rate = rospy.Rate(10)  # Hz
 
     gr_mapped = map_grasps()
-    good_grasps = filter_grasps(gr_mapped)
+    good_grasps = filter_grasps(gr_mapped)  # Choose if you want to map the grasps 
+                                            # or directly load the raw ones
 
     # ind = select_target_ind(good_grasps)
     ind = random.randrange(0, len(good_grasps.rel_poses))
-    ind = 6 
+    ind = 1
 
     g_br = GraspsBroadcasater(good_grasps)
     print("The selected index is: ", ind)
-    print("The power grasp flag ist: ", g_br.power_gr[ind])
+    print("The power grasp flag is: ", g_br.power_gr[ind])
     while not rospy.is_shutdown():
         g_br.broadcast_target(ind)
         rate.sleep() 

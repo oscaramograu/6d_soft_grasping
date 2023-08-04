@@ -4,13 +4,18 @@
 
   <!-- Fake object broadcaster node -->
   <node pkg="impose_grasp" type="fake_obj_broadcaster.py" 
-      name="fake_obj_broadcaster" output="screen" />  
+    name="fake_obj_broadcaster" output="screen" />  \
 
-  <!-- Object mesh publisher -->
-  <!-- <node pkg="pandaqb_movegroup_control" type="object_publisher_node" 
-      name="object_publisher_node" output="screen" />   -->
+  <!-- Broadcast a fake detected grasp -->
+  <node pkg="impose_grasp" type="fake_grasp_broadcaster.py" 
+    name="fake_grasp_br_node" output="screen" />
 
-  <!-- Launch the floor object  -->
-  <!-- <node pkg="pandaqb_movegroup_control" type="scene_objects_publisher"
-      name="scene_objects_publisher_node" output="screen"/> -->
+  <!-- Launch the mesh of the target object -->
+  <node pkg="pandaqb_movegroup_control" type= "object_publisher_node"
+    name="mesh_publisher_node" output="screen"/>
+
+  <!-- Launch objects in the scene  -->
+  <node pkg="pandaqb_movegroup_control" type="scene_objects_publisher_node"
+      name="scene_objects_publisher_node" output="screen"/>
+
 </launch>

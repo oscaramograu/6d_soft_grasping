@@ -32,24 +32,25 @@ shape_msgs::SolidPrimitive build_primitive(float x, float y, float z){
 
 geometry_msgs::Pose build_pose(float x, float y, float z, shape_msgs::SolidPrimitive prim){
     geometry_msgs::Pose pose;
+    std::vector<double> dims = prim.dimensions;
     pose.orientation.w = 1.0;
-    pose.position.x = x + prim.BOX_X/2;
-    pose.position.y = y + prim.BOX_Y/2;
-    // pose.position.z = z + prim.BOX_Z/2;
+    pose.position.x = x + dims[0]/2;
+    pose.position.y = y + dims[1]/2;
+    pose.position.z = z + dims[2]/2;
 
     return pose;
 }
 
 moveit_msgs::CollisionObject build_box(){
     shape_msgs::SolidPrimitive box_prim = build_primitive(0.28, 0.28, 0.15);
-    geometry_msgs::Pose box_pose = build_pose(0.55, 0.1, 0, box_prim);
+    geometry_msgs::Pose box_pose = build_pose(0.55, -0.1, 0, box_prim);
 
     return build_col_obj("box", box_prim, box_pose);
 }
 
 moveit_msgs::CollisionObject build_platform(){
     shape_msgs::SolidPrimitive plat_prim = build_primitive(1.5, 1.5, 0.03);
-    geometry_msgs::Pose plat_pose = build_pose(0.9, 0, 0.0, plat_prim);
+    geometry_msgs::Pose plat_pose = build_pose(0.1, -0.75, -0.031, plat_prim);
 
     return build_col_obj("box", plat_prim, plat_pose);
 }
@@ -72,11 +73,15 @@ int main(int argc, char **argv){
     plat = build_platform();
 
     moveit_msgs::PlanningScene planning_scene;
-    planning_scene.world.collision_objects.push_back(box);
-    planning_scene.world.collision_objects.push_back(plat);
-
     planning_scene.is_diff = true;
+
+
+    planning_scene.world.collision_objects.push_back(plat);
     planning_scene_diff_publisher.publish(planning_scene);
+    
+    planning_scene.world.collision_objects.push_back(box);
+    planning_scene_diff_publisher.publish(planning_scene);
+
 
 
     ROS_INFO_STREAM("Object added to world");

@@ -6,9 +6,9 @@ from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
 
 def build_affine_mat()->np.ndarray:
     array = np.array([
-        [1, 0, 0, .75],
+        [1, 0, 0, .55],
         [0, 1, 0, 0],
-        [0, 0, 1, 0],
+        [0, 0, 1, 0.175],
         [0, 0, 0, 1]
     ])
     return array

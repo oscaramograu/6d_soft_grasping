@@ -4,17 +4,10 @@ class HandController{
 public:
     HandController();
     ~HandController();
+    
+    void grasp(bool pw_gr_flag);
 
-    /**
-     * Makes the robot qb soft hand execute a pinch grasp. 
-     * Closing only the index and the thumb.
-     */
-    void pinch();
-    /**
-     * Makes the robot qb soft hand execute a power grasp.
-     * Closing all the fingers.
-     */
-    void power();
+
     /**
      * Opens the qb soft hand.
      */
@@ -27,6 +20,17 @@ public:
 
 private:
     void send_trajectory(std::vector<double> motor_command);
+
+    /**
+     * Makes the robot qb soft hand execute a pinch grasp. 
+     * Closing only the index and the thumb.
+     */
+    void pinch();
+    /**
+     * Makes the robot qb soft hand execute a power grasp.
+     * Closing all the fingers.
+     */
+    void power();
 
     GroupMover hand_mover;
     bool open_flag;

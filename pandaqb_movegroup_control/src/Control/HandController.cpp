@@ -9,6 +9,15 @@ HandController::HandController():
 HandController::~HandController(){
 }
 
+void HandController::grasp(bool pw_gr_flag){
+    if(pw_gr_flag){
+        power();
+    }
+    else{
+        pinch();
+    }
+}
+
 void HandController::pinch(){
     ROS_INFO_STREAM("STARTING PINCH PROCESS");
 
