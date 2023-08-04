@@ -40,15 +40,25 @@ class ObjectBroadcaster(TransformBroadcaster):
         f_obj_cam = None
         if not stop:
             frame = self.fb.get_actual_frame()
-            
-            f_obj_cam = self.compute_filtered_affine(frame)
-            cam_world = self.get_cam_world_affine()
+            if frame is not None:
+                f_obj_cam = self.compute_filtered_affine(frame)
+                cam_world = self.get_cam_world_affine()
 
-            if f_obj_cam is not None and cam_world is not None:
-                self.obj_world = cam_world@f_obj_cam
-                
-        if self.obj_world is not None:
-            self.broadcast_transform(self.obj_world)
+                if f_obj_cam is not None and cam_world is not None:
+                    self.obj_world = cam_world@f_obj_cam
+                    print("object has been found")
+                    self.broadcast_transform(self.obj_world)
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            if self.obj_world is not None:
+                self.broadcast_transform(self.obj_world)
+            return False
+
+
             
 
     def test_broadcaster(self):

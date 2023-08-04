@@ -2,6 +2,7 @@
 
 import rospy
 import ros_numpy
+from datetime import datetime
 
 from std_msgs.msg import String 
 from sensor_msgs.msg import Image, CameraInfo
@@ -45,17 +46,6 @@ def set_up_camera_info():
     
     return camera_info_msg
 
-class Flag:
-    def __init__(self) -> None:
-        self.flag = True
-        rospy.Subscriber("stop_camera", String, self.callback)
-
-    def callback(self,data):
-        print(self.flag)
-
-        self.flag *= False
-        print(self.flag)
-
 def main():
     rospy.init_node('img_publisher_node', anonymous=True)
     camera = D415(name="realsense_D415")
@@ -73,56 +63,50 @@ def main():
     d_np_pub = rospy.Publisher(
         '/camera/depth/numpy', Float32MultiArray, queue_size=10)
 
-    rate = rospy.Rate(2)  # Publish at 10Hz
-    flag = Flag()
-    print(flag.flag)
-    n = 0
+    rate = rospy.Rate(10)  # Publish at 10Hz
+
+    camera.start()
     while not rospy.is_shutdown():
-        if flag.flag:
-            if n == 0:
-                camera.start()
-                n+=1
 
-            frame = camera.grab_frame()
 
-            # time = rospy.Time.now()
+        frame = camera.grab_frame()
 
-            # # Convert the RGB image to ROS message
-            # rgb_image_msg:Image
-            # rgb_image_msg = ros_numpy.msgify(Image, frame.rgb, "rgb8")
-            # rgb_image_msg.header.stamp = time
-            # rgb_image_msg.header.frame_id = "camera_frame"
+        time = rospy.Time.now()
+
+        # Convert the RGB image to ROS message
+        rgb_image_msg:Image
+        rgb_image_msg = ros_numpy.msgify(Image, frame.rgb, "rgb8")
+        rgb_image_msg.header.stamp = time
+        rgb_image_msg.header.frame_id = "camera_frame"
+    
+        # Publish the RGB image
+        image_pub_rgb.publish(rgb_image_msg)
+
+        # Convert the depth numpy image to ROS Image message
+        d_img_msg:Image
+        d_img_msg = ros_numpy.msgify(Image, frame.depth, "32FC1")
+        d_img_msg.header.stamp = time
         
-            # # Publish the RGB image
-            # image_pub_rgb.publish(rgb_image_msg)
+        # Publish the depth image
+        image_pub_d.publish(d_img_msg)
 
-            # # Convert the depth numpy image to ROS Image message
-            # d_img_msg:Image
-            # d_img_msg = ros_numpy.msgify(Image, frame.depth, "32FC1")
-            # d_img_msg.header.stamp = time
-            
-            # # Publish the depth image
-            # image_pub_d.publish(d_img_msg)
+        # Setup camera info msg
+        camera_info_msg = set_up_camera_info()
+        camera_info_msg.header.stamp = time
+        camera_info_pub.publish(camera_info_msg)
 
-            # # Setup camera info msg
-            # camera_info_msg = set_up_camera_info()
-            # camera_info_msg.header.stamp = time
-            # camera_info_pub.publish(camera_info_msg)
+        # Setup the numpy msg
 
-            # Setup the numpy msg
-            depth_multiarr = numpy_to_multiarray(frame.depth)
-            rgb_multiarr = numpy_to_multiarray(frame.rgb)
+        old = datetime.now()
+        
+        depth_multiarr = numpy_to_multiarray(frame.depth)
+        rgb_multiarr = numpy_to_multiarray(frame.rgb)
 
-            d_np_pub.publish(depth_multiarr)
-            rgb_np_pub.publish(rgb_multiarr)
-
-
-        else:
-            if n == 1:
-                camera.close()
-                n = 0
-                
-            flag.flag = True
+        d_np_pub.publish(depth_multiarr)
+        rgb_np_pub.publish(rgb_multiarr)
+        actual = datetime.now()
+        diff = actual-old
+        # print("It took ", diff, "s to publish the images.")            
 
         rate.sleep()
 

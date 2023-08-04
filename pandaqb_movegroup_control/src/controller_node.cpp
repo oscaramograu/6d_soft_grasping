@@ -60,59 +60,15 @@ int main(int argc, char** argv){
     // Initialize the node
     ros::init(argc, argv, "controller_node");
 
-    // Spin and process ROS callbacks
-    // ros::spin();
-    // ROS spinning must be running for the MoveGroupInterface to get information about the robot's state.
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    // HandController hc;
-    // hc.pinch();
-
-// ################################################################################################################
-    //GROUP MOVE  TESTS
-// ################################################################################################################
+// ================= REAL CODE ===========================
     ros::NodeHandle nh;
     GraspListener gr(&nh);
     geometry_msgs::Pose target_pose = gr.get_grasp_pose();
     bool pow_gr_flag = gr.get_power_gr_flag();
 
-    // tf::StampedTransform transform;
-    // tf::TransformListener listener;
-
-    // try {
-    //     listener.waitForTransform("/panda_link0", "/target_grasp", 
-    //         ros::Time(0), ros::Duration(50.0));
-    //     listener.lookupTransform("/panda_link0", "/target_grasp", 
-    //         ros::Time(0), transform);
-    // } catch (tf::TransformException ex) {
-    //     ROS_ERROR("%s",ex.what());
-    // }
-
-    // ROS_INFO_STREAM("Target pose: " << target_pose);
-    // target_pose = tf_to_pose(transform);
-
-// ================= TESTING ===========================
-    // tf::Quaternion rotation;
-    // rotation.setW(0);
-    // rotation.setX(0);
-    // rotation.setY(0);
-    // rotation.setZ(1);
-
-    // transform.setRotation(rotation);
-    // rotate_aroundX(transform, M_PI);
-    // target_pose = tf_to_pose(transform);
-
-    // GroupMover arm("arm");
-    // arm.set_EEF_link("panda_link8");
-    // arm.printCurrentJointPosition();
-
-    // target_pose.position.z += 0.05;
-
-    // ROS_INFO_STREAM("The target pose is: " << target_pose);
-    // arm.moveTo(target_pose);
-
-// ================= REAL CODE ===========================
     ArmController ac;
     HandController hc;
 
@@ -123,27 +79,43 @@ int main(int argc, char** argv){
     
     ac.pick_up();
 
-    ac.approach_grasp();
-    hc.open();
+// ================= TESTING POSE ===========================
+    // tf::StampedTransform transform;
+    // tf::TransformListener listener;
 
-    ros::shutdown();
-    return 0;
+    // try {
+    //     listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
+    //         ros::Time(0), ros::Duration(50.0));
+    //     listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
+    //         ros::Time(0), transform);
+    // } catch (tf::TransformException ex) {
+    //     ROS_ERROR("%s",ex.what());
+    // }
 
-// ================= WAYPOINTS TESTING ===========================
-//     geometry_msgs::Pose target_pose = arm.getCurrentPose();
-//     target_pose.position.x += 0.0;
-//     target_pose.position.y += 0.05;
-//     target_pose.position.z -= 0.02;
+    // tf::Quaternion rotation;
+    // rotation.setW(0);
+    // rotation.setX(0);
+    // rotation.setY(0);
+    // rotation.setZ(1);
 
-//     arm.apend_waypt(target_pose); 
+    // transform.setRotation(rotation);
+    // rotate_aroundX(transform, M_PI);
 
-//     target_pose.position.y -= 0.0;
-//     arm.apend_waypt(target_pose);
+    // geometry_msgs::Pose  target_pose = tf_to_pose(transform);
+    // target_pose.position.z += 0.05;
 
-//     target_pose.position.z -= 0.08;
-//     target_pose.position.y += 0.0;
-//     target_pose.position.x -= 0.0;
-//     arm.apend_waypt(target_pose);
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("qbhand2m1_end_effector_link");
+    // arm.moveTo(target_pose);
+    
+// ================= PRINT CURRENT JOINT STATES ===========================
 
-//     arm.build_cart_plan();
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("panda_link8");
+    // arm.printCurrentJointPosition();
+
+    // target_pose.position.z += 0.05;
+
+    // ROS_INFO_STREAM("The target pose is: " << target_pose);
+    // arm.moveTo(target_pose);
 }
