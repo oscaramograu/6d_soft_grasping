@@ -79,14 +79,14 @@ int main(int argc, char** argv){
     
     ac.pick_up();
 
-// ================= TESTING POSE WITHOUT EEF ===========================
+// ================= TESTING POSE ===========================
     // tf::StampedTransform transform;
     // tf::TransformListener listener;
 
     // try {
-    //     listener.waitForTransform("/panda_link0", "/target_grasp", 
+    //     listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
     //         ros::Time(0), ros::Duration(50.0));
-    //     listener.lookupTransform("/panda_link0", "/target_grasp", 
+    //     listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
     //         ros::Time(0), transform);
     // } catch (tf::TransformException ex) {
     //     ROS_ERROR("%s",ex.what());
@@ -102,10 +102,12 @@ int main(int argc, char** argv){
     // rotate_aroundX(transform, M_PI);
 
     // geometry_msgs::Pose  target_pose = tf_to_pose(transform);
-    // target_pose.position.z += 0.20;
+    // target_pose.position.z += 0.05;
 
-
-
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("qbhand2m1_end_effector_link");
+    // arm.moveTo(target_pose);
+    
 // ================= PRINT CURRENT JOINT STATES ===========================
 
     // GroupMover arm("arm");

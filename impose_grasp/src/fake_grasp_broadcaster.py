@@ -37,8 +37,8 @@ if __name__ == "__main__":
                                             # or directly load the raw ones
 
     # ind = select_target_ind(good_grasps)
-    ind = random.randrange(0, len(good_grasps.rel_poses))
-    ind = 1
+    # ind = random.randrange(0, len(good_grasps.rel_poses))
+    ind = 4
 
     g_br = GraspsBroadcasater(good_grasps)
     print("The selected index is: ", ind)
