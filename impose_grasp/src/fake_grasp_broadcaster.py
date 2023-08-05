@@ -30,7 +30,7 @@ def select_target_ind(good_grasps):
 
 if __name__ == "__main__":
     rospy.init_node('fake_grasp_br_node')
-    rate = rospy.Rate(10)  # Hz
+    rate = rospy.Rate(20)  # Hz
 
     gr_mapped = map_grasps()
     good_grasps = filter_grasps(gr_mapped)  # Choose if you want to map the grasps 
@@ -45,4 +45,5 @@ if __name__ == "__main__":
     print("The power grasp flag is: ", g_br.power_gr[ind])
     while not rospy.is_shutdown():
         g_br.broadcast_target(ind)
+    
         rate.sleep() 

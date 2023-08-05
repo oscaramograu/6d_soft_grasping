@@ -37,7 +37,7 @@ class GraspChooserBase(Grasps):
         self._build_scene()
 
     def _build_camera_pose(self):
-        cam_listener = TfListener("/camera_frame")
+        cam_listener = TfListener("camera_frame")
         cam_listener.listen_tf()
         self.cam_pose = cam_listener.get_np_frame()
 

@@ -14,6 +14,8 @@
         <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
   </node>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+  
+  <include file="$(find panda_qb_description)/launch/camera_pose.launch" />
 
 <!-- Launch moveit planning execution -->
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->

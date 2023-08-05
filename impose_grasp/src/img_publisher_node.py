@@ -68,7 +68,6 @@ def main():
     camera.start()
     while not rospy.is_shutdown():
 
-
         frame = camera.grab_frame()
 
         time = rospy.Time.now()
@@ -106,7 +105,8 @@ def main():
         rgb_np_pub.publish(rgb_multiarr)
         actual = datetime.now()
         diff = actual-old
-        # print("It took ", diff, "s to publish the images.")            
+
+        # print(diff)            
 
         rate.sleep()
 

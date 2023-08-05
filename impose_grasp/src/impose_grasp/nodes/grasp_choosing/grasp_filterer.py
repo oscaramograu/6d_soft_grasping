@@ -10,7 +10,7 @@ class GraspFilterer(Grasps):
         self._good_grasps_ids = []
         self._bad_grasps_ids = []
 
-        self._tf_listener = TfListener("/" + obj_name + "_frame")
+        self._tf_listener = TfListener(obj_name + "_frame")
 
         if grasps == None:
             self.load_from_file(obj_name)

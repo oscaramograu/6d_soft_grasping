@@ -3,6 +3,7 @@
 import rospy
 import numpy as np
 from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
+from datetime import datetime
 
 def build_affine_mat()->np.ndarray:
     array = np.array([
@@ -41,7 +42,7 @@ def rotate_aroudn_z(array: np.ndarray):
     ])
     return array@rot
 
-def run(tf_br: TransformBroadcaster):
+def run(tf_br: TransformBroadcaster, r:rospy.Rate):
     fake_obj_pose = build_affine_mat()
     fake_obj_pose = rotate_around_x(fake_obj_pose)
     fake_obj_pose = rotate_around_y(fake_obj_pose)
@@ -51,11 +52,12 @@ def run(tf_br: TransformBroadcaster):
 
     while not rospy.is_shutdown():
         tf_br.broadcast_transform(fake_obj_pose)
-
+        r.sleep()
+        
 if __name__ == "__main__":
     rospy.init_node("fake_obj_broadcaster")
 
     obj_frame_name = "/cpsduck_frame"
     tf_br = TransformBroadcaster("/panda_link0", obj_frame_name)
-
-    run(tf_br)
+    r = rospy.Rate(5)
+    run(tf_br, r)
