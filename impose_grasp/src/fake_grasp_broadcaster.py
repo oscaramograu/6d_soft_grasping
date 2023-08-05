@@ -25,7 +25,7 @@ def filter_grasps(grasps=None):
     return good_grasps
 
 def select_target_ind(good_grasps):
-    gr_chooser = GraspChooser(good_grasps)
+    gr_chooser = GraspChooser(good_grasps, obj)
     return gr_chooser.compute_best_grasp_ind()
 
 if __name__ == "__main__":
@@ -36,9 +36,9 @@ if __name__ == "__main__":
     good_grasps = filter_grasps(gr_mapped)  # Choose if you want to map the grasps 
                                             # or directly load the raw ones
 
-    # ind = select_target_ind(good_grasps)
+    ind = select_target_ind(good_grasps)
     # ind = random.randrange(0, len(good_grasps.rel_poses))
-    ind = 4
+    # ind = 4
 
     g_br = GraspsBroadcasater(good_grasps)
     print("The selected index is: ", ind)

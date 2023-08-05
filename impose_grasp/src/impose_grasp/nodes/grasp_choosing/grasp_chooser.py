@@ -1,22 +1,25 @@
 import math
 import numpy as np 
 import open3d as o3d
+import os
 
-from typing import List
-from impose_grasp.nodes.grasp_choosing.grasp_chooser_base import GraspChooserBase
-from impose_grasp.models.cameras.base_camera import CamFrame
+from impose_grasp.nodes.visualisation.point_cloud import PointCloud
 from impose_grasp.lib.geometry import invert_homogeneous
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
+from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 
-class GraspChooser(GraspChooserBase):
-    def __init__(self, grasps: Grasps):
+class GraspChooser(Grasps):
+    def __init__(self, grasps: Grasps, obj_name):
+        super().__init__()
+        self.set_rel_poses(grasps.rel_poses)
+        self.set_widths(grasps.widths)
+        self.set_power_gr(grasps.power_gr)
 
-        self.cam_pose: np.ndarray  # in global frame
+        self.pcd_builder = PointCloud(obj_name + "_frame")
+        self.voxel_size = 0.05
 
-        self.obstruction_pcl: o3d.t.geometry.PointCloud = None # in camera frame
         self.scene: o3d.t.geometry.RaycastingScene 
-
-        super().__init__(grasps)
+        self._build_scene()
 
     def compute_best_grasp_ind(self):
         """
@@ -34,20 +37,19 @@ class GraspChooser(GraspChooserBase):
         - Finally based on the score obtained, the best grasping 
         position is retrieved.
         """
-        if  self.obstruction_pcl is None:
-            print("Obstruction point cloud is none")
-            return None
 
         # find distances to obstruction pointcloud
         best_i = None
         best_score = math.inf
 
+        self.pcd_builder.build_pcd_wrt_obj(self.voxel_size)
+
         for i in range(len(self.rel_poses)):
             grasp_depth = self.widths[i]
             gpose = self.rel_poses[i] # From a grasping pose wrt obj
 
-            pcd =  self.obstruction_pcl.clone()
-            pcd.transform(self.cam_pose @ invert_homogeneous(gpose))     #NEEDS TO BE REVISED   # get the obstrution points wrt grasping points
+            pcd = self.pcd_builder.get_pcd()            
+            pcd.transform(invert_homogeneous(gpose))     #NEEDS TO BE REVISED   # get the obstrution points wrt grasping points
             pcd = pcd.select_by_mask(o3d.core.Tensor(
                 pcd.point.positions.numpy()[:, 2] < - grasp_depth+0.02))  # dont consider points that "are further away" + finger_over tolerance
 
@@ -62,3 +64,14 @@ class GraspChooser(GraspChooserBase):
                     best_score = dist_score
 
         return best_i
+    
+    def _build_scene(self):
+        """
+        Builds the mesh of the movement projection of the end effector.
+        """
+        EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,
+            "data", "models", "gripper_collision_d415.stl")
+
+        gripper_bbox = load_mesh(EEF_mesh_path, tensor=True)
+        self.scene = o3d.t.geometry.RaycastingScene()
+        _ = self.scene.add_triangles(gripper_bbox)

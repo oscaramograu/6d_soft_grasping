@@ -1,7 +1,6 @@
 import open3d as o3d
 import numpy as np
 from impose_grasp.lib.tf_listener import TfListener
-from datetime import datetime
 
 from ctypes import * # convert float to uint32
 import rospy
@@ -10,7 +9,6 @@ from std_msgs.msg import Header
 from sensor_msgs.msg import PointCloud2, PointField
 import sensor_msgs.point_cloud2 as pc2
 
-from impose_grasp.lib.geometry import invert_homogeneous
 from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.models.cameras.base_camera import CamFrame
 
@@ -21,27 +19,28 @@ FIELDS_XYZ = [
 ]
 
 class PointCloud(FrameBuilder):
-    def __init__(self) -> None:
+    def __init__(self, target_frame) -> None:
         super().__init__()
+        self.target = target_frame
 
         self.obstruction_pcl: o3d.t.geometry.PointCloud = None
-        self.ros_pcl: PointCloud2 = None
         self.voxel_size = 0
 
-        self.camera_t: np.ndarray = None
-        self.camera_rot: np.ndarray = None
-        self.target_wrt_cam: np.ndarray = None
+        self.listener = TfListener(
+            target_frame= "camera_frame", base_frame=target_frame)
 
-        self.listener = TfListener(target_frame= "camera_frame", base_frame="cpsduck_frame")
-
-
-    def build_new_pcd(self, voxel_size):
+    def build_pcd_wrt_obj(self, voxel_size):
         self.voxel_size = voxel_size
-        frame = self.get_actual_frame()
-        self._build_obstruction_pcl(frame)
-        self.ros_pcl = self._get_pcd_in_ros()
-        
-    def _build_obstruction_pcl(self, frame: CamFrame):
+        frame = None
+        while frame is None:
+            frame = self.get_actual_frame() 
+
+        self._build_obstr_wrt_obj(frame)
+
+    def get_pcd(self):
+        return self.obstruction_pcl.cpu().clone()
+
+    def _build_obstr_wrt_obj(self, frame: CamFrame):
         """
         Builds the obstruction point cloud from the camera frame. 
         """
@@ -59,22 +58,20 @@ class PointCloud(FrameBuilder):
         pcd = o3d.t.geometry.PointCloud.create_from_rgbd_image(
             rgbd, intr_mat, depth_scale=1.0, stride=max(stride_, 1))
 
-
         if self.voxel_size > 0.0:
             pcd = pcd.voxel_down_sample(self.voxel_size)
 
-        # self.set_camera_pose()
         self.set_target_wrt_cam()
-        pcd.transform(self.target_pose)     #NEEDS TO BE REVISED   # get the obstrution points wrt grasping points
-        
+        pcd.transform(self.target_pose)     
+
         self.obstruction_pcl = pcd.cpu().clone()
     
-    def _get_pcd_in_ros(self):
+    def get_pcd_in_ros(self):
         open3d_cloud = self.obstruction_pcl.cpu().clone()
         # Set "header"
         header = Header()
         header.stamp = rospy.Time.now()
-        header.frame_id = "cpsduck_frame"
+        header.frame_id = self.target
 
         # Set "fields" and "cloud_data"
         points=np.asarray(open3d_cloud.point.positions)
