@@ -6,8 +6,9 @@ from ctypes import * # convert float to uint32
 import rospy
 
 from std_msgs.msg import Header
-from sensor_msgs.msg import PointCloud2, PointField
+from sensor_msgs.msg import PointField
 import sensor_msgs.point_cloud2 as pc2
+from impose_grasp.lib.geometry import invert_homogeneous
 
 from impose_grasp.lib.frame_builder import FrameBuilder
 from impose_grasp.models.cameras.base_camera import CamFrame
@@ -29,7 +30,13 @@ class PointCloud(FrameBuilder):
         self.listener = TfListener(
             target_frame= "camera_frame", base_frame=target_frame)
 
-    def build_pcd_wrt_obj(self, voxel_size):
+    def set_new_pcd_wrt_obj(self, voxel_size):
+        """
+        Grabs an RGBD frame to build a pointcloud using open3d.
+
+        Sets the  the attribute obstruction pointcloud in which the points 
+        are in object coordinates.
+        """
         self.voxel_size = voxel_size
         frame = None
         while frame is None:
@@ -42,7 +49,8 @@ class PointCloud(FrameBuilder):
 
     def _build_obstr_wrt_obj(self, frame: CamFrame):
         """
-        Builds the obstruction point cloud from the camera frame. 
+        Builds the attribute obstruction pointcloud in which the points 
+        are in object coordinates.
         """
         stride_ = 4
         remove_tolerance = 0.01
@@ -61,17 +69,28 @@ class PointCloud(FrameBuilder):
         if self.voxel_size > 0.0:
             pcd = pcd.voxel_down_sample(self.voxel_size)
 
-        self.set_target_wrt_cam()
-        pcd.transform(self.target_pose)     
+        self._set_target_wrt_cam()
+        pcd.transform(self.target_pose)
 
+        np_pts = pcd.point.positions.numpy()
+        euclidean_norms = np.linalg.norm(np_pts, axis=1)
+        pcd = pcd.select_by_mask(o3d.core.Tensor(
+            euclidean_norms < 0.15))
+        
         self.obstruction_pcl = pcd.cpu().clone()
     
-    def get_pcd_in_ros(self):
-        open3d_cloud = self.obstruction_pcl.cpu().clone()
-        # Set "header"
+    def get_pcd_in_ros(self, open3d_cloud, frame_id = None):
+        """
+        Given a open3d pointcloud object, a ros pointcloud is returned 
+        wrt the given frame id.
+        """
         header = Header()
         header.stamp = rospy.Time.now()
-        header.frame_id = self.target
+
+        if frame_id is None:
+            header.frame_id = self.target
+        else:
+            header.frame_id = frame_id
 
         # Set "fields" and "cloud_data"
         points=np.asarray(open3d_cloud.point.positions)
@@ -85,8 +104,28 @@ class PointCloud(FrameBuilder):
         cloud_data = item_func(cloud_data)
 
         print(cloud_data[0])
+        
         return pc2.create_cloud(header, fields, cloud_data)
     
-    def set_target_wrt_cam(self):
+    def _set_target_wrt_cam(self):
+        """
+        Sets the transformation from the object frame to the camera frame.
+        Used to convert the pointcloud from camera to object coordinates.
+        """
         self.listener.listen_tf()
         self.target_pose = self.listener.get_np_frame()
+
+    def get_pcd_wrt_target(self, target_g_pose: np.ndarray, g_depth:float):
+        """
+        Returns a new pointcloud with respect to a given target grasp pose,
+        given the grasp width some points are rejected.
+        """
+        pcd = self.obstruction_pcl.cpu().clone()
+        pcd.transform(invert_homogeneous(target_g_pose))
+        # print(pcd.point.positions.numpy())
+
+
+        # pcd = pcd.select_by_mask(o3d.core.Tensor(
+        #     np_pts[:, 2] < - g_depth+0.02))
+
+        return pcd.cpu().clone()

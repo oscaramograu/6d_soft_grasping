@@ -4,7 +4,6 @@ import open3d as o3d
 import os
 
 from impose_grasp.nodes.visualisation.point_cloud import PointCloud
-from impose_grasp.lib.geometry import invert_homogeneous
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 
@@ -16,7 +15,7 @@ class GraspChooser(Grasps):
         self.set_power_gr(grasps.power_gr)
 
         self.pcd_builder = PointCloud(obj_name + "_frame")
-        self.voxel_size = 0.05
+        self.voxel_size = 0.00
 
         self.scene: o3d.t.geometry.RaycastingScene 
         self._build_scene()
@@ -41,28 +40,26 @@ class GraspChooser(Grasps):
         # find distances to obstruction pointcloud
         best_i = None
         best_score = math.inf
-
-        self.pcd_builder.build_pcd_wrt_obj(self.voxel_size)
+        self.pcd_builder.set_new_pcd_wrt_obj(self.voxel_size)
 
         for i in range(len(self.rel_poses)):
-            grasp_depth = self.widths[i]
             gpose = self.rel_poses[i] # From a grasping pose wrt obj
+            grasp_depth = self.widths[i]
 
-            pcd = self.pcd_builder.get_pcd()            
-            pcd.transform(invert_homogeneous(gpose))     #NEEDS TO BE REVISED   # get the obstrution points wrt grasping points
-            pcd = pcd.select_by_mask(o3d.core.Tensor(
-                pcd.point.positions.numpy()[:, 2] < - grasp_depth+0.02))  # dont consider points that "are further away" + finger_over tolerance
-
+            pcd = self.pcd_builder.get_pcd_wrt_target(gpose, grasp_depth)
             result = self.scene.compute_signed_distance(pcd.point.positions).numpy() # compute the distance of each obstruction point wrt the EEF mesh
                                                                                 # placed at distance 
-                                # from an obstruction point to the EEF mesh at this p this grasping position
-            n_points = np.count_nonzero(result < 0.001)
-            if n_points < 1:    # select the grasping point that has the smallest averageoint.
-                dist_score = np.mean(1. / result)
-                if dist_score < best_score:
-                    best_i = i
-                    best_score = dist_score
+                                # from an obstruc
+                                # tion point to the EEF mesh at this p this grasping position
+            n_points = np.count_nonzero(result < 0.00)
+            print("the besad", n_points)
 
+            # if n_points < 1:    # select the grasping point that has the smallest averageoint.
+
+            dist_score = np.mean(1. / result)
+            if dist_score < best_score:
+                best_i = i
+                best_score = dist_score
         return best_i
     
     def _build_scene(self):

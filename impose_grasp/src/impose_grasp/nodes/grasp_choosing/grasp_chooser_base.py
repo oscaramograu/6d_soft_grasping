@@ -18,7 +18,6 @@ class GraspChooserBase(Grasps):
         self.set_widths(grasps.widths)
         self.set_power_gr(grasps.power_gr)
 
-        
         self._EEF_mesh_path = os.path.join(MODELS_PATH,
             "gripper_collision_d415.stl")
 
