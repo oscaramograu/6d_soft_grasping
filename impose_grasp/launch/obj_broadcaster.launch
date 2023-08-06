@@ -1,9 +1,0 @@
-<launch>
-    <param name="target_obj" type="string" value="cpsduck" />
-        
-    <node pkg="impose_grasp" type="img_publisher_node.py" 
-        name="image_publisher" output="screen" />
-
-    <node pkg="impose_grasp" type="object_broadcaster_node.py" 
-        name="object_broadcaster_node" output="screen"  />
-</launch>

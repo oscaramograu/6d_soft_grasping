@@ -50,7 +50,8 @@ class PointCloud(FrameBuilder):
     def _build_obstr_wrt_obj(self, frame: CamFrame):
         """
         Builds the attribute obstruction pointcloud in which the points 
-        are in object coordinates.
+        are in object coordinates. It then selects only the pts which
+        are within 15cm around the target object.
         """
         stride_ = 4
         remove_tolerance = 0.01
@@ -92,19 +93,13 @@ class PointCloud(FrameBuilder):
         else:
             header.frame_id = frame_id
 
-        # Set "fields" and "cloud_data"
         points=np.asarray(open3d_cloud.point.positions)
         fields=FIELDS_XYZ
         cloud_data=points
 
-        # Create a ufunc using np.frompyfunc that applies the item() method to each element
         item_func = np.frompyfunc(lambda tensor: tensor.item(), 1, 1)
 
-        # Use the ufunc to retrieve the float values
-        cloud_data = item_func(cloud_data)
-
-        print(cloud_data[0])
-        
+        cloud_data = item_func(cloud_data)        
         return pc2.create_cloud(header, fields, cloud_data)
     
     def _set_target_wrt_cam(self):
@@ -115,17 +110,11 @@ class PointCloud(FrameBuilder):
         self.listener.listen_tf()
         self.target_pose = self.listener.get_np_frame()
 
-    def get_pcd_wrt_target(self, target_g_pose: np.ndarray, g_depth:float):
+    def get_pcd_wrt_target(self, target_g_pose: np.ndarray):
         """
-        Returns a new pointcloud with respect to a given target grasp pose,
-        given the grasp width some points are rejected.
+        Returns a new pointcloud with respect to a given target grasp pose.
         """
         pcd = self.obstruction_pcl.cpu().clone()
         pcd.transform(invert_homogeneous(target_g_pose))
-        # print(pcd.point.positions.numpy())
-
-
-        # pcd = pcd.select_by_mask(o3d.core.Tensor(
-        #     np_pts[:, 2] < - g_depth+0.02))
 
         return pcd.cpu().clone()

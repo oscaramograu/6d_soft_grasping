@@ -13,16 +13,16 @@ std::string grippr_mesh_pth(){
 std::string hand_path = grippr_mesh_pth();
 
 int main(int argc, char** argv){
-    // Initialize the node
     ros::init(argc, argv, "object_publisher_node");
 
-    // Create an instance of the object class
-    TargetMeshBr object(hand_path, "hand_model");
+// ==============  PUBLISH THE TARGET OBJECT ============== 
+    TargetMeshBr object("", "cpsduck");
+    object.add_target_mesh(true);
 
-    // Execute main code
-    object.add_target_mesh(false);
+// ============== PUBLISH THE HAND COLLISION MODEL ============== 
+    // TargetMeshBr object(hand_path, "hand_model");
+    // object.add_target_mesh(false);
 
-    // Spin and process ROS callbacks
     ros::spin();
     ros::shutdown();
     return 0;

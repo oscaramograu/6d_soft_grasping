@@ -3,7 +3,7 @@ import numpy as np
 import open3d as o3d
 import os
 
-from impose_grasp.nodes.visualisation.point_cloud import PointCloud
+from impose_grasp.lib.point_cloud import PointCloud
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 
@@ -23,21 +23,17 @@ class GraspChooser(Grasps):
     def compute_best_grasp_ind(self):
         """
         It selects the best grasping pose for the target 
-        object between all the possible candidates:
-        - It first removes all grasp pose which its normal 
-        has 60 degrees from the camera frame normal.
-        - Then it iterates through the selected points.
-        - For each grasping position removes all points from 
-        the obstruction point cloud which are to far away.
-        - Then it calculates the mean distance from each of the 
-        obstruction points to the collision mesh of the gripper 
-        placed at the current grasping position, to assign a score 
-        to that grasping position.
-        - Finally based on the score obtained, the best grasping 
-        position is retrieved.
-        """
+        object between all the possible registered candidates.
 
-        # find distances to obstruction pointcloud
+        For each grasp candidate:
+        - It computes the number of ostructioin pts inside the collisioin
+        mesh palced at the grasp candidate position.
+        - If no points are inside the collision mesh, calculates the mean 
+        distance from each of the obstruction points to the collision mesh
+        to assign a score to that grasp candidate.
+        - If all candidates have points inside its collision mesh, the one
+        with less pts is selected.
+        """
         best_i = None
         best_score = math.inf
         self.pcd_builder.set_new_pcd_wrt_obj(self.voxel_size)
@@ -45,16 +41,12 @@ class GraspChooser(Grasps):
 
         for i in range(len(self.rel_poses)):
             gpose = self.rel_poses[i] # From a grasping pose wrt obj
-            grasp_depth = self.widths[i]
 
-            pcd = self.pcd_builder.get_pcd_wrt_target(gpose, grasp_depth)
-            result = self.scene.compute_signed_distance(pcd.point.positions).numpy() # compute the distance of each obstruction point wrt the EEF mesh
-                                                                                # placed at distance 
-                                # from an obstruc
-                                # tion point to the EEF mesh at this p this grasping position
+            pcd = self.pcd_builder.get_pcd_wrt_target(gpose)
+            result = self.scene.compute_signed_distance(pcd.point.positions).numpy()
             n_points = np.count_nonzero(result < -0.01)
 
-            if n_points < 1:    # select the grasping point that has the smallest averageoint.
+            if n_points < 1:  
                 print("The grasp: ", i, ", has no points in its grasping volume.")
 
                 dist_score = np.mean(1. / result)

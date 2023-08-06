@@ -1,11 +1,19 @@
 <launch>
-    <node pkg="impose_grasp" type="fake_grasp_broadcaster.py" 
-        name="fake_grasp_br_node" output="screen" />
-    
+    <arg name="camera_sim" default = "false" />
+
+    <!-- Target grasp broadcaster node -->
+    <node pkg="impose_grasp" type="grasp_broadcaster_node.py" 
+        name="grasp_br_node" output="screen" />
+
+    <!-- Add object mesh to the planning scene -->
     <node pkg="pandaqb_movegroup_control" type= "object_publisher_node"
     name="scene_objects_publisher_node" output="screen"/>
 
+    <!-- Add other scene objects to the planning scene -->
     <node pkg="pandaqb_movegroup_control" type= "scene_objects_publisher_node"
     name="target_obj_publisher_node" output="screen"/>
 
+    <!-- Visualise the pointcloud in rviz -->
+    <node unless="$(arg camera_sim)"  pkg="impose_grasp" type="pcd_publisher_node.py" 
+        name="pcd_publisher_node" output="screen" />    
 </launch>
