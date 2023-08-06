@@ -73,12 +73,17 @@ class PointCloud(FrameBuilder):
         self._set_target_wrt_cam()
         pcd.transform(self.target_pose)
 
+        pcd = self.select_pts_in_range(pcd, 0.4)
+        
+        self.obstruction_pcl = pcd.cpu().clone()
+
+    def select_pts_in_range(self, pcd_, range):
+        pcd = pcd_.cpu().clone()
         np_pts = pcd.point.positions.numpy()
         euclidean_norms = np.linalg.norm(np_pts, axis=1)
         pcd = pcd.select_by_mask(o3d.core.Tensor(
-            euclidean_norms < 0.15))
-        
-        self.obstruction_pcl = pcd.cpu().clone()
+            euclidean_norms < range))
+        return pcd.cpu().clone()
     
     def get_pcd_in_ros(self, open3d_cloud, frame_id = None):
         """

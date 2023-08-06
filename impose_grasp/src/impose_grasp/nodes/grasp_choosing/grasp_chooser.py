@@ -26,6 +26,8 @@ class GraspChooser(Grasps):
         object between all the possible registered candidates.
 
         For each grasp candidate:
+        - It  selects only points that are at less than 15 cm from the 
+        grasp candidate position. 
         - It computes the number of ostructioin pts inside the collisioin
         mesh palced at the grasp candidate position.
         - If no points are inside the collision mesh, calculates the mean 
@@ -43,6 +45,7 @@ class GraspChooser(Grasps):
             gpose = self.rel_poses[i] # From a grasping pose wrt obj
 
             pcd = self.pcd_builder.get_pcd_wrt_target(gpose)
+            pcd = self.pcd_builder.select_pts_in_range(pcd, 0.15)
             result = self.scene.compute_signed_distance(pcd.point.positions).numpy()
             n_points = np.count_nonzero(result < -0.01)
 
