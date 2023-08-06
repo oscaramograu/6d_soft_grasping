@@ -9,10 +9,12 @@ private:
     geometry_msgs::Pose pose;
 
     void listen();
+    void listen2();
+
     void build_pose();
 
 public:
-    TargetMeshBr(const std::string& object_name);
+    TargetMeshBr(const std::string& mesh_path, const std::string& object_name);
     ~TargetMeshBr();
-    void add_target_mesh();
+    void add_target_mesh(bool is_obj);
 };

@@ -41,6 +41,7 @@ class GraspChooser(Grasps):
         best_i = None
         best_score = math.inf
         self.pcd_builder.set_new_pcd_wrt_obj(self.voxel_size)
+        pts_in_col = []
 
         for i in range(len(self.rel_poses)):
             gpose = self.rel_poses[i] # From a grasping pose wrt obj
@@ -51,15 +52,21 @@ class GraspChooser(Grasps):
                                                                                 # placed at distance 
                                 # from an obstruc
                                 # tion point to the EEF mesh at this p this grasping position
-            n_points = np.count_nonzero(result < 0.00)
-            print("the besad", n_points)
+            n_points = np.count_nonzero(result < -0.01)
 
-            # if n_points < 1:    # select the grasping point that has the smallest averageoint.
+            if n_points < 1:    # select the grasping point that has the smallest averageoint.
+                print("The grasp: ", i, ", has no points in its grasping volume.")
 
-            dist_score = np.mean(1. / result)
-            if dist_score < best_score:
-                best_i = i
-                best_score = dist_score
+                dist_score = np.mean(1. / result)
+                if dist_score < best_score:
+                    best_i = i
+                    best_score = dist_score
+
+            pts_in_col.append(n_points)
+            
+        if best_i == None:
+            best_i = pts_in_col.index(min(pts_in_col))
+
         return best_i
     
     def _build_scene(self):
@@ -67,7 +74,7 @@ class GraspChooser(Grasps):
         Builds the mesh of the movement projection of the end effector.
         """
         EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,
-            "data", "models", "gripper_collision_d415.stl")
+            "data", "models", "hand_col.stl")
 
         gripper_bbox = load_mesh(EEF_mesh_path, tensor=True)
         self.scene = o3d.t.geometry.RaycastingScene()

@@ -1,9 +1,16 @@
 #include <pandaqb_movegroup_control/Target/TargetObject.h>
 
-TargetObject::TargetObject(const std::string& object_name): object_name_(object_name){
+TargetObject::TargetObject(const std::string& mesh_path, const std::string& object_name): 
+        object_name_(object_name){
     planning_scene_diff_publisher = nh.advertise<moveit_msgs::PlanningScene>(
         "planning_scene", 1);
-    set_mesh_path();
+
+    if(mesh_path==""){
+        set_mesh_path();
+    }
+    else{
+        mesh_path_ = mesh_path;
+    }
     load_moveit_mesh();
 }
 
@@ -26,13 +33,13 @@ void TargetObject::set_mesh_path(){
     mesh_folder =  impose_grasp_path + "/data/models/" + object_name_ + "/";
     file_name = object_name_ + ".ply";
 
-    mesh_path = mesh_folder + file_name;
+    mesh_path_ = mesh_folder + file_name;
 }
 
 void TargetObject::load_moveit_mesh(){
     // Load the mesh file using PCL
     pcl::PolygonMesh pcl_mesh;
-    if (pcl::io::loadPLYFile(mesh_path, pcl_mesh) == -1) {
+    if (pcl::io::loadPLYFile(mesh_path_, pcl_mesh) == -1) {
         ROS_ERROR("Failed to load PLY file");
     }
 

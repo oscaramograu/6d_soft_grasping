@@ -4,7 +4,7 @@
 
 class TargetObject{
 private:
-    std::string mesh_path;
+    std::string mesh_path_;
     shape_msgs::Mesh moveit_mesh;
     moveit_msgs::CollisionObject collision_object;
 
@@ -21,6 +21,6 @@ protected:
     void add_to_world(geometry_msgs::Pose pose);
 
 public:
-    TargetObject(const std::string& object_name);
+    TargetObject(const std::string& mesh_path, const std::string& object_name);
     ~TargetObject();
 };
