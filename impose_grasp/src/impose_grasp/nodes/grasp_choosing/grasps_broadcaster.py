@@ -7,13 +7,16 @@ from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 
 
 class GraspsBroadcasater(Grasps):
-    def __init__(self, grasps: Grasps) -> None:
+    def __init__(self, obj_frame,  grasps: Grasps) -> None:
         super().__init__()
+        self.obj_frame = obj_frame
+
         self.set_up_br(grasps)
 
         self.pow_gr_pub = rospy.Publisher('power_gr', Bool, queue_size=10)
         self.broadcasters: List[TransformBroadcaster] 
-        self.target_gr_br = TransformBroadcaster("/cpsduck_frame", "/target_grasp")
+        self.target_gr_br = TransformBroadcaster(obj_frame, "/target_grasp")
+
 
     def broadcast_grasps(self):
         for i in range(self.num_grasps):
@@ -43,7 +46,7 @@ class GraspsBroadcasater(Grasps):
         self.broadcasters = []
         for i in range(self.num_grasps):
             grasp_name = "/grasp_n_" + str(i)
-            self.broadcasters.append(TransformBroadcaster("/cpsduck_frame", grasp_name))
+            self.broadcasters.append(TransformBroadcaster(self.obj_frame, grasp_name))
 
     def _publish_flag(self, ind):
         pow_gr_msg = Bool()

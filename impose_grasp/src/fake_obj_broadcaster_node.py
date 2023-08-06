@@ -57,7 +57,9 @@ def run(tf_br: TransformBroadcaster, r:rospy.Rate):
 if __name__ == "__main__":
     rospy.init_node("fake_obj_broadcaster")
 
-    obj_frame_name = "/cpsduck_frame"
+    obj = rospy.get_param("/target_object")
+
+    obj_frame_name = "/" + obj + "_frame"
     tf_br = TransformBroadcaster("/panda_link0", obj_frame_name)
     r = rospy.Rate(5)
     run(tf_br, r)

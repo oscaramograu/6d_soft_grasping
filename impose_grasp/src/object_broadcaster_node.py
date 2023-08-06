@@ -17,8 +17,9 @@ class Flag:
 if __name__ == "__main__":
     rospy.init_node("object_broadcaster_node")
     flag = Flag()
+    obj = rospy.get_param("/target_object")
 
-    object_br = ObjectBroadcaster("cpsduck")
+    object_br = ObjectBroadcaster(obj)
 
     n=0
     old = datetime.now()

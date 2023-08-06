@@ -27,7 +27,6 @@ class PvnDetector:
             - saved_model.pb
     """
     step = -1
-
     base_crop = (80, 80)
 
     def __init__(self, obj_id, n_sample_points):

@@ -14,9 +14,11 @@ std::string hand_path = grippr_mesh_pth();
 
 int main(int argc, char** argv){
     ros::init(argc, argv, "object_publisher_node");
-
+    std::string obj_name;
+    ros::param::get("target_object", obj_name);
+    
 // ==============  PUBLISH THE TARGET OBJECT ============== 
-    TargetMeshBr object("", "cpsduck");
+    TargetMeshBr object("", obj_name);
     object.add_target_mesh(true);
 
 // ============== PUBLISH THE HAND COLLISION MODEL ============== 

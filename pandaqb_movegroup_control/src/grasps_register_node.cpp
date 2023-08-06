@@ -95,7 +95,8 @@ void add_grasp_to_file(){
 
 int main(int argc, char **argv){
   ros::init(argc, argv, "move_group_interface_tutorial");
-  std::string obj_name = "cpsduck";
+  std::string obj_name;
+  ros::param::get("target_object", obj_name);
 
   open_file(obj_name);
   data = json::array();

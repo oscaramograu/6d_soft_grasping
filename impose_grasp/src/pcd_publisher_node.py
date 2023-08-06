@@ -9,14 +9,17 @@ from impose_grasp.nodes.grasp_choosing.grasps_broadcaster import GraspsBroadcasa
 
 if __name__ == "__main__":
     rospy.init_node("point_cloud_viewer")
+    obj = rospy.get_param("/target_object")
+    frame = obj + "_frame"
+
     pub = rospy.Publisher("Realsense/points", PointCloud2, queue_size=1)
-    pcd = PointCloud("cpsduck_frame")
+    pcd = PointCloud(frame)
     r = rospy.Rate(2) # 10Hz
 
-    g_chooser = GraspFilterer()
+    g_chooser = GraspFilterer(obj)
     g_pose = g_chooser.rel_poses[0]
     g_w = g_chooser.widths[0]
-    g_br = GraspsBroadcasater(g_chooser)
+    g_br = GraspsBroadcasater(frame, g_chooser)
 
     n = 0
     while not rospy.is_shutdown() and n<5:
@@ -29,7 +32,7 @@ if __name__ == "__main__":
         pcd_wrt_targ = pcd.get_pcd_wrt_target(g_pose)
 
         ros_pcd = pcd.get_pcd_in_ros(pcd_wrt_obj)
-        # ros_pcd = pcd.get_pcd_in_ros(pcd_wrt_targ, frame_id="cpsduck_frame")
+        # ros_pcd = pcd.get_pcd_in_ros(pcd_wrt_targ, frame_id=frame)
 
         pub.publish(ros_pcd)
 

@@ -8,7 +8,7 @@ from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 
 class GraspChooser(Grasps):
-    def __init__(self, grasps: Grasps, obj_name):
+    def __init__(self, obj_name, grasps: Grasps):
         super().__init__()
         self.set_rel_poses(grasps.rel_poses)
         self.set_widths(grasps.widths)

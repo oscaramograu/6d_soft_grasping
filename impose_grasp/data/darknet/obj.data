@@ -1,2 +1,2 @@
-classes = 1
+classes = 5
 names = /home/oscar/catkin_ws/src/thesis/impose_grasp/data/darknet/single_obj.names

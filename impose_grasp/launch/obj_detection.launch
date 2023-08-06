@@ -2,13 +2,14 @@
     <arg name="robot_sim" default = "true" />
     <arg name="camera_sim" default = "false" />
 
+    <rosparam command="load" 
+    file="$(find impose_grasp)/config/target_object.yaml" />
+
     <!-- Launch fake robot in the scene -->
     <include unless="$(arg robot_sim)" file="$(find panda_qb_description)/launch/real_panda.launch"/>
     <include if="$(arg robot_sim)" file="$(find panda_qb_description)/launch/sim_panda.launch"/>
 
     <!-- Image publisher and Object broadcaster nodes -->
-    <param name="target_obj" type="string" value="cpsduck" />
-
     <node unless="$(arg camera_sim)" pkg="impose_grasp" type="img_publisher_node.py" 
         name="image_publisher" output="screen" />
 
@@ -17,5 +18,5 @@
 
     <!-- Fake object broadcaster node -->
     <node if="$(arg camera_sim)" pkg="impose_grasp" type="fake_obj_broadcaster_node.py" 
-        name="fake_obj_broadcaster_node" output="screen" /> 
+        name="fake_obj_broadcaster_node" output="screen" />
 </launch>

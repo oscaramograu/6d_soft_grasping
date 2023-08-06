@@ -4,7 +4,7 @@ from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 from impose_grasp.lib.tf_listener import TfListener
 
 class GraspFilterer(Grasps):
-    def __init__(self, grasps: Grasps = None, obj_name = "cpsduck") -> None:
+    def __init__(self, obj_name,  grasps: Grasps = None) -> None:
         super().__init__()
 
         self._good_grasps_ids = []
@@ -35,8 +35,8 @@ class GraspFilterer(Grasps):
         z_vec =  np.array([0,0,-1])
         good_grasps_ids  = self._select_grasp_inds_by_ang(z_vec, tr_ang=60, axis=2)
 
-        self._good_grasps_ids = self._exclude_lower_grasps(good_grasps_ids, obj_pose)
-
+        # self._good_grasps_ids = self._exclude_lower_grasps(good_grasps_ids, obj_pose)
+        self._good_grasps_ids = good_grasps_ids
         inds = range(len(self.abs_poses))
         self._bad_grasps = [x for x in inds if x not in self._good_grasps_ids]
         print("The number of filtered grasps is: ", len(self._good_grasps_ids))
