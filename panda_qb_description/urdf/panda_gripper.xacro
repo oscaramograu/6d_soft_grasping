@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="panda_robot" params="joint_limits">
+    <xacro:arg name="arm_id" default="panda" />
+    <xacro:arg name="hand" default="true" />
+
+    <xacro:include filename="$(find franka_description)/robots/common/franka_arm.xacro" />
+    <xacro:franka_arm arm_id="panda" safety_distance="0.03" gazebo="false" joint_limits="${joint_limits}"/>
+
+    <xacro:include filename="$(find panda_qb_description)/urdf/camera_support.xacro"/>
+
+    <xacro:if value="$(arg hand)">
+      <!-- Import the Franka Hand and connect it to the created link -->
+      <xacro:include filename="$(find franka_description)/robots/common/franka_hand.xacro"/>
+      <xacro:franka_hand
+          arm_id="$(arg arm_id)"
+          rpy="0 0 0"
+          xyz="0 0 0.011"
+          connected_to="camera_support_link"
+          safety_distance="0.03"
+       />
+    </xacro:if>
+  </xacro:macro>
+  
+</robot>

@@ -3,11 +3,15 @@
   <!-- publish the current configuration of the robot (simulated or real)  -->
   <!-- and the current state of the world as seen by the planner -->
   <arg name="rviz_file" default = "default"/>
+  <arg name="use_gripper" default = "true"/>
+
+  <arg if="$(arg use_gripper)" name="moveit_controller_manager" default = "pandaqb"/>
+  <arg unless="$(arg use_gripper)" name="moveit_controller_manager" default = "panda"/>
 
   <!-- launch movegroup -->
   <include file="$(find movit_config_panda_qb_4)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true" />
-    <arg name="moveit_controller_manager" value="panda" />
+    <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
   </include>
 
   <!-- The visualization component of MoveIt! -->

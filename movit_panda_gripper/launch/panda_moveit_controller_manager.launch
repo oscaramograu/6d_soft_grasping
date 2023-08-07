@@ -6,6 +6,6 @@
   <param name="moveit_controller_manager" value="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
 
   <!-- load controller_list -->
-  <rosparam file="$(find movit_config_panda_qb_4)/config/panda_controllers.yaml"/>
+  <rosparam file="$(find movit_config_gripper)/config/controllers.yaml"/>
 
 </launch>

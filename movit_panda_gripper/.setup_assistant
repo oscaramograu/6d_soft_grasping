@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: panda_qb_description
+    relative_path: urdf/panda_gripper.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/panda_qb.srdf
+  CONFIG:
+    author_name: oscar amo grau
+    author_email: 15.oscar.amo@gmail.com
+    generated_timestamp: 1691401042

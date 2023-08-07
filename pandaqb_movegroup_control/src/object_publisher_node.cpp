@@ -18,12 +18,12 @@ int main(int argc, char** argv){
     ros::param::get("target_object", obj_name);
     
 // ==============  PUBLISH THE TARGET OBJECT ============== 
-    TargetMeshBr object("", obj_name);
-    object.add_target_mesh(true);
+    // TargetMeshBr object("", obj_name);
+    // object.add_target_mesh(true);
 
 // ============== PUBLISH THE HAND COLLISION MODEL ============== 
-    // TargetMeshBr object(hand_path, "hand_model");
-    // object.add_target_mesh(false);
+    TargetMeshBr object(hand_path, "hand_model");
+    object.add_target_mesh(false);
 
     ros::spin();
     ros::shutdown();

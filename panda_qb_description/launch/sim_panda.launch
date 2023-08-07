@@ -1,33 +1,28 @@
 <?xml version="1.0"?>
 <launch>
 <!-- Launch parameters -->
-  <arg name="moveit_controller_manager" default="fake" />
-  <arg name="fake_execution_type" default="interpolate" />
-
-<!-- Load the robot description -->
-  <param name="robot_description"
-    command="xacro $(find panda_qb_description)/urdf/pandaqb_description.urdf.xacro">
-  </param>
+  <arg name="qb_hand" default="true" />
 
 <!-- Run robot and joint state publishers -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
   </node>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
-  
-  <include file="$(find panda_qb_description)/launch/camera_pose.launch" />
 
 <!-- Launch moveit planning execution -->
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
-  <include file="$(find movit_config_panda_qb_4)/launch/move_group.launch">
-    <arg name="allow_trajectory_execution" value="true"/>
-    <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
-    <arg name="fake_execution_type" value="$(arg fake_execution_type)"/>
-    <arg name="info" value="true"/>
-    <arg name="debug" value="false"/>
-    <arg name="pipeline" value="ompl"/>
-    <arg name="load_robot_description" value="false"/>
+  <include if = "$(arg qb_hand)" file="$(find movit_config_panda_qb_4)/launch/move_group.launch">
+    <arg name="moveit_controller_manager" value="fake" />
+    <arg name="load_robot_description" value="true"/>
   </include>
+
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
+  <include unless = "$(arg qb_hand)" file="$(find movit_panda_gripper)/launch/move_group.launch">
+    <arg name="moveit_controller_manager" value="fake" />
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <include file="$(find panda_qb_description)/launch/camera_pose.launch" />
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
   <include file="$(find movit_config_pandaqb)/launch/moveit_rviz.launch">
