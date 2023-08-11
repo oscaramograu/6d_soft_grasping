@@ -8,11 +8,13 @@ from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 
 class GraspChooser(Grasps):
-    def __init__(self, obj_name, grasps: Grasps):
+    def __init__(self, obj_name, grasps: Grasps, robot_config="qb_hand"):
         super().__init__()
         self.set_rel_poses(grasps.rel_poses)
         self.set_widths(grasps.widths)
         self.set_power_gr(grasps.power_gr)
+
+        self.using_hand = robot_config=="qb_hand"
 
         self.pcd_builder = PointCloud(obj_name + "_frame")
         self.voxel_size = 0.00
@@ -47,11 +49,14 @@ class GraspChooser(Grasps):
             pcd = self.pcd_builder.get_pcd_wrt_target(gpose)
             pcd = self.pcd_builder.select_pts_in_range(pcd, 0.15)
             result = self.scene.compute_signed_distance(pcd.point.positions).numpy()
-            n_points = np.count_nonzero(result < -0.01)
+
+            if self.using_hand: th = -0.01
+            else: th = 0.1
+
+            n_points = np.count_nonzero(result < th)
 
             if n_points < 1:  
                 print("The grasp: ", i, ", has no points in its grasping volume.")
-
                 dist_score = np.mean(1. / result)
                 if dist_score < best_score:
                     best_i = i
@@ -59,8 +64,10 @@ class GraspChooser(Grasps):
 
             pts_in_col.append(n_points)
             
-        if best_i == None:
+        if best_i == None and self.using_hand:
             best_i = pts_in_col.index(min(pts_in_col))
+        elif best_i == None and not self.using_hand:
+            print("No collision free grasp was found.")
 
         return best_i
     
@@ -68,8 +75,11 @@ class GraspChooser(Grasps):
         """
         Builds the mesh of the movement projection of the end effector.
         """
+        if self.using_hand: eef = "hand_col"
+        else: eef = "gripper_col"
+
         EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,
-            "data", "models", "hand_col.stl")
+            "data", "models", eef + ".stl")
 
         gripper_bbox = load_mesh(EEF_mesh_path, tensor=True)
         self.scene = o3d.t.geometry.RaycastingScene()

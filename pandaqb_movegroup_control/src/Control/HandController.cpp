@@ -9,6 +9,10 @@ HandController::HandController():
 HandController::~HandController(){
 }
 
+void HandController::print_joints(){
+    hand_mover.printCurrentJointPosition();
+}
+
 void HandController::grasp(bool pw_gr_flag){
     if(pw_gr_flag){
         power();

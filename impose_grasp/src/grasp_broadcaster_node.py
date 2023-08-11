@@ -15,29 +15,41 @@ def map_grasps(obj):
 
     return g_map
 
-def filter_grasps(obj, grasps=None):
-    g_filt = GraspFilterer(obj, grasps)
+def filter_grasps(obj, grasps=None, robot_config="qb_hand"):
+    g_filt = GraspFilterer(obj, grasps, robot_config)
     g_filt.filter()
 
     good_grasps = g_filt.get_good_grasps()
     return good_grasps
 
-def select_target_ind(obj, good_grasps):
-    gr_chooser = GraspChooser(obj, good_grasps)
+def select_target_ind(obj, good_grasps, robot_config):
+    gr_chooser = GraspChooser(obj, good_grasps, robot_config)
     return gr_chooser.compute_best_grasp_ind()
+
+def map_if_neces(robot_config):
+    print(robot_config)
+    if robot_config=="qb_hand":
+        print("Grasps were mapped")
+        gr_mapped = map_grasps(obj)
+    elif robot_config == "gripper":
+        gr_mapped = None
+        print("Grasps where not mapped")
+    return gr_mapped
 
 if __name__ == "__main__":
     rospy.init_node('fake_grasp_br_node')
+    robot_config = rospy.get_param("/robot_config")
+
     obj = rospy.get_param("/target_object")
     frame = obj + "_frame"
 
     rate = rospy.Rate(20)  # Hz
 
-    gr_mapped = map_grasps(obj)
-    good_grasps = filter_grasps(obj,gr_mapped)  # Choose if you want to map the grasps 
-                                            # or directly load the raw ones
+    gr_mapped = map_if_neces(robot_config)
 
-    # ind = select_target_ind(obj, good_grasps)
+    good_grasps = filter_grasps(obj, gr_mapped, robot_config)
+
+    # ind = select_target_ind(obj, good_grasps, robot_config)
     ind = random.randrange(0, len(good_grasps.rel_poses))
     # ind = 0
 

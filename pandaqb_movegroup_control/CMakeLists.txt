@@ -66,6 +66,7 @@ add_library(MoveGroup_libs
 )
 add_library(Control_libs
   ${PROJECT_SOURCE_DIR}/src/Control/HandController.cpp
+  ${PROJECT_SOURCE_DIR}/src/Control/GripperController.cpp
   ${PROJECT_SOURCE_DIR}/src/Control/ArmController.cpp
   ${PROJECT_SOURCE_DIR}/src/Target/GraspListener.cpp
 )

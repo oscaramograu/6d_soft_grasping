@@ -6,6 +6,7 @@
 #include <pandaqb_movegroup_control/Control/HandController.h>
 #include <pandaqb_movegroup_control/Control/ArmController.h>
 #include <pandaqb_movegroup_control/Target/GraspListener.h>
+#include <pandaqb_movegroup_control/Control/GripperController.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -62,20 +63,29 @@ int main(int argc, char** argv){
 
     ros::AsyncSpinner spinner(1);
     spinner.start();
+    std::string rbt_conf;
+    ros::param::get("robot_config", rbt_conf);
 
 // ================= REAL CODE ===========================
     ros::NodeHandle nh;
     GraspListener gr(&nh);
     geometry_msgs::Pose target_pose = gr.get_grasp_pose();
-    bool pow_gr_flag = gr.get_power_gr_flag();
 
     ArmController ac;
     HandController hc;
-
+    GripperController gc;
+    
     ac.set_grasp(target_pose);
     ac.approach_grasp();
 
-    hc.grasp(pow_gr_flag);
+    if(rbt_conf == "qb_hand"){
+        bool pow_gr_flag = gr.get_power_gr_flag();
+        hc.grasp(pow_gr_flag);
+    }
+    else if (rbt_conf == "gripper"){
+        float widht = gr.get_width();
+        gc.close_gripper(widht);
+    }
     
     ac.pick_up();
 
@@ -118,4 +128,12 @@ int main(int argc, char** argv){
 
     // ROS_INFO_STREAM("The target pose is: " << target_pose);
     // arm.moveTo(target_pose);
+
+// ================= TEST CLASSES ===========================
+    // GripperController gc;
+    // gc.close_gripper(0.00);
+    // gc.close_gripper(0.02);
+
+    // gc.open_gripper();
+    // gc.printCurrentJointPosition();
 }

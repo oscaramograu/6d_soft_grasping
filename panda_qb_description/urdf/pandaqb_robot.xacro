@@ -7,16 +7,14 @@
     <xacro:include filename="$(find franka_description)/robots/common/franka_arm.xacro" />
     <xacro:franka_arm arm_id="panda" safety_distance="0.03" gazebo="$(arg gazebo)" joint_limits="${joint_limits}"/>
 
-    <xacro:include filename="$(find panda_qb_description)/urdf/camera_support.xacro"/>
+    <xacro:include filename="$(find panda_qb_description)/urdf/qb_hand_wrist.xacro"/>
 
     <xacro:if value="$(arg hand)">
       <!-- Import the QB Hand and connect it to the created link -->
       <xacro:include filename="$(find qb_hand_description)/urdf/qbhand.utils.xacro"/>
-      <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m1" parent="camera_support">
-        <origin xyz="0 0 0.01" rpy="0 0 ${pi/2}"/>
+      <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m1" parent="qb_hand_wrist">
+        <origin xyz="0.018 0.0 0.058" rpy="${pi/2} 0 ${pi/2}"/>
       </xacro:build_hand_2m_from_yaml>
     </xacro:if>
   </xacro:macro>
-
-  
 </robot>

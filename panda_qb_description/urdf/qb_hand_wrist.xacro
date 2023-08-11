@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot name = "qb_hand_wrist">
+  <!-- Create a link and a joint to connect the last link of the panda arm with the base of the qb hand -->  
+  <joint name="panda_support_link__qb_hand_wrist_link" type="fixed">
+      <parent link="panda_link8"/>
+      <child link="qb_hand_wrist_link"/>
+  </joint>
+
+  <link name="qb_hand_wrist_link">
+    <visual>
+      <origin rpy="0 0 ${-pi/2}" xyz="0.0 0.0 -0.007"/>
+      <geometry>
+        <mesh filename="package://panda_qb_description/meshes/qb_hand_wrist.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="gray">
+      <color rgba="1 1 1 1"/>
+      </material>
+    </visual>  
+
+    <collision>
+      <origin rpy="0 0 ${-pi/2}" xyz="0.0 0.0 0.0"/> <!-- -${pi/2} -->
+      <geometry>
+        <mesh filename="package://panda_qb_description/meshes/qb_hand_wrist.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin rpy="0 0 ${-pi/2}" xyz="0.0 0.0 0.0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.001" ixz="0.001" iyy="0.001" iyz="0.001" izz="0.001" />
+    </inertial>
+
+  </link>
+
+  <link name="camera_frame" />
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.06 0.06 0.02" rpy="0.0872665 0 2.35619" />
+    <parent link="qb_hand_wrist_link" />
+    <child  link="camera_frame" />
+  </joint>
+
+</robot>

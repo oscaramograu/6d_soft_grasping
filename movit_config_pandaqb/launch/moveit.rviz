@@ -73,11 +73,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          camera_support_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -162,6 +157,11 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          qb_hand_wrist_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           qbhand2m1_base_link:
             Alpha: 1
             Show Axes: false
@@ -393,11 +393,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          camera_support_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -482,6 +477,11 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          qb_hand_wrist_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           qbhand2m1_base_link:
             Alpha: 1
             Show Axes: false
@@ -677,9 +677,69 @@ Visualization Manager:
         All Enabled: false
         camera_frame:
           Value: false
-        camera_support_link:
-          Value: false
         cpsduck_frame:
+          Value: true
+        grasp_n_0:
+          Value: true
+        grasp_n_1:
+          Value: true
+        grasp_n_10:
+          Value: true
+        grasp_n_11:
+          Value: true
+        grasp_n_12:
+          Value: true
+        grasp_n_13:
+          Value: true
+        grasp_n_14:
+          Value: true
+        grasp_n_15:
+          Value: true
+        grasp_n_16:
+          Value: true
+        grasp_n_17:
+          Value: true
+        grasp_n_18:
+          Value: true
+        grasp_n_19:
+          Value: true
+        grasp_n_2:
+          Value: true
+        grasp_n_20:
+          Value: true
+        grasp_n_21:
+          Value: true
+        grasp_n_22:
+          Value: true
+        grasp_n_23:
+          Value: true
+        grasp_n_24:
+          Value: true
+        grasp_n_25:
+          Value: true
+        grasp_n_26:
+          Value: true
+        grasp_n_27:
+          Value: true
+        grasp_n_28:
+          Value: true
+        grasp_n_29:
+          Value: true
+        grasp_n_3:
+          Value: true
+        grasp_n_30:
+          Value: true
+        grasp_n_4:
+          Value: true
+        grasp_n_5:
+          Value: true
+        grasp_n_6:
+          Value: true
+        grasp_n_7:
+          Value: true
+        grasp_n_8:
+          Value: true
+        grasp_n_9:
           Value: true
         panda_link0:
           Value: false
@@ -715,6 +775,8 @@ Visualization Manager:
           Value: false
         panda_link8:
           Value: false
+        qb_hand_wrist_link:
+          Value: true
         qbhand2m1_base_link:
           Value: false
         qbhand2m1_end_effector_link:
@@ -795,6 +857,8 @@ Visualization Manager:
           Value: false
         qbhand2m1_thumb_proximal_virtual_link:
           Value: false
+        target_grasp:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 0.20000000298023224
       Name: TF
@@ -804,7 +868,70 @@ Visualization Manager:
       Tree:
         panda_link0:
           cpsduck_frame:
-            {}
+            grasp_n_0:
+              {}
+            grasp_n_1:
+              {}
+            grasp_n_10:
+              {}
+            grasp_n_11:
+              {}
+            grasp_n_12:
+              {}
+            grasp_n_13:
+              {}
+            grasp_n_14:
+              {}
+            grasp_n_15:
+              {}
+            grasp_n_16:
+              {}
+            grasp_n_17:
+              {}
+            grasp_n_18:
+              {}
+            grasp_n_19:
+              {}
+            grasp_n_2:
+              {}
+            grasp_n_20:
+              {}
+            grasp_n_21:
+              {}
+            grasp_n_22:
+              {}
+            grasp_n_23:
+              {}
+            grasp_n_24:
+              {}
+            grasp_n_25:
+              {}
+            grasp_n_26:
+              {}
+            grasp_n_27:
+              {}
+            grasp_n_28:
+              {}
+            grasp_n_29:
+              {}
+            grasp_n_3:
+              {}
+            grasp_n_30:
+              {}
+            grasp_n_4:
+              {}
+            grasp_n_5:
+              {}
+            grasp_n_6:
+              {}
+            grasp_n_7:
+              {}
+            grasp_n_8:
+              {}
+            grasp_n_9:
+              {}
+            target_grasp:
+              {}
           panda_link0_sc:
             {}
           panda_link1:
@@ -829,9 +956,9 @@ Visualization Manager:
                         panda_link7_sc:
                           {}
                         panda_link8:
-                          camera_support_link:
-                            camera_frame:
-                              {}
+                          camera_frame:
+                            {}
+                          qb_hand_wrist_link:
                             qbhand2m1_base_link:
                               qbhand2m1_end_effector_link:
                                 {}

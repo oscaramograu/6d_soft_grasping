@@ -23,7 +23,7 @@
   </include> -->
 
   <include if = "$(arg qb_hand)" 
-    file="$(find movit_config_panda_qb_4)/launch/moveit_planning_execution.launch">
+    file="$(find movit_config_panda_qb_5)/launch/moveit_planning_execution.launch">
     <remap from="joint_states" to="robot/joint_states"/>
     <arg name="rviz_file" default="default"/>
     <arg name="use_gripper" default="$(arg load_gripper)"/>

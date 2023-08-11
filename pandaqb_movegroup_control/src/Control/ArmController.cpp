@@ -5,13 +5,12 @@ ArmController::ArmController(): arm_mover("arm"){
     std::string path = "move_group/arm/";
     ros::param::get(path + "left", left_pose);
     ros::param::get(path + "right", right_pose);
-
 }
 
 ArmController::~ArmController(){
 }
 void ArmController::approach_grasp(){
-    move_to_pre_pose();
+    // move_to_pre_pose();
 
     geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
     target_pose.position.z -= 0.2;

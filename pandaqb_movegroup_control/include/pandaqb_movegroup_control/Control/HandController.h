@@ -7,7 +7,6 @@ public:
     
     void grasp(bool pw_gr_flag);
 
-
     /**
      * Opens the qb soft hand.
      */
@@ -17,6 +16,8 @@ public:
      * The flag is true if the last method called was a open().
      */
     bool is_open();
+    
+    void print_joints();
 
 private:
     void send_trajectory(std::vector<double> motor_command);
@@ -32,6 +33,7 @@ private:
      */
     void power();
 
+    
     GroupMover hand_mover;
     bool open_flag;
     float duration;

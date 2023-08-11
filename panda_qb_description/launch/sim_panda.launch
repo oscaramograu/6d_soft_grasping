@@ -5,13 +5,13 @@
 
 <!-- Run robot and joint state publishers -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+    <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
   </node>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
 <!-- Launch moveit planning execution -->
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
-  <include if = "$(arg qb_hand)" file="$(find movit_config_panda_qb_4)/launch/move_group.launch">
+  <include if = "$(arg qb_hand)" file="$(find movit_config_panda_qb_5)/launch/move_group.launch">
     <arg name="moveit_controller_manager" value="fake" />
     <arg name="load_robot_description" value="true"/>
   </include>
@@ -29,4 +29,3 @@
     <arg name="rviz_config" value="$(find movit_config_pandaqb)/launch/moveit.rviz"/>
   </include>
 </launch>
-
