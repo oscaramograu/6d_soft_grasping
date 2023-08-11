@@ -12,7 +12,7 @@ class GraspFilterer(Grasps):
         self._bad_grasps_ids = []
 
         self._obj_tf_listener = TfListener(obj_name + "_frame")
-        self._obj_cam_tf_listener = TfListener(target_frame="camera_frame", base_frame=obj_name + "_frame")
+        self._cam_tf_listener = TfListener(target_frame="camera_frame")
 
         if grasps == None:
             self.load_from_file(obj_name)
@@ -28,22 +28,23 @@ class GraspFilterer(Grasps):
         the ones which's Zs are pointing upwards and Ys are pointing to the robot base. Or the 
         ones that are pointing to the camera frame.
         """
-        obj_pose = self._listen_pose("obj")
+        obj_pose, cam_pose = self._listen_poses()
+
         self.set_abs_poses(obj_pose)
         vertical_vec =  np.array([0,0,-1])
 
-        if self.robot_config == "qb_hand":
+        if cam_pose is None:
             obj_to_base_vec = -obj_pose[:3,3]/np.linalg.norm(-obj_pose[:3,3])
             good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)
             self._invert_opposite_Ys(good_gps_y_inds)
 
             good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=60, axis=2)
 
-        else:
+        elif cam_pose is not None:
             # SELECT ONLY THE ONES THAT POINT TO THE CAMERA OR THE ROBOT
-            obj_cam_pose = self._listen_pose("cam")
-            obj_cam_vec = obj_cam_pose[:3, 3]/np.linalg.norm(-obj_cam_pose[:3,3])
-            good_grasps_ids  = self._select_grasp_inds_by_ang(obj_cam_vec, tr_ang=80, axis=2)
+            obj_cam_vec = (cam_pose[:3, 3] - obj_pose[:3, 3])
+            obj_cam_vec /= np.linalg.norm(obj_cam_vec)
+            good_grasps_ids  = self._select_grasp_inds_by_ang(obj_cam_vec, tr_ang=70, axis=2)
 
         # self._good_grasps_ids = self._exclude_lower_grasps(good_grasps_ids, obj_pose)
         self._good_grasps_ids = good_grasps_ids
@@ -57,14 +58,16 @@ class GraspFilterer(Grasps):
                     self.abs_poses[ind][2,3] > z_th]
         return new_inds
 
-    def _listen_pose(self, obj)-> np.ndarray:
-        if obj == "obj":
-            self._obj_tf_listener.listen_tf()
-            pose = self._obj_tf_listener.get_np_frame()
-        elif obj == "cam":
-            self._obj_cam_tf_listener.listen_tf()
-            pose = self._obj_cam_tf_listener.get_np_frame()
-        return pose
+    def _listen_poses(self)-> (np.ndarray, np.ndarray):
+        self._obj_tf_listener.listen_tf()
+        obj_pose = self._obj_tf_listener.get_np_frame()
+
+        if self.robot_config == "gripper":
+            self._cam_tf_listener.listen_tf()
+            cam_pose = self._cam_tf_listener.get_np_frame()
+        else:
+            cam_pose = None
+        return obj_pose, cam_pose
     
     def _invert_opposite_Ys(self, good_g_inds):
         """
