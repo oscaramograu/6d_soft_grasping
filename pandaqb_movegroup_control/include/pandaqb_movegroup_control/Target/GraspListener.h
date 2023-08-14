@@ -1,3 +1,6 @@
+#ifndef GRASPLISTENER
+#define GRASPLISTENER
+
 #include <tf/transform_listener.h>
 #include <ros/ros.h>
 #include "std_msgs/Bool.h"
@@ -29,3 +32,4 @@ public:
 
     void build_gr_pose();
 };
+#endif

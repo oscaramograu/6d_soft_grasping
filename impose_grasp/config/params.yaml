@@ -1,3 +1,3 @@
 # Choose the target object to grasp
-target_object: "pliers"
+target_object: "cpsduck"
 robot_config: "gripper" #gripper // qb_hand

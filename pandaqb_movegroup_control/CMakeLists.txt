@@ -65,6 +65,7 @@ add_library(MoveGroup_libs
   ${PROJECT_SOURCE_DIR}/src/MoveGroup/InfoTriggerMG.cpp
 )
 add_library(Control_libs
+  ${PROJECT_SOURCE_DIR}/src/Control/EEFController.cpp
   ${PROJECT_SOURCE_DIR}/src/Control/HandController.cpp
   ${PROJECT_SOURCE_DIR}/src/Control/GripperController.cpp
   ${PROJECT_SOURCE_DIR}/src/Control/ArmController.cpp

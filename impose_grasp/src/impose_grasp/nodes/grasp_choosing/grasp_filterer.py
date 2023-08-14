@@ -42,7 +42,7 @@ class GraspFilterer(Grasps):
 
         elif cam_pose is not None:
             # SELECT ONLY THE ONES THAT POINT TO THE CAMERA OR THE ROBOT
-            obj_cam_vec = (cam_pose[:3, 3] - obj_pose[:3, 3])
+            obj_cam_vec = (obj_pose[:3, 3] - cam_pose[:3, 3])
             obj_cam_vec /= np.linalg.norm(obj_cam_vec)
             good_grasps_ids  = self._select_grasp_inds_by_ang(obj_cam_vec, tr_ang=70, axis=2)
 

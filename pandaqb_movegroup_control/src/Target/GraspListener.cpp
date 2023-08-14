@@ -2,7 +2,7 @@
 
 GraspListener::GraspListener(ros::NodeHandle *nh){
     pow_gr_sub = nh->subscribe("power_gr", 100, &GraspListener::flag_callback, this);
-    width_sub = nh->subscribe("grasp_width", 100, &GraspListener::width_callback, this);
+    width_sub = nh->subscribe("gr_width", 100, &GraspListener::width_callback, this);
 };
 
 GraspListener::~GraspListener(){
@@ -60,8 +60,8 @@ bool GraspListener::get_power_gr_flag(){
 
 float GraspListener::get_width(){
     std_msgs::Float32::ConstPtr msg = ros::topic::waitForMessage
-        <std_msgs::Float32>("/grasp_width");
+        <std_msgs::Float32>("/gr_width");
     ROS_INFO_STREAM("The grasp width is: " << width);
 
-    return power_gr;
+    return width;
 }

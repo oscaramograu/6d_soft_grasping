@@ -2,7 +2,7 @@
 
 class ArmController{
 public:
-    ArmController();
+    ArmController(std::string rbt_conf);
     ~ArmController();
 
     void set_grasp(geometry_msgs::Pose pose);

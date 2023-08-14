@@ -3,10 +3,9 @@
 // #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
-#include <pandaqb_movegroup_control/Control/HandController.h>
+#include <pandaqb_movegroup_control/Control/EEFController.h>
 #include <pandaqb_movegroup_control/Control/ArmController.h>
 #include <pandaqb_movegroup_control/Target/GraspListener.h>
-#include <pandaqb_movegroup_control/Control/GripperController.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -71,21 +70,17 @@ int main(int argc, char** argv){
     GraspListener gr(&nh);
     geometry_msgs::Pose target_pose = gr.get_grasp_pose();
 
-    ArmController ac;
-    HandController hc;
-    GripperController gc;
+    ArmController ac(rbt_conf);
+    EEFController eef_c(&nh);
     
     ac.set_grasp(target_pose);
+
+    eef_c.open();
+
     ac.approach_grasp();
 
-    if(rbt_conf == "qb_hand"){
-        bool pow_gr_flag = gr.get_power_gr_flag();
-        hc.grasp(pow_gr_flag);
-    }
-    else if (rbt_conf == "gripper"){
-        float widht = gr.get_width();
-        gc.close_gripper(widht);
-    }
+    eef_c.close();
+
     
     ac.pick_up();
 

@@ -1,11 +1,18 @@
 #include <pandaqb_movegroup_control/Control/ArmController.h>
 
-ArmController::ArmController(): arm_mover("arm"){
-    arm_mover.set_EEF_link("qbhand2m1_end_effector_link");
+ArmController::ArmController(std::string rbt_conf): arm_mover("arm"){
+    std::string eef_frame;
+    if(rbt_conf == "qb_hand"){
+        eef_frame = "qbhand2m1_end_effector_link";
+    }
+    else if(rbt_conf == "gripper"){
+        eef_frame = "panda_hand_tcp";
+    }
+    arm_mover.set_EEF_link(eef_frame);
     std::string path = "move_group/arm/";
     ros::param::get(path + "left", left_pose);
     ros::param::get(path + "right", right_pose);
-}
+    }
 
 ArmController::~ArmController(){
 }

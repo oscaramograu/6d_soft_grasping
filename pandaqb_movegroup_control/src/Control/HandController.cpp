@@ -1,7 +1,8 @@
 #include <pandaqb_movegroup_control/Control/HandController.h>
 
-HandController::HandController():
-        open_flag(false), duration(1.0), hand_mover("hand"){
+HandController::HandController(): GroupMover("hand"){
+    open_flag = false; 
+    duration = 1.0;
 
     open();
 }
@@ -10,7 +11,7 @@ HandController::~HandController(){
 }
 
 void HandController::print_joints(){
-    hand_mover.printCurrentJointPosition();
+    printCurrentJointPosition();
 }
 
 void HandController::grasp(bool pw_gr_flag){
@@ -61,5 +62,5 @@ bool HandController::is_open(){
 void HandController::send_trajectory(std::vector<double> motor_command){
     ROS_INFO_STREAM("Hand will move to: " << motor_command[0] 
         << ", " << motor_command[1]);
-    hand_mover.moveTo(motor_command);
+    moveTo(motor_command);
 }

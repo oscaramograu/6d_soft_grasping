@@ -1,6 +1,6 @@
 #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 
-class HandController{
+class HandController: public GroupMover{
 public:
     HandController();
     ~HandController();
@@ -33,8 +33,6 @@ private:
      */
     void power();
 
-    
-    GroupMover hand_mover;
     bool open_flag;
     float duration;
 };    

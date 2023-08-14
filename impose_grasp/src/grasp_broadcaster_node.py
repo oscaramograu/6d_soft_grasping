@@ -27,12 +27,13 @@ def select_target_ind(obj, good_grasps, robot_config):
     return gr_chooser.compute_best_grasp_ind()
 
 def map_if_neces(robot_config):
-    print(robot_config)
+    print("The robot config is: ", robot_config)
+    gr_mapped = None
+
     if robot_config=="qb_hand":
         print("Grasps were mapped")
         gr_mapped = map_grasps(obj)
     elif robot_config == "gripper":
-        gr_mapped = None
         print("Grasps where not mapped")
     return gr_mapped
 

@@ -13,7 +13,7 @@
       <!-- Import the QB Hand and connect it to the created link -->
       <xacro:include filename="$(find qb_hand_description)/urdf/qbhand.utils.xacro"/>
       <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m1" parent="qb_hand_wrist">
-        <origin xyz="0.018 0.0 0.058" rpy="${pi/2} 0 ${pi/2}"/>
+        <origin xyz="0.018 0.0 0.068" rpy="${pi/2} 0 ${pi/2}"/>
       </xacro:build_hand_2m_from_yaml>
     </xacro:if>
   </xacro:macro>

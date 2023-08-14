@@ -8,7 +8,7 @@
 
   <link name="qb_hand_wrist_link">
     <visual>
-      <origin rpy="0 0 ${-pi/2}" xyz="0.0 0.0 -0.007"/>
+      <origin rpy="0 0 ${pi/2}" xyz="0.0 0.0 -0.007"/>
       <geometry>
         <mesh filename="package://panda_qb_description/meshes/qb_hand_wrist.stl" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -18,14 +18,14 @@
     </visual>  
 
     <collision>
-      <origin rpy="0 0 ${-pi/2}" xyz="0.0 0.0 0.0"/> <!-- -${pi/2} -->
+      <origin rpy="0 0 ${pi/2}" xyz="0.0 0.0 -0.007"/> <!-- -${pi/2} -->
       <geometry>
         <mesh filename="package://panda_qb_description/meshes/qb_hand_wrist.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
     <inertial>
-      <origin rpy="0 0 ${-pi/2}" xyz="0.0 0.0 0.0"/>
+      <origin rpy="0 0 ${pi/2}" xyz="0.0 0.0 -0.007"/>
       <mass value="0.1"/>
       <inertia ixx="0.001" ixy="0.001" ixz="0.001" iyy="0.001" iyz="0.001" izz="0.001" />
     </inertial>
