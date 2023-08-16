@@ -50,8 +50,8 @@ if __name__ == "__main__":
 
     good_grasps = filter_grasps(obj, gr_mapped, robot_config)
 
-    # ind = select_target_ind(obj, good_grasps, robot_config)
-    ind = random.randrange(0, len(good_grasps.rel_poses))
+    ind = select_target_ind(obj, good_grasps, robot_config)
+    # ind = random.randrange(0, len(good_grasps.rel_poses))
     # ind = 0
 
     g_br = GraspsBroadcasater(frame, good_grasps)

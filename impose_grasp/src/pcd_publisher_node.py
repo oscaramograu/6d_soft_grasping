@@ -22,7 +22,7 @@ if __name__ == "__main__":
     g_br = GraspsBroadcasater(frame, g_chooser)
 
     n = 0
-    while not rospy.is_shutdown() and n<5:
+    while not rospy.is_shutdown() and n<10:
         n+=1
 
         g_br.broadcast_target(0)
@@ -38,4 +38,4 @@ if __name__ == "__main__":
 
         r.sleep()
 
-    print("The pointcloud has been published 5 times, check if makes sence")
+    print("The pointcloud has been published ", n, " times, check if makes sence")

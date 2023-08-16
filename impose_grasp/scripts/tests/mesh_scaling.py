@@ -2,7 +2,7 @@ import trimesh
 import os
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP
 
-mesh_pth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "gripper_col.stl")
+mesh_pth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "hand_col2.stl")
 
 # Load the PLY file
 mesh = trimesh.load_mesh(mesh_pth)

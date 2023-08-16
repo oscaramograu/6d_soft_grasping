@@ -1,7 +1,6 @@
 #include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
 
-GraspRegisterer::GraspRegisterer(
-    ros::NodeHandle *nh): 
+GraspRegisterer::GraspRegisterer(ros::NodeHandle *nh): 
         GraspListener(nh), id(0), file(),
         exp_files_path("/home/oscar/catkin_ws/src/thesis/results/"){
 

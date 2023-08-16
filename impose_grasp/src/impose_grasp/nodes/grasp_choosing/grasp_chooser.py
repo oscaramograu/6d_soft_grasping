@@ -50,7 +50,7 @@ class GraspChooser(Grasps):
             pcd = self.pcd_builder.select_pts_in_range(pcd, 0.15)
             result = self.scene.compute_signed_distance(pcd.point.positions).numpy()
 
-            if self.using_hand: th = -0.01
+            if self.using_hand: th = 0.0
             else: th = 0.1
 
             n_points = np.count_nonzero(result < th)
@@ -75,8 +75,8 @@ class GraspChooser(Grasps):
         """
         Builds the mesh of the movement projection of the end effector.
         """
-        if self.using_hand: eef = "hand_col"
-        else: eef = "gripper_col"
+        if self.using_hand: eef = "qb_hand_col2"
+        else: eef = "qb_gripper_col"
 
         EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,
             "data", "models", eef + ".stl")

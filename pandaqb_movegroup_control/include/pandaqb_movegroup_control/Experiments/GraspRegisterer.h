@@ -9,8 +9,7 @@
 
 class GraspRegisterer: public GraspListener{
 public:
-    GraspRegisterer(
-        ros::NodeHandle *nh);
+    GraspRegisterer(ros::NodeHandle *nh);
     ~GraspRegisterer();
 
     void register_data();

@@ -9,11 +9,7 @@ int main(int argc, char** argv){
     spinner.start();
 
     ros::NodeHandle nh;
-    bool using_clutter = true;
-    bool using_mapped_grasps = true;
-    ros::param::get("using_clutter", using_clutter);
-
-    GraspRegisterer grasp_registerer(&nh, using_clutter, using_mapped_grasps);
+    GraspRegisterer grasp_registerer(&nh);
 
     while(n < max_n){
         n++;
