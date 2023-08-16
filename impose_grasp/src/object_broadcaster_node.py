@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     n=0
     old = datetime.now()
-    cycles = 10
+    cycles = 15
     r = rospy.Rate(5) # 10Hz
     while not rospy.is_shutdown():
         r.sleep()

@@ -77,7 +77,7 @@ void ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
     std::cout << "The offsets in target grasp coordinates are:\n"
         << normal_offsets << std::endl;
 
-    offsets = quad.matrix().inverse()*normal_offsets;
+    offsets = quad.matrix()*normal_offsets;
 
     std::cout << "The offsets in abs coordinates are:\n"
         << offsets << std::endl;

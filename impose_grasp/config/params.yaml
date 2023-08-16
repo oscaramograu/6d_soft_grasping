@@ -1,4 +1,3 @@
 # Choose the target object to grasp
 target_object: "cpsduck"
-robot_config: "gripper" #gripper // qb_hand
-using_clutter: "false"
+robot_config: "qb_hand" #gripper // qb_hand

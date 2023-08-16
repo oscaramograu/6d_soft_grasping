@@ -1,4 +1,3 @@
-#pragma once
 #include <ros/ros.h>
 #include <iostream>
 #include <fstream>
@@ -8,16 +7,18 @@
 
 #include <pandaqb_movegroup_control/Target/GraspListener.h>
 
-class PinchVsPower: public GraspListener{
+class GraspRegisterer: public GraspListener{
 public:
-    PinchVsPower(ros::NodeHandle *nh, bool using_clutter);
-    ~PinchVsPower();
+    GraspRegisterer(
+        ros::NodeHandle *nh);
+    ~GraspRegisterer();
 
     void register_data();
 
 private:
+    void set_file_path();
     void open_file();
-
+    
     void set_data();
 
     void set_grasp();
@@ -25,7 +26,7 @@ private:
     void set_success();
 
     std::ofstream *file;
-    std::string file_path;
+    std::string exp_files_path, file_path;
 
     ros::ServiceClient grasp_client;
     std_srvs::SetBool srv;
@@ -34,7 +35,7 @@ private:
     std_msgs::String msg;
 
     int id;
-    bool success, clutter;
+    bool success;
     float width;
-    std::string grasp, object;
+    std::string grasp_type, object, eef;
 };

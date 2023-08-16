@@ -1,4 +1,4 @@
-#include <pandaqb_movegroup_control/Experiments/PinchVsPower.h>
+#include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
 
 int n = 0;
 int max_n = 2;
@@ -9,13 +9,14 @@ int main(int argc, char** argv){
     spinner.start();
 
     ros::NodeHandle nh;
-    bool using_clutter;
+    bool using_clutter = true;
+    bool using_mapped_grasps = true;
     ros::param::get("using_clutter", using_clutter);
 
-    PinchVsPower pinch_vs_pw(&nh, using_clutter);
+    GraspRegisterer grasp_registerer(&nh, using_clutter, using_mapped_grasps);
 
     while(n < max_n){
         n++;
-        pinch_vs_pw.register_data();
+        grasp_registerer.register_data();
     }
 }

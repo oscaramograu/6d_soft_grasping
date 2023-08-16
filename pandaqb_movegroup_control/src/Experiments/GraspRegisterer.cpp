@@ -1,9 +1,9 @@
-#include <pandaqb_movegroup_control/Experiments/PinchVsPower.h>
+#include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
 
-PinchVsPower::PinchVsPower(ros::NodeHandle *nh, bool using_clutter): 
-        GraspListener(nh),
-        file(), clutter(using_clutter), 
-        id(0), file_path("/home/oscar/Desktop/pinch_vs_pow.txt"){
+GraspRegisterer::GraspRegisterer(
+    ros::NodeHandle *nh): 
+        GraspListener(nh), id(0), file(),
+        exp_files_path("/home/oscar/catkin_ws/src/thesis/results/"){
 
     grasp_client = nh->serviceClient<std_srvs::SetBool>("gr_exec");
     srv.request.data = true;
@@ -11,42 +11,50 @@ PinchVsPower::PinchVsPower(ros::NodeHandle *nh, bool using_clutter):
     pub = nh->advertise<std_msgs::String>("stop_flag", 10);
     msg.data = "";
 
+    set_file_path();
     open_file();
 
-    ros::param::get("target_object", object);
     std::cout << "The object being used is: " << object << std::endl;
-    std::cout << "The clutter flag has been set to: " << clutter << std::endl;
 }
 
-PinchVsPower::~PinchVsPower(){
+GraspRegisterer::~GraspRegisterer(){
     file->close();
     std::cout << "The file has been saved at: " << file_path << std::endl;
 }
 
-void PinchVsPower::open_file(){
+void GraspRegisterer::set_file_path(){
+    ros::param::get("target_object", object);
+    ros::param::get("robot_config", eef);
+
+    file_path = exp_files_path + "/" + eef + "/" + object + ".txt";
+}   
+
+void GraspRegisterer::open_file(){
     file= new std::ofstream(file_path); // opens the file
 
     if(!file->is_open()) { // file couldn't be opened
-      std::cerr << "Error1: file could not be opened" << std::endl;
+      std::cerr << "Error1: file " << file_path <<
+        " could not be opened" << std::endl;
+
       exit(1);
     }
 
-    *file << "id, Grasp, Width, Object, Success, Clutter" << std::endl;
+    *file << "id, Width, Object, Success, Grasp type" << std::endl;
 }
 
-void PinchVsPower::register_data(){
+void GraspRegisterer::register_data(){
     set_data();
 
     *file 
     << id << ", " 
-    << grasp << ", " 
-    << success << ", " 
     << width << ", " 
     << object << ", " 
-    << clutter << std::endl;
+    << success << ", " 
+    << grasp_type << ", " 
+    << std::endl;
 }
 
-void PinchVsPower::set_data(){
+void GraspRegisterer::set_data(){
     id++;
     width = get_width();
     set_grasp();
@@ -59,17 +67,22 @@ void PinchVsPower::set_data(){
     std::cin >> enter;
 }
 
-void PinchVsPower::set_grasp(){
+void GraspRegisterer::set_grasp(){
+    if(eef == "qb_hand"){
     bool pw_g_f =  get_power_gr_flag();
-    if(pw_g_f == true){
-        grasp == "power";
+        if(pw_g_f == true){
+            grasp_type = "power";
+        }
+        else{
+            grasp_type = "pinch";
+        }
     }
     else{
-        grasp == "pinch";
+        grasp_type = "parallel_plates";
     }
 }
 
-void PinchVsPower::send_grasp_request(){
+void GraspRegisterer::send_grasp_request(){
     if (grasp_client.call(srv))
     {
         ROS_INFO_STREAM("The grasp execution request was properly sent.");
@@ -80,17 +93,19 @@ void PinchVsPower::send_grasp_request(){
     }
 }
 
-void PinchVsPower::set_success(){
+void GraspRegisterer::set_success(){
     std::string succeded = "";
     do{
         std::cout << "Enter y if grasp succeded or n if not:";
         std::cin >> succeded;
     }
     while(succeded != "n" && succeded != "y");   
+    std::cout << "Succeeded value = " << succeded << std::endl;
     if(succeded == "n"){
         success = false;
     }
     else if(succeded == "y"){
         success = true;
     }
+    std::cout << "Success value = " << success << std::endl;
 }

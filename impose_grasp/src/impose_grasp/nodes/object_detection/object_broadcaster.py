@@ -58,9 +58,6 @@ class ObjectBroadcaster(TransformBroadcaster):
                 self.broadcast_transform(self.obj_world)
             return False
 
-
-            
-
     def test_broadcaster(self):
         affine_matrix = np.array([[1.0, 0.0, 0.0, 0.0],
                                   [0.0, 1.0, 0.0, 0.0],

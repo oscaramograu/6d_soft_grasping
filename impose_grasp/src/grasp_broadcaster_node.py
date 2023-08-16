@@ -59,5 +59,5 @@ if __name__ == "__main__":
     print("The power grasp flag is: ", g_br.power_gr[ind])
     while not rospy.is_shutdown():
         g_br.broadcast_target(ind)
-        g_br.broadcast_grasps()
+        # g_br.broadcast_grasps()
         rate.sleep() 

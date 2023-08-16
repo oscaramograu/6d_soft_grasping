@@ -75,7 +75,7 @@ add_library(Control_libs
 )
 
 add_library(Experiment_libs
-  ${PROJECT_SOURCE_DIR}/src/Experiments/PinchVsPower.cpp
+  ${PROJECT_SOURCE_DIR}/src/Experiments/GraspRegisterer.cpp
   ${PROJECT_SOURCE_DIR}/src/Target/GraspListener.cpp
 )
 
