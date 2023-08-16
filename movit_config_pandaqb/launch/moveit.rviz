@@ -368,34 +368,6 @@ Visualization Manager:
           Value: false
         camera_support_link:
           Value: true
-        cpsduck_frame:
-          Value: true
-        grasp_n_0:
-          Value: true
-        grasp_n_1:
-          Value: true
-        grasp_n_10:
-          Value: true
-        grasp_n_11:
-          Value: true
-        grasp_n_12:
-          Value: true
-        grasp_n_2:
-          Value: true
-        grasp_n_3:
-          Value: true
-        grasp_n_4:
-          Value: true
-        grasp_n_5:
-          Value: true
-        grasp_n_6:
-          Value: true
-        grasp_n_7:
-          Value: true
-        grasp_n_8:
-          Value: true
-        grasp_n_9:
-          Value: true
         panda_hand:
           Value: true
         panda_hand_sc:
@@ -440,8 +412,6 @@ Visualization Manager:
           Value: false
         panda_rightfinger:
           Value: true
-        target_grasp:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 0.20000000298023224
       Name: TF
@@ -450,35 +420,6 @@ Visualization Manager:
       Show Names: false
       Tree:
         panda_link0:
-          cpsduck_frame:
-            grasp_n_0:
-              {}
-            grasp_n_1:
-              {}
-            grasp_n_10:
-              {}
-            grasp_n_11:
-              {}
-            grasp_n_12:
-              {}
-            grasp_n_2:
-              {}
-            grasp_n_3:
-              {}
-            grasp_n_4:
-              {}
-            grasp_n_5:
-              {}
-            grasp_n_6:
-              {}
-            grasp_n_7:
-              {}
-            grasp_n_8:
-              {}
-            grasp_n_9:
-              {}
-            target_grasp:
-              {}
           panda_link0_sc:
             {}
           panda_link1:
@@ -581,7 +522,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.2931900024414062
+      Distance: 1.3060011863708496
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -589,17 +530,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.75
       Focal Point:
-        X: 0.41859135031700134
-        Y: 0.06501855701208115
-        Z: 0.0747947096824646
+        X: 0.533174991607666
+        Y: -0.006980320438742638
+        Z: 0.6147067546844482
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.25520414113998413
+      Pitch: 0.6247971057891846
       Target Frame: panda_link0
-      Yaw: 1.0187318325042725
+      Yaw: 4.966930866241455
     Saved: ~
 Window Geometry:
   Displays:
@@ -619,5 +560,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1848
-  X: 1992
+  X: 1152
   Y: 0

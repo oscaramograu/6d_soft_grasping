@@ -15,7 +15,7 @@
       <xacro:franka_hand
           arm_id="$(arg arm_id)"
           rpy="0 0 0"
-          xyz="0 0 0.011"
+          xyz="0 0 0.015"
           connected_to="camera_support_link"
           safety_distance="0.03"
        />

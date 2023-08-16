@@ -3,9 +3,10 @@
 // #include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
-#include <pandaqb_movegroup_control/Control/EEFController.h>
-#include <pandaqb_movegroup_control/Control/ArmController.h>
-#include <pandaqb_movegroup_control/Target/GraspListener.h>
+// #include <pandaqb_movegroup_control/Control/EEFController.h>
+// #include <pandaqb_movegroup_control/Control/ArmController.h>
+// #include <pandaqb_movegroup_control/Target/GraspListener.h>
+#include <pandaqb_movegroup_control/Control/Controller.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -62,28 +63,36 @@ int main(int argc, char** argv){
 
     ros::AsyncSpinner spinner(1);
     spinner.start();
-    std::string rbt_conf;
-    ros::param::get("robot_config", rbt_conf);
 
 // ================= REAL CODE ===========================
     ros::NodeHandle nh;
-    GraspListener gr(&nh);
-    geometry_msgs::Pose target_pose = gr.get_grasp_pose();
+    // GraspListener gr(&nh);
+    // geometry_msgs::Pose target_pose = gr.get_grasp_pose();
 
-    ArmController ac(rbt_conf);
-    EEFController eef_c(&nh);
+    // ArmController ac;
+    // EEFController eef_c(&nh);
     
-    ac.set_grasp(target_pose);
+    // ac.set_grasp(target_pose);
 
-    eef_c.open();
+    // eef_c.open();
 
-    ac.approach_grasp();
+    // ac.approach_grasp();
 
-    eef_c.close();
+    // eef_c.close();
 
     
-    ac.pick_up();
+    // ac.pick_up();
 
+// ================= EXPERIMENTING ===========================
+    Controller controller(&nh);
+    ROS_INFO_STREAM("READY TO GRASP");
+
+    ros::Rate loop_rate(10);  // Adjust the rate as needed
+    while (ros::ok())
+    {
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
 // ================= TESTING POSE ===========================
     // tf::StampedTransform transform;
     // tf::TransformListener listener;

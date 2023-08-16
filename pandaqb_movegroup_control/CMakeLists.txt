@@ -32,6 +32,7 @@ catkin_package(
   LIBRARIES 
     Control_libs
     MoveGroup_libs
+    Experiment_libs
   CATKIN_DEPENDS 
     tf
     tf_conversions
@@ -70,6 +71,12 @@ add_library(Control_libs
   ${PROJECT_SOURCE_DIR}/src/Control/GripperController.cpp
   ${PROJECT_SOURCE_DIR}/src/Control/ArmController.cpp
   ${PROJECT_SOURCE_DIR}/src/Target/GraspListener.cpp
+  ${PROJECT_SOURCE_DIR}/src/Control/Controller.cpp
+)
+
+add_library(Experiment_libs
+  ${PROJECT_SOURCE_DIR}/src/Experiments/PinchVsPower.cpp
+  ${PROJECT_SOURCE_DIR}/src/Target/GraspListener.cpp
 )
 
 target_link_libraries(MoveGroup_libs
@@ -80,8 +87,13 @@ target_link_libraries(MoveGroup_libs
   nlohmann_json::nlohmann_json
 )
 
+target_link_libraries(Experiment_libs
+  ${catkin_LIBRARIES}
+)
+
 add_dependencies(Control_libs ${catkin_EXPORTED_TARGETS})
 add_dependencies(MoveGroup_libs ${catkin_EXPORTED_TARGETS})
+add_dependencies(Experiment_libs ${catkin_EXPORTED_TARGETS})
 
 # ======================================== Controller Node ========================================
 add_executable(controller_node 
@@ -114,6 +126,16 @@ add_dependencies(camera_callibration_control_node
 target_link_libraries(camera_callibration_control_node
   MoveGroup_libs)
 
+# ======================================== Experiment Recorder Node ========================================
+add_executable(experiment_recorder_node
+  ${PROJECT_SOURCE_DIR}/src/experiment_recorder.cpp)
+
+add_dependencies(experiment_recorder_node
+  ${experiment_recorder_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+  target_link_libraries(experiment_recorder_node
+  Experiment_libs
+  )
 
 # ======================================== Object Publisher Node ========================================
 add_library(Object_libs
