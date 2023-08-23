@@ -5,13 +5,13 @@
   <arg name="rviz_file" default = "default"/>
 
   <!-- launch movegroup -->
-  <include file="$(find movit_config_gripper)/launch/move_group.launch">
+  <include file="$(find movit_panda_gripper)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true" />
     <arg name="moveit_controller_manager" value="panda" />
   </include>
 
   <!-- The visualization component of MoveIt! -->
-  <include file="$(find movit_config_gripper)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find movit_config_gripper)/rviz/$(arg rviz_file).rviz"/>
+  <include file="$(find movit_panda_gripper)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find movit_panda_gripper)/rviz/$(arg rviz_file).rviz"/>
   </include>
 </launch>

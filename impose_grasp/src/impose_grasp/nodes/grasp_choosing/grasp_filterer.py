@@ -38,7 +38,8 @@ class GraspFilterer(Grasps):
             good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)
             self._invert_opposite_Ys(good_gps_y_inds)
 
-            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=60, axis=2)
+            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=40, axis=2)
+            good_grasps_ids = self._select_only_positive_points(good_grasps_ids, obj_pose, th_dist=0.02)
 
         elif cam_pose is not None:
             # SELECT ONLY THE ONES THAT POINT TO THE CAMERA OR THE ROBOT
@@ -81,7 +82,16 @@ class GraspFilterer(Grasps):
             original_pose = self.rel_poses[ind][:3, 3].copy()
             self.rel_poses[ind] = self._rotate_around_Z(self.rel_poses[ind], pi)
             self.rel_poses[ind][:3, 3] = original_pose
-       
+
+    def _select_only_positive_points(self, ids, obj_pose:np.ndarray, th_dist: float = 0):
+        """ It selects grasps which are over the target object in the z axis."""
+        high_ids = [i for i in ids if(self.abs_poses[i][2, 3] > obj_pose[2, 3] - th_dist)]
+        # for i in high_ids:
+        #     z = self.abs_poses[i][2, 3]
+        #     print(z)
+        # print("The abs pose of z is: ", obj_pose[2, 3])
+        return high_ids
+
     def _select_grasp_inds_by_ang(self, vect:np.ndarray, tr_ang: float, axis: int):
         """
         It filters the absolute pose grasps to select only the ones which's selected axis

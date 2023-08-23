@@ -63,7 +63,7 @@ def main():
     d_np_pub = rospy.Publisher(
         '/camera/depth/numpy', Float32MultiArray, queue_size=10)
 
-    rate = rospy.Rate(10)  # Publish at 10Hz
+    rate = rospy.Rate(2)  # Publish at 10Hz
 
     camera.start()
     while not rospy.is_shutdown():

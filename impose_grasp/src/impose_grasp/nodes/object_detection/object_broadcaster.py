@@ -21,6 +21,7 @@ class ObjectBroadcaster(TransformBroadcaster):
 
         self.det = Detector(target_obj)
         self.fb = FrameBuilder()
+        self.tf_listener = TfListener("camera_frame")
 
         self.obj_world: np.ndarray = None
 
@@ -44,17 +45,23 @@ class ObjectBroadcaster(TransformBroadcaster):
                 f_obj_cam = self.compute_filtered_affine(frame)
                 cam_world = self.get_cam_world_affine()
 
+                print("obj_cam: ", f_obj_cam)
+                print("cam_world:", cam_world)
+
                 if f_obj_cam is not None and cam_world is not None:
                     self.obj_world = cam_world@f_obj_cam
                     print("object has been found")
                     self.broadcast_transform(self.obj_world)
                     return True
-                else:
+                else: 
                     return False
             else:
                 return False
         else:
             if self.obj_world is not None:
+                if self.num == 0:
+                    self.filter.clear_poses()
+                    self.num += 1
                 self.broadcast_transform(self.obj_world)
             return False
 
@@ -68,9 +75,8 @@ class ObjectBroadcaster(TransformBroadcaster):
         self.rate.sleep()
 
     def get_cam_world_affine(self):
-        tf_listener = TfListener("camera_frame")
-        tf_listener.listen_tf()
-        CamWorld = tf_listener.get_np_frame()
+        self.tf_listener.listen_tf()
+        CamWorld = self.tf_listener.get_np_frame()
         return CamWorld
 
     def compute_filtered_affine(self, frame):

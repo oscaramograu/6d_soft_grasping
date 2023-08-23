@@ -25,3 +25,6 @@ class PoseFilter:
         It returns the last filtered pose.
         """
         return self.f_pose
+    
+    def clear_poses(self):
+        self.poses.clear()

@@ -2,6 +2,7 @@
 import rospy
 import random
 import numpy as np
+from datetime import datetime
 
 from impose_grasp.nodes.grasp_choosing.grasps_mapper import GraspMapper
 from impose_grasp.nodes.grasp_choosing.grasp_chooser import GraspChooser
@@ -9,7 +10,7 @@ from impose_grasp.nodes.grasp_choosing.grasp_filterer import GraspFilterer
 from impose_grasp.nodes.grasp_choosing.grasps_broadcaster import GraspsBroadcasater
 
 def map_grasps(obj):
-    g_map = GraspMapper(width_proportion_th=0.9, offsets=np.array([-0.03, -0.005, 0]))
+    g_map = GraspMapper(width_proportion_th=0.9, offsets=np.array([-0.005, 0.02, -0.02]))
     g_map.load_from_file(obj)
     g_map.map_grasps()
 
@@ -20,6 +21,12 @@ def filter_grasps(obj, grasps=None, robot_config="qb_hand"):
     g_filt.filter()
 
     good_grasps = g_filt.get_good_grasps()
+    print(len(good_grasps.power_gr))
+
+    if len(good_grasps.power_gr) == 0:
+        good_grasps = g_filt
+    print(len(good_grasps.power_gr))
+
     return good_grasps
 
 def select_target_ind(obj, good_grasps, robot_config):
@@ -49,15 +56,19 @@ if __name__ == "__main__":
     gr_mapped = map_if_neces(robot_config)
 
     good_grasps = filter_grasps(obj, gr_mapped, robot_config)
-
-    ind = select_target_ind(obj, good_grasps, robot_config)
+    
+    # ind = select_target_ind(obj, good_grasps, robot_config)
     # ind = random.randrange(0, len(good_grasps.rel_poses))
-    # ind = 0
+    ind = 0
 
     g_br = GraspsBroadcasater(frame, good_grasps)
     print("The selected index is: ", ind)
     print("The power grasp flag is: ", g_br.power_gr[ind])
+    print("The pose of the target grasp is: ", g_br.abs_poses)
     while not rospy.is_shutdown():
+        old = datetime.now()
         g_br.broadcast_target(ind)
         # g_br.broadcast_grasps()
+        new = datetime.now()
+        # print(new-old)
         rate.sleep() 

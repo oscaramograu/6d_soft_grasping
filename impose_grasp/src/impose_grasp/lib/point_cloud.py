@@ -73,7 +73,7 @@ class PointCloud(FrameBuilder):
         self._set_target_wrt_cam()
         pcd.transform(self.target_pose)
 
-        pcd = self.select_pts_in_range(pcd, 0.4)
+        pcd = self.select_pts_in_range(pcd, 0.2)
         
         self.obstruction_pcl = pcd.cpu().clone()
 
@@ -120,6 +120,5 @@ class PointCloud(FrameBuilder):
         Returns a new pointcloud with respect to a given target grasp pose.
         """
         pcd = self.obstruction_pcl.cpu().clone()
-        pcd.transform(invert_homogeneous(target_g_pose))
-
+        
         return pcd.cpu().clone()

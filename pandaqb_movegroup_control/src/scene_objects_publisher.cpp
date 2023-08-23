@@ -79,8 +79,8 @@ int main(int argc, char **argv){
     planning_scene.world.collision_objects.push_back(plat);
     planning_scene_diff_publisher.publish(planning_scene);
     
-    planning_scene.world.collision_objects.push_back(box);
-    planning_scene_diff_publisher.publish(planning_scene);
+    // planning_scene.world.collision_objects.push_back(box);
+    // planning_scene_diff_publisher.publish(planning_scene);
 
 
 

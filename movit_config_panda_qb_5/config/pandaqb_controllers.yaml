@@ -24,10 +24,10 @@
 
 
 
-      # control the qbhand 2 with motor positions
-    - name:  qbhand2m1_motor_positions_trajectory_controller
-      action_ns: follow_joint_trajectory
-      type: FollowJointTrajectory
-      joints:
-        - qbhand2m1_motor_1_joint
-        - qbhand2m1_motor_2_joint
+    #   # control the qbhand 2 with motor positions
+    # - name:  qbhand2m1_motor_positions_trajectory_controller
+    #   action_ns: follow_joint_trajectory
+    #   type: FollowJointTrajectory
+    #   joints:
+    #     - qbhand2m1_motor_1_joint
+    #     - qbhand2m1_motor_2_joint

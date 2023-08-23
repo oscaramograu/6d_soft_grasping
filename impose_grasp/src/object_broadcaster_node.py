@@ -23,9 +23,10 @@ if __name__ == "__main__":
 
     n=0
     old = datetime.now()
-    cycles = 15
-    r = rospy.Rate(5) # 10Hz
+    cycles = 10
+    r = rospy.Rate(2) # 10Hz
     while not rospy.is_shutdown():
+        old = datetime.now()
         r.sleep()
         detected = object_br.broadcast_tf(flag.flag)
         if detected == True:
@@ -38,3 +39,5 @@ if __name__ == "__main__":
 
         elif n>cycles and flag.flag == False:
             n = 0
+        new = datetime.now()
+        # print("The time lapse between two target pose publications is: ", new - old)

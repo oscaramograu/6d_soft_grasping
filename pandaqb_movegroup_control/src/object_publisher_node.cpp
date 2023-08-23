@@ -25,12 +25,12 @@ int main(int argc, char** argv){
     ros::param::get("robot_config", rbt_conf);
     hand_path = grippr_mesh_pth(rbt_conf);
 // ==============  PUBLISH THE TARGET OBJECT ============== 
-    // TargetMeshBr object("", obj_name);
-    // object.add_target_mesh(true);
+    TargetMeshBr object("", obj_name);
+    object.add_target_mesh(true);
 
 // ============== PUBLISH THE HAND COLLISION MODEL ============== 
-    TargetMeshBr object(hand_path, "eef");
-    object.add_target_mesh(false);
+    // TargetMeshBr object(hand_path, "eef");
+    // object.add_target_mesh(false);
 
     ros::spin();
     ros::shutdown();

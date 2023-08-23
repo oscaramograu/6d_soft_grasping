@@ -50,7 +50,7 @@ class GraspChooser(Grasps):
             pcd = self.pcd_builder.select_pts_in_range(pcd, 0.15)
             result = self.scene.compute_signed_distance(pcd.point.positions).numpy()
 
-            if self.using_hand: th = 0.0
+            if self.using_hand: th = -0.005
             else: th = 0.1
 
             n_points = np.count_nonzero(result < th)
@@ -66,6 +66,7 @@ class GraspChooser(Grasps):
             
         if best_i == None and self.using_hand:
             best_i = pts_in_col.index(min(pts_in_col))
+            print("The chosen grasp has ", pts_in_col[best_i], " points.")
         elif best_i == None and not self.using_hand:
             print("No collision free grasp was found.")
 

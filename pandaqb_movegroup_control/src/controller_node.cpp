@@ -66,33 +66,33 @@ int main(int argc, char** argv){
 
 // ================= REAL CODE ===========================
     ros::NodeHandle nh;
-    // GraspListener gr(&nh);
-    // geometry_msgs::Pose target_pose = gr.get_grasp_pose();
+    GraspListener gr(&nh);
+    geometry_msgs::Pose target_pose = gr.get_grasp_pose();
 
-    // ArmController ac;
-    // EEFController eef_c(&nh);
+    ArmController ac;
+    EEFController eef_c(&nh);
     
-    // ac.set_grasp(target_pose);
+    ac.set_grasp(target_pose);
 
-    // eef_c.open();
+    eef_c.open();
 
-    // ac.approach_grasp();
+    ac.approach_grasp();
 
-    // eef_c.close();
+    eef_c.close();
 
     
-    // ac.pick_up();
+    ac.pick_up();
 
 // ================= EXPERIMENTING ===========================
-    Controller controller(&nh);
-    ROS_INFO_STREAM("READY TO GRASP");
+    // Controller controller(&nh);
+    // ROS_INFO_STREAM("READY TO GRASP");
 
-    ros::Rate loop_rate(10);  // Adjust the rate as needed
-    while (ros::ok())
-    {
-        ros::spinOnce();
-        loop_rate.sleep();
-    }
+    // ros::Rate loop_rate(10);  // Adjust the rate as needed
+    // while (ros::ok())
+    // {
+    //     ros::spinOnce();
+    //     loop_rate.sleep();
+    // }
 // ================= TESTING POSE ===========================
     // tf::StampedTransform transform;
     // tf::TransformListener listener;
