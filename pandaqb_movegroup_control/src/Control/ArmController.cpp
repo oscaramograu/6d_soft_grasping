@@ -33,6 +33,10 @@ void ArmController::approach_grasp(){
     arm_mover.clear_waypt();
 }
 
+void ArmController::move_to_g_pose(){
+    arm_mover.moveTo(grasp_pose);
+}
+
 void ArmController::move_to_pre_pose(){
     right_gr_flag = check_right_grasp();
     if(right_gr_flag){

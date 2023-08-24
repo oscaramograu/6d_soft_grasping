@@ -1,18 +1,21 @@
 import numpy as  np
 from math import pi
+import rospy
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 from impose_grasp.lib.tf_listener import TfListener
 
 class GraspFilterer(Grasps):
-    def __init__(self, obj_name,  grasps: Grasps = None, robot_config="qb_hand") -> None:
+    def __init__(self, obj_pose,  grasps: Grasps = None) -> None:
         super().__init__()
-        self.robot_config = robot_config
 
+        self.robot_config = rospy.get_param("/robot_config")
+        obj_name = rospy.get_param("/target_object")
         self._good_grasps_ids = []
         self._bad_grasps_ids = []
 
-        self._obj_tf_listener = TfListener(obj_name + "_frame")
+        # self._obj_tf_listener = TfListener(obj_name + "_frame")
         self._cam_tf_listener = TfListener(target_frame="camera_frame")
+        self._obj_pose = obj_pose
 
         if grasps == None:
             self.load_from_file(obj_name)
@@ -28,15 +31,17 @@ class GraspFilterer(Grasps):
         the ones which's Zs are pointing upwards and Ys are pointing to the robot base. Or the 
         ones that are pointing to the camera frame.
         """
-        obj_pose, cam_pose = self._listen_poses()
+        # obj_pose, cam_pose = self._listen_poses()
+        cam_pose = self._listen_poses()
+        obj_pose = self._obj_pose
 
         self.set_abs_poses(obj_pose)
         vertical_vec =  np.array([0,0,-1])
 
         if cam_pose is None:
-            obj_to_base_vec = -obj_pose[:3,3]/np.linalg.norm(-obj_pose[:3,3])
-            good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)
-            self._invert_opposite_Ys(good_gps_y_inds)
+            # obj_to_base_vec = -obj_pose[:3,3]/np.linalg.norm(-obj_pose[:3,3])
+            # good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)
+            # self._invert_opposite_Ys(good_gps_y_inds)
 
             good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=40, axis=2)
             good_grasps_ids = self._select_only_positive_points(good_grasps_ids, obj_pose, th_dist=0.02)
@@ -60,15 +65,17 @@ class GraspFilterer(Grasps):
         return new_inds
 
     def _listen_poses(self)-> (np.ndarray, np.ndarray):
-        self._obj_tf_listener.listen_tf()
-        obj_pose = self._obj_tf_listener.get_np_frame()
+        # self._obj_tf_listener.listen_tf()
+        # obj_pose = self._obj_tf_listener.get_np_frame()
 
         if self.robot_config == "gripper":
             self._cam_tf_listener.listen_tf()
             cam_pose = self._cam_tf_listener.get_np_frame()
         else:
             cam_pose = None
-        return obj_pose, cam_pose
+        # return obj_pose, cam_pose
+        return cam_pose
+
     
     def _invert_opposite_Ys(self, good_g_inds):
         """
@@ -92,21 +99,7 @@ class GraspFilterer(Grasps):
         # print("The abs pose of z is: ", obj_pose[2, 3])
         return high_ids
 
-    def _select_grasp_inds_by_ang(self, vect:np.ndarray, tr_ang: float, axis: int):
-        """
-        It filters the absolute pose grasps to select only the ones which's selected axis
-        angle wrt the given vector is smaller than the given threshold angle.
 
-        Keyword arguments:
-        axis -- from 0 to 2 are the x to z respectiveley
-        tr_ang -- in degrees
-        """
-        gposes = self.abs_poses
-        rel_ang = [np.dot(vect, gpose[:3, axis]) for gpose in gposes]
-        angle_thr = np.cos(tr_ang/180*np.pi)
-        inds = range(len(gposes))
-
-        return [x for x in inds if (rel_ang[x] > angle_thr)]
 
     def get_good_grasps(self):
         poses = []
@@ -123,7 +116,7 @@ class GraspFilterer(Grasps):
         good_grasps.set_widths(widths)
         good_grasps.set_power_gr(power_gr)
     
-        return good_grasps
+        return good_grasps, self._good_grasps_ids
 
     def get_bad_grasps(self):
         poses = []
@@ -138,3 +131,19 @@ class GraspFilterer(Grasps):
         bad_grasps.set_widths(widths)
 
         return bad_grasps
+    
+    def _select_grasp_inds_by_ang(self, vect:np.ndarray, tr_ang: float, axis: int):
+        """
+        It filters the absolute pose grasps to select only the ones which's selected axis
+        angle wrt the given vector is smaller than the given threshold angle.
+
+        Keyword arguments:
+        axis -- from 0 to 2 are the x to z respectiveley
+        tr_ang -- in degrees
+        """
+        gposes = self.abs_poses
+        rel_ang = [np.dot(vect, gpose[:3, axis]) for gpose in gposes]
+        angle_thr = np.cos(tr_ang/180*np.pi)
+        inds = range(len(gposes))
+
+        return [x for x in inds if (rel_ang[x] > angle_thr)]

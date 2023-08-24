@@ -7,6 +7,7 @@ public:
 
     void set_grasp(geometry_msgs::Pose pose);
     void approach_grasp();
+    void move_to_g_pose();
     void approach_place();
     void pick_up();
     geometry_msgs::Pose get_current_pose();

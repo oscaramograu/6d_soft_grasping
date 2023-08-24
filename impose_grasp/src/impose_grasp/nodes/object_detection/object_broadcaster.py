@@ -45,9 +45,6 @@ class ObjectBroadcaster(TransformBroadcaster):
                 f_obj_cam = self.compute_filtered_affine(frame)
                 cam_world = self.get_cam_world_affine()
 
-                print("obj_cam: ", f_obj_cam)
-                print("cam_world:", cam_world)
-
                 if f_obj_cam is not None and cam_world is not None:
                     self.obj_world = cam_world@f_obj_cam
                     print("object has been found")

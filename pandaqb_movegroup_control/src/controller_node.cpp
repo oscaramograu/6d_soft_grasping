@@ -65,23 +65,33 @@ int main(int argc, char** argv){
     spinner.start();
 
 // ================= REAL CODE ===========================
-    ros::NodeHandle nh;
-    GraspListener gr(&nh);
-    geometry_msgs::Pose target_pose = gr.get_grasp_pose();
+    // ros::NodeHandle nh;
+    // GraspListener gr(&nh);
+    // geometry_msgs::Pose target_pose = gr.get_grasp_pose();
 
-    ArmController ac;
-    EEFController eef_c(&nh);
+    // ArmController ac;
+    // EEFController eef_c(&nh);
     
-    ac.set_grasp(target_pose);
+    // ac.set_grasp(target_pose);
 
-    eef_c.open();
+    // eef_c.open();
 
-    ac.approach_grasp();
+    // ac.approach_grasp();
 
-    eef_c.close();
+    // std::string s = ";";
+    // while (s == ";"){
+    //     ac.move_to_g_pose();
+    //     std::cout << "Type ; to keep iterating: ";
+    //     std::cin >> s;
+    //     target_pose = gr.get_grasp_pose();
+    //     ac.set_grasp(target_pose);
+    // }
 
+    // eef_c.close();
     
-    ac.pick_up();
+    // ac.pick_up();
+
+    // eef_c.open();
 
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
@@ -124,9 +134,9 @@ int main(int argc, char** argv){
     
 // ================= PRINT CURRENT JOINT STATES ===========================
 
-    // GroupMover arm("arm");
-    // arm.set_EEF_link("panda_link8");
-    // arm.printCurrentJointPosition();
+    GroupMover arm("arm");
+    arm.set_EEF_link("panda_link8");
+    arm.printCurrentJointPosition();
 
     // target_pose.position.z += 0.05;
 

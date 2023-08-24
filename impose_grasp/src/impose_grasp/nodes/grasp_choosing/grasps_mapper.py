@@ -4,13 +4,18 @@ from typing import List
 from impose_grasp.nodes.grasp_choosing.grasps_base import Grasps
 
 class GraspMapper(Grasps):
-    def __init__(self, width_proportion_th:float = 0.3,
-                theta: float = 30, offsets: np.ndarray = np.array([0,0,0])):
+    def __init__(self, width_th :float = 0.04,
+                theta: float = 30, grasps: Grasps = None):
         super().__init__()
 
+        self.set_rel_poses(grasps.rel_poses)
+        self.set_widths(grasps.widths)
+        self.set_power_gr(grasps.power_gr)
+
         self.theta = theta*pi/180
-        self.offsets = offsets
-        self.prop_th = width_proportion_th
+        self.pinch_offsets = np.array([0.015, 0.02, -0.025])
+        self.power_offsets = np.array([0.02, 0.01, -0.03])
+        self.width_th = width_th
         self.mapped_poses = List[np.ndarray]
 
     def map_grasps(self):
@@ -33,7 +38,7 @@ class GraspMapper(Grasps):
 
     def _pow_offset(self, arr: np.ndarray):
         new_arr = arr.copy()
-        offsets = self.offsets.copy()
+        offsets = self.power_offsets.copy()
 
         conv_offsets = new_arr[:3,:3]@offsets
         new_arr[:3,3] += conv_offsets
@@ -42,7 +47,7 @@ class GraspMapper(Grasps):
           
     def _pinch_offset(self, arr: np.ndarray):
         new_arr = arr.copy()
-        offsets = self.offsets.copy()
+        offsets = self.pinch_offsets.copy()
 
         conv_offsets = new_arr[:3,:3]@offsets
         new_arr[:3,3] += conv_offsets
@@ -51,12 +56,7 @@ class GraspMapper(Grasps):
 
 
     def _with_to_power_g(self, width) -> bool:
-        max_width = max(self.widths)
-        min_widht = min(self.widths)
-
-        width_prop = (width - min_widht)/(max_width - min_widht)
-
-        if width_prop > self.prop_th:
+        if width > self.width_th:
             return True
         else:
             return False
