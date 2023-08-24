@@ -4,8 +4,8 @@ import rospy
 from sensor_msgs.msg import PointCloud2
 
 from impose_grasp.lib.point_cloud import PointCloud
-from impose_grasp.nodes.grasp_choosing.grasp_filterer import GraspFilterer
-from impose_grasp.nodes.grasp_choosing.grasps_broadcaster import GraspsBroadcasater
+from impose_grasp.nodes.grasp_choosing.grasp_processing.grasp_filterer import GraspFilterer
+from impose_grasp.nodes.grasp_choosing.grasp_processing.grasps_broadcaster import GraspsBroadcasater
 
 
 if __name__ == "__main__":
