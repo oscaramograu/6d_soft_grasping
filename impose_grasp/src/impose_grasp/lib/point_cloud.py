@@ -120,5 +120,5 @@ class PointCloud(FrameBuilder):
         Returns a new pointcloud with respect to a given target grasp pose.
         """
         pcd = self.obstruction_pcl.cpu().clone()
-        
+        pcd.transform(target_g_pose)
         return pcd.cpu().clone()

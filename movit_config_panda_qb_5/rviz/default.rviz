@@ -6,7 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /PointCloud21
+        - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.6529411673545837
     Tree Height: 394
   - Class: rviz/Selection
@@ -26,7 +27,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -705,6 +706,36 @@ Visualization Manager:
           Value: true
         cpsduck_frame:
           Value: true
+        grasp_n_1:
+          Value: true
+        grasp_n_10:
+          Value: true
+        grasp_n_11:
+          Value: true
+        grasp_n_12:
+          Value: true
+        grasp_n_14:
+          Value: true
+        grasp_n_3:
+          Value: true
+        grasp_n_45:
+          Value: true
+        grasp_n_53:
+          Value: true
+        grasp_n_54:
+          Value: true
+        grasp_n_56:
+          Value: true
+        grasp_n_58:
+          Value: true
+        grasp_n_59:
+          Value: true
+        grasp_n_64:
+          Value: true
+        grasp_n_66:
+          Value: true
+        grasp_n_68:
+          Value: true
         panda_EE:
           Value: false
         panda_K:
@@ -836,10 +867,40 @@ Visualization Manager:
       Name: TF
       Show Arrows: false
       Show Axes: true
-      Show Names: true
+      Show Names: false
       Tree:
         panda_link0:
           cpsduck_frame:
+            grasp_n_1:
+              {}
+            grasp_n_10:
+              {}
+            grasp_n_11:
+              {}
+            grasp_n_12:
+              {}
+            grasp_n_14:
+              {}
+            grasp_n_3:
+              {}
+            grasp_n_45:
+              {}
+            grasp_n_53:
+              {}
+            grasp_n_54:
+              {}
+            grasp_n_56:
+              {}
+            grasp_n_58:
+              {}
+            grasp_n_59:
+              {}
+            grasp_n_64:
+              {}
+            grasp_n_66:
+              {}
+            grasp_n_68:
+              {}
             target_grasp:
               {}
           panda_link0_sc:
@@ -937,14 +998,14 @@ Visualization Manager:
       Channel Name: intensity
       Class: rviz/PointCloud2
       Color: 255; 255; 255
-      Color Transformer: ""
+      Color Transformer: Intensity
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
       Name: PointCloud2
-      Position Transformer: ""
+      Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
@@ -983,7 +1044,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.9358850717544556
+      Distance: 1.3883402347564697
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -999,9 +1060,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.22039802372455597
+      Pitch: 0.2203979790210724
       Target Frame: <Fixed Frame>
-      Yaw: 2.090393304824829
+      Yaw: 1.770389437675476
     Saved: ~
 Window Geometry:
   Displays:
