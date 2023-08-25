@@ -2,7 +2,7 @@
 #include <pandaqb_movegroup_control/Target/TargetMeshBroadcaster.h>
 
 std::string grippr_mesh_pth(std::string robot_config){
-    std::string impose_grasp_path, mesh_folder, extension;
+    std::string impose_grasp_path, mesh_folder, extension, full_path;
 
     impose_grasp_path = ros::package::getPath("impose_grasp");
     mesh_folder =  impose_grasp_path + "/data/models/";
@@ -13,7 +13,9 @@ std::string grippr_mesh_pth(std::string robot_config){
     else{
         extension = "_col.ply";
     }
-    return mesh_folder + robot_config + extension;
+    full_path = mesh_folder + robot_config + extension;
+
+    return full_path;
 }
 
 int main(int argc, char** argv){

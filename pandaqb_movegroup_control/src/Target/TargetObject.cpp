@@ -34,6 +34,7 @@ void TargetObject::set_mesh_path(){
     file_name = object_name_ + ".ply";
 
     mesh_path_ = mesh_folder + file_name;
+    std::cout << "The mesh path is: " << mesh_path_ << std::endl;
 }
 
 void TargetObject::load_moveit_mesh(){

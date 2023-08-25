@@ -18,7 +18,7 @@ class GraspBrNode:
         # good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
         #                   if chooser.good_gr_flags[i]]  
         # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
-        self.target = 75
+        # self.target = 75
         print("The target grasp is: ", self.target)
         self.broadcaster = GraspsBroadcasater(chooser)
 
