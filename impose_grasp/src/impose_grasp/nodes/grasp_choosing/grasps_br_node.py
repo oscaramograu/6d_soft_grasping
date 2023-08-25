@@ -18,7 +18,8 @@ class GraspBrNode:
         # good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
         #                   if chooser.good_gr_flags[i]]  
         # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
-        # self.target = good_grasp_ids[0]
+        self.target = 75
+        print("The target grasp is: ", self.target)
         self.broadcaster = GraspsBroadcasater(chooser)
 
     def __call__(self, br_only_target: bool):
@@ -31,10 +32,10 @@ class GraspBrNode:
         obj_pose, cam_pose = self._get_and_listen_poses()
 
         orienter = GraspOrienter(obj_pose)
-        # orienter.orient_grasps(obj_pose)
+        # orienter.orient_grasps()
 
-        mapper = GraspMapper(width_th=0.05, theta=30, grasps=orienter)
-        mapper.map_grasps()
+        mapper = GraspMapper(width_th=0.04, theta=-20, grasps=orienter)
+        mapper.map_grasps(using_offset=True)
 
         filterer = GraspFilterer(mapper)
         filterer.filter(obj_pose, cam_pose)

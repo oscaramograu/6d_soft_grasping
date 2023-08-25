@@ -17,7 +17,7 @@ bool Controller::callback(std_srvs::SetBoolRequest &req,
     arm_controller.set_grasp(target_pose);
     eef_controller.open();
     arm_controller.approach_grasp();
-    eef_controller.close();
+    eef_controller.close_hand();
     arm_controller.pick_up();
 
     res.success = true;

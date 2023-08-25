@@ -8,7 +8,8 @@ public:
     ~EEFController();
 
     void open();
-    void close();
+    void grasp();
+    void close_hand();
 
 private:
     GripperController* gc;

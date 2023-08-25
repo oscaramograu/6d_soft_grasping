@@ -4,7 +4,7 @@ HandController::HandController(): GroupMover("hand"){
     open_flag = false; 
     duration = 1.0;
 
-    open();
+    // open();
 }
 
 HandController::~HandController(){

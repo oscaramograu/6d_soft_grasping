@@ -27,7 +27,7 @@ void ArmController::approach_grasp(){
 
     arm_mover.apend_waypt(target_pose);
     arm_mover.apend_waypt(pre_grasp_pose);
-    arm_mover.apend_waypt(grasp_pose);
+    // arm_mover.apend_waypt(grasp_pose);
 
     arm_mover.build_cart_plan();
     arm_mover.clear_waypt();
@@ -77,7 +77,7 @@ void ArmController::compute_pre_grasp_pose(){
 void ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
     Eigen::Quaterniond quad = orient_msg_to_eigen(orient);
 
-    Eigen::Vector3d normal_offsets(0, 0, -0.07);
+    Eigen::Vector3d normal_offsets(0, 0, -0.05);
     std::cout << "The offsets in target grasp coordinates are:\n"
         << normal_offsets << std::endl;
 

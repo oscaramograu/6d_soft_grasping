@@ -46,7 +46,6 @@ void GroupMover::planExecute(){
     ROS_INFO_STREAM("Planning succeeded");
 
     bool success = (move_group_->plan(plan)==moveit::core::MoveItErrorCode::SUCCESS);
-    ROS_INFO_STREAM("asffad succeeded");
 
     if (success){
         ROS_INFO_STREAM("Planning succeeded");

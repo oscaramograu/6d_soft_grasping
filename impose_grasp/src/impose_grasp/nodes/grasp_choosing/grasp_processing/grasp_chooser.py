@@ -37,17 +37,18 @@ class GraspChooser(GraspsBase):
         best_score = math.inf
         self.pcd_builder.set_new_pcd_wrt_obj(self.voxel_size)
         pts_in_col = []
+        dist_scores = []
 
         good_grasp_ids = [i for i in range(len(self.rel_poses)) 
                           if self.good_gr_flags[i]]  
-        print(good_grasp_ids)
+
         for i in good_grasp_ids:
             gpose = self.rel_poses[i] # From a grasping pose wrt obj
             pcd = self.pcd_builder.get_pcd_wrt_target(gpose)
             pcd = self.pcd_builder.select_pts_in_range(pcd, 0.30)
             result = self.scene.compute_signed_distance(pcd.point.positions).numpy()
 
-            if self.using_qb_hand: th = -0.005
+            if self.using_qb_hand: th = -0.00
             else: th = 0.1
 
             n_points = np.count_nonzero(result < th)
@@ -55,17 +56,25 @@ class GraspChooser(GraspsBase):
             if n_points < 1:  
                 print("The grasp: ", i, ", has no points in its grasping volume.")
                 dist_score = np.mean(1. / result)
+                dist_scores.append(dist_score)
                 if dist_score < best_score:
                     best_i = i
                     best_score = dist_score
+            else:
+                dist_scores.append(None)
 
             pts_in_col.append(n_points)
             
         if best_i == None and self.using_qb_hand:
-            best_i = pts_in_col.index(min(pts_in_col))
-            print("The chosen grasp has ", pts_in_col[best_i], " points.")
+            index = pts_in_col.index(min(pts_in_col))
+            best_i = good_grasp_ids[index]
+            print("There are some points in collision with the target grasp!")
         elif best_i == None and not self.using_qb_hand:
             print("No collision free grasp was found.")
+        
+        print("List of good grasps ids: ", good_grasp_ids)
+        print("List of pointcloud pts for each valid grasp: ", pts_in_col)
+        print("List of socres for each valid grasp: ", dist_scores)
 
         return best_i
     
@@ -73,7 +82,7 @@ class GraspChooser(GraspsBase):
         """
         Builds the mesh of the movement projection of the end effector.
         """
-        if self.using_qb_hand: eef = "qb_hand_col2"
+        if self.using_qb_hand: eef = "qb_hand_col3"
         else: eef = "qb_gripper_col"
 
         EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,

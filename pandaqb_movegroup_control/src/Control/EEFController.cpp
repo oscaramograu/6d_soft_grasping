@@ -23,7 +23,7 @@ EEFController::~EEFController(){
     delete hc;
 }
 
-void EEFController::close(){
+void EEFController::grasp(){
     if(using_qb){
         bool pwr_gr_flag;
         pwr_gr_flag = get_power_gr_flag();
@@ -35,6 +35,10 @@ void EEFController::close(){
         ROS_INFO_STREAM("THE WIDTH IS" << width);
         gc->close_gripper(width);
     }
+}
+
+void EEFController::close_hand(){
+    hc->grasp(true);
 }
 
 void EEFController::open(){
