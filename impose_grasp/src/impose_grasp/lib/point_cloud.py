@@ -73,7 +73,7 @@ class PointCloud(FrameBuilder):
         self._set_target_wrt_cam()
         pcd.transform(self.target_pose)
 
-        pcd = self.select_pts_in_range(pcd, 0.2)
+        pcd = self.select_pts_in_range(pcd, 0.3)
         
         self.obstruction_pcl = pcd.cpu().clone()
 
