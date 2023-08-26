@@ -68,13 +68,9 @@ void GraspRegisterer::set_data(){
 
 void GraspRegisterer::set_grasp(){
     if(eef == "qb_hand"){
-    bool pw_g_f =  get_power_gr_flag();
-        if(pw_g_f == true){
-            grasp_type = "power";
-        }
-        else{
-            grasp_type = "pinch";
-        }
+    std::vector<float> sinergies =  get_sinergies();
+        grasp_type = std::to_string(sinergies[0]) 
+            + ", " + std::to_string(sinergies[1]);
     }
     else{
         grasp_type = "parallel_plates";

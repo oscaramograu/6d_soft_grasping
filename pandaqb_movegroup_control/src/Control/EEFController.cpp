@@ -25,9 +25,8 @@ EEFController::~EEFController(){
 
 void EEFController::grasp(){
     if(using_qb){
-        bool pwr_gr_flag;
-        pwr_gr_flag = get_power_gr_flag();
-        hc->grasp(pwr_gr_flag);
+        std::vector<float> sinergies = get_sinergies();
+        hc->grasp(sinergies);
     }
     else{
         float width;
@@ -38,7 +37,8 @@ void EEFController::grasp(){
 }
 
 void EEFController::close_hand(){
-    hc->grasp(true);
+    std::vector<float> power_sinergy = {0, 0.9};
+    hc->grasp(power_sinergy);
 }
 
 void EEFController::open(){

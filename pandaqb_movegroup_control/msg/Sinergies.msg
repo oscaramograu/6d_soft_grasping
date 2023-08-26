@@ -1,0 +1,2 @@
+float32 first_sin
+float32 second_sin

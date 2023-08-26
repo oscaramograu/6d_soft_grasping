@@ -74,11 +74,11 @@ int main(int argc, char** argv){
 
     ac.set_grasp(target_pose);
 
-    eef_c.close_hand();
-    ac.approach_grasp();
+    // eef_c.close_hand();
+    // ac.approach_grasp();
 
-    eef_c.open();
-    ac.move_to_g_pose();
+    // eef_c.open();
+    // ac.move_to_g_pose();
 
     eef_c.grasp();
     ac.pick_up();

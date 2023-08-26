@@ -1,6 +1,7 @@
 import rospy
 from typing import List
 from std_msgs.msg import Bool, Float32
+from pandaqb_movegroup_control.msg import Sinergies
 
 from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
 from impose_grasp.nodes.grasp_choosing.grasps_base import GraspsBase, Grasps
@@ -15,6 +16,7 @@ class GraspsBroadcasater(GraspsBase):
 
         self.pow_gr_pub = rospy.Publisher('power_gr', Bool, queue_size=10)
         self.widht_pub = rospy.Publisher('gr_width', Float32, queue_size=10)
+        self.singergies_pub = rospy.Publisher('sinergies', Sinergies, queue_size=10)
 
         self.target_gr_br = TransformBroadcaster(self.obj_frame, "/target_grasp")
         self._set_up_broadcasters()
@@ -48,11 +50,14 @@ class GraspsBroadcasater(GraspsBase):
             self.broadcasters.append(TransformBroadcaster(self.obj_frame, grasp_name))
 
     def _publish_msgs(self, ind):
-        pow_gr_msg = Bool()
-        pow_gr_msg.data = self.power_gr_flags[ind]
+
+
+        sinegies_msg = Sinergies()
+        sinegies_msg.first_sin = self.synergies_values[ind][0]
+        sinegies_msg.second_sin = self.synergies_values[ind][1]
 
         gr_width_msg = Float32()
         gr_width_msg.data = self.widths[ind]
 
-        self.pow_gr_pub.publish(pow_gr_msg)
         self.widht_pub.publish(gr_width_msg)
+        self.singergies_pub.publish(sinegies_msg)

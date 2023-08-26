@@ -14,42 +14,45 @@ class GraspMapper(GraspsBase):
         # self.pinch_offsets = np.array([0, 0, -0.025])
         self.power_offsets = np.array([0.02, 0.01, -0.03])
 
+        self.pinch_sinergy = [0.9, 0]
+        self.power_sinergy = [0.5, -0.9]
+
         self.width_th = width_th
 
     def map_grasps(self, using_offset = True):
         if self.using_qb_hand:
             for ind in range(len(self.rel_poses)):
                 grasp = [self.rel_poses[ind], self.widths[ind]]
-                self.rel_poses[ind], power_graps_flag = self._map_grasp(grasp, using_offset)
-                self.power_gr_flags.append(power_graps_flag)
+                self.rel_poses[ind], sin_values = self._map_grasp(grasp, using_offset)
+                self.synergies_values.append(sin_values)
             print("Grasps where mapped")
 
     def _map_grasp(self, grasp, using_offset = True)->List[np.ndarray]:
         gpose, w = grasp
         mapped_g = self._rotate_around_Z(gpose, self.theta)
-        using_pw_gr = self._using_pow_gr(w)
+        sin_values = self._compute_sinergies(w)
 
         if using_offset:
-            offseted_g = self._offset(mapped_g, using_pw_gr)
+            return self._offset(mapped_g, w), sin_values
         else:
-            offseted_g = mapped_g
-        return offseted_g, using_pw_gr
-
-    def _offset(self, gr_pose: np.ndarray, using_pw_gr):
+            return mapped_g, sin_values
+            
+    def _offset(self, gr_pose: np.ndarray, width):
         new_gr_pose = gr_pose.copy()
 
-        if using_pw_gr:
-            new_offsets = self.power_offsets.copy()
+        if width > self.width_th:
+            offsets = self.power_offsets.copy()
         else:
-            new_offsets = self.pinch_offsets.copy()
+            offsets = self.pinch_offsets.copy()
 
-        conv_offsets = new_gr_pose[:3,:3]@new_offsets
-        new_gr_pose[:3,3] += conv_offsets
+        oriented_offsets = new_gr_pose[:3,:3]@offsets
+        new_gr_pose[:3,3] += oriented_offsets
         
         return new_gr_pose  
 
-    def _using_pow_gr(self, width) -> bool:
+    def _compute_sinergies(self, width) -> List[float]:
         if width > self.width_th:
-            return True
+            return self.power_sinergy
+            
         else:
-            return False
+            return self.pinch_sinergy

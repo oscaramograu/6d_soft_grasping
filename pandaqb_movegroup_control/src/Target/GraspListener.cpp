@@ -1,8 +1,8 @@
 #include  <pandaqb_movegroup_control/Target/GraspListener.h>
 
 GraspListener::GraspListener(ros::NodeHandle *nh){
-    pow_gr_sub = nh->subscribe("power_gr", 100, &GraspListener::flag_callback, this);
     width_sub = nh->subscribe("gr_width", 100, &GraspListener::width_callback, this);
+    sinergies_sub = nh->subscribe("sinergies", 100, &GraspListener::sinergies_callback, this);
 };
 
 GraspListener::~GraspListener(){
@@ -37,11 +37,13 @@ geometry_msgs::Pose GraspListener::tf_to_pose(tf::StampedTransform transform){
     return pose;
 }
 
-void GraspListener::flag_callback(const std_msgs::Bool::ConstPtr& msg){
-    power_gr = msg->data;
-}
 void GraspListener::width_callback(const std_msgs::Float32::ConstPtr& msg){
     width = msg->data;
+}
+
+void GraspListener::sinergies_callback(
+    const pandaqb_movegroup_control::Sinergies::ConstPtr& msg){
+    sinergies = {msg->first_sin, msg->second_sin};
 }
 
 geometry_msgs::Pose GraspListener::get_grasp_pose(){
@@ -50,18 +52,21 @@ geometry_msgs::Pose GraspListener::get_grasp_pose(){
     return target_pose;
 }
 
-bool GraspListener::get_power_gr_flag(){
-    std_msgs::Bool::ConstPtr msg = ros::topic::waitForMessage
-        <std_msgs::Bool>("/power_gr");
-    ROS_INFO_STREAM("The power grasp flag is: " << power_gr);
-
-    return power_gr;
-}
-
 float GraspListener::get_width(){
     std_msgs::Float32::ConstPtr msg = ros::topic::waitForMessage
         <std_msgs::Float32>("/gr_width");
     ROS_INFO_STREAM("The grasp width is: " << width);
 
     return width;
+}
+
+std::vector<float> GraspListener::get_sinergies(){
+    pandaqb_movegroup_control::Sinergies::ConstPtr msg = 
+        ros::topic::waitForMessage<pandaqb_movegroup_control::Sinergies>(
+            "/sinergies");
+
+    ROS_INFO_STREAM("The grasp sinergies are: " << 
+        sinergies[0] << ", " << sinergies[1]);
+
+    return sinergies;
 }

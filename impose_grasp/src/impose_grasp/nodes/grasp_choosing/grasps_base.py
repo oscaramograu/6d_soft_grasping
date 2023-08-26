@@ -1,4 +1,3 @@
-
 import os
 import json
 import numpy as np
@@ -14,8 +13,8 @@ class Grasps:
     rel_poses: List[np.ndarray]
     widths: List [float]
     abs_poses: List[np.ndarray]
-    power_gr_flags: List [bool]
     good_gr_flags: List [bool]
+    synergies_values: List [List [float]]
 
 class GraspsBase(Grasps):
     obj_name: str
@@ -41,8 +40,8 @@ class GraspsBase(Grasps):
                 grasps.rel_poses,
                 grasps.widths,
                 grasps.abs_poses,
-                grasps.power_gr_flags, 
-                grasps.good_gr_flags)
+                grasps.good_gr_flags,
+                grasps.synergies_values)
 
     def _load_from_file(self):
         MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models")

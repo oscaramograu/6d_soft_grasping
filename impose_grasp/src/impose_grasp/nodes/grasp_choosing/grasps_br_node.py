@@ -14,10 +14,10 @@ class GraspBrNode:
         self._cam_tf_listener = TfListener("camera_frame")
         
         chooser = self._build_chooser()
-        self.target = chooser.compute_best_grasp_ind()
-        # good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
-        #                   if chooser.good_gr_flags[i]]  
-        # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
+        # self.target = chooser.compute_best_grasp_ind()
+        good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
+                          if chooser.good_gr_flags[i]]  
+        self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
         # self.target = 75
         print("The target grasp is: ", self.target)
         self.broadcaster = GraspsBroadcasater(chooser)

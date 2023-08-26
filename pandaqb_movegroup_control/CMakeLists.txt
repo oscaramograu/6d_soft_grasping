@@ -7,7 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   # system_lib
   std_msgs
-  # message_generation
+  message_generation
   moveit_core 
   moveit_ros_planning 
   moveit_ros_planning_interface
@@ -20,12 +20,15 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(PCL REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-#   sensor_msgs
-#   geometry_msgs
-# )
+add_message_files(
+  FILES
+  Sinergies.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -46,7 +49,7 @@ catkin_package(
     moveit_visual_tools
     # cv_bridge
  
-  DEPENDS system_lib
+  DEPENDS system_lib message_runtime
 )
 
 include_directories(
