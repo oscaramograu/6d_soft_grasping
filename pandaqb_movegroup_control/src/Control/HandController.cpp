@@ -2,7 +2,6 @@
 
 HandController::HandController(): GroupMover("hand"){
     open_flag = false; 
-    duration = 1.0;
 }
 
 HandController::~HandController(){
@@ -12,17 +11,17 @@ void HandController::print_joints(){
     printCurrentJointPosition();
 }
 
-void HandController::grasp(std::vector<float> sinergies){
+void HandController::grasp(std::vector<double> sinergies){
     ROS_INFO_STREAM("HAND GRASP");
-    std::vector<double> motor_pinch{sinergies[1], sinergies[0]};  // from 0 to 1
-    send_trajectory(motor_pinch);
+    std::vector<double> hand_joints = {sinergies[1], sinergies[0]};
+    moveTo(hand_joints);
     open_flag = false;
 }
 
 void HandController::open(){
-    std::vector<double> motor_open{0, 0};
+    std::vector<double> hand_joints{0, 0};
     ROS_INFO_STREAM("HAND OPEN");
-    send_trajectory(motor_open);
+    moveTo(hand_joints);
     open_flag = true;
 }
 
@@ -35,8 +34,4 @@ bool HandController::is_open(){
     }
 
     return open_flag;
-}
-
-void HandController::send_trajectory(std::vector<double> motor_command){
-    moveTo(motor_command);
 }

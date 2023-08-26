@@ -68,7 +68,7 @@ void GraspRegisterer::set_data(){
 
 void GraspRegisterer::set_grasp(){
     if(eef == "qb_hand"){
-    std::vector<float> sinergies =  get_sinergies();
+    std::vector<double> sinergies =  get_sinergies();
         grasp_type = std::to_string(sinergies[0]) 
             + ", " + std::to_string(sinergies[1]);
     }

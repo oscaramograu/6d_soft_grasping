@@ -5,7 +5,7 @@ public:
     HandController();
     ~HandController();
     
-    void grasp(std::vector<float> sinergies);
+    void grasp(std::vector<double> sinergies);
 
     /**
      * Opens the qb soft hand.
@@ -21,8 +21,5 @@ public:
     void print_joints();
 
 private:
-    void send_trajectory(std::vector<double> motor_command);
-
     bool open_flag;
-    float duration;
 };    

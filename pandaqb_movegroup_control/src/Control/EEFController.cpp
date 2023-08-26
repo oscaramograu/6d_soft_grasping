@@ -25,19 +25,20 @@ EEFController::~EEFController(){
 
 void EEFController::grasp(){
     if(using_qb){
-        std::vector<float> sinergies = get_sinergies();
+
+        std::vector<double> sinergies = get_sinergies();
+
         hc->grasp(sinergies);
     }
     else{
         float width;
         width = get_width();
-        ROS_INFO_STREAM("THE WIDTH IS" << width);
         gc->close_gripper(width);
     }
 }
 
 void EEFController::close_hand(){
-    std::vector<float> power_sinergy = {0, 0.9};
+    std::vector<double> power_sinergy = {0, 0.9};
     hc->grasp(power_sinergy);
 }
 

@@ -22,7 +22,7 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 
 add_message_files(
   FILES
-  Sinergies.msg
+  Grasp.msg
 )
 
 generate_messages(

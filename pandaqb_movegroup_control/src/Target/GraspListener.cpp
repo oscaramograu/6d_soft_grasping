@@ -1,8 +1,12 @@
 #include  <pandaqb_movegroup_control/Target/GraspListener.h>
 
 GraspListener::GraspListener(ros::NodeHandle *nh){
-    width_sub = nh->subscribe("gr_width", 100, &GraspListener::width_callback, this);
-    sinergies_sub = nh->subscribe("sinergies", 100, &GraspListener::sinergies_callback, this);
+    gr_param_sub = nh->subscribe("grasp_params", 100, 
+        &GraspListener::gr_param_callback, this);
+
+        pandaqb_movegroup_control::Grasp::ConstPtr msg = 
+        ros::topic::waitForMessage<pandaqb_movegroup_control::Grasp>(
+            "/grasp_params");
 };
 
 GraspListener::~GraspListener(){
@@ -37,13 +41,10 @@ geometry_msgs::Pose GraspListener::tf_to_pose(tf::StampedTransform transform){
     return pose;
 }
 
-void GraspListener::width_callback(const std_msgs::Float32::ConstPtr& msg){
-    width = msg->data;
-}
-
-void GraspListener::sinergies_callback(
-    const pandaqb_movegroup_control::Sinergies::ConstPtr& msg){
-    sinergies = {msg->first_sin, msg->second_sin};
+void GraspListener::gr_param_callback(
+    const pandaqb_movegroup_control::Grasp::ConstPtr& msg){
+    sinergies = {msg->sinergies[0], msg->sinergies[1]};
+    width = msg->width;
 }
 
 geometry_msgs::Pose GraspListener::get_grasp_pose(){
@@ -52,21 +53,14 @@ geometry_msgs::Pose GraspListener::get_grasp_pose(){
     return target_pose;
 }
 
-float GraspListener::get_width(){
-    std_msgs::Float32::ConstPtr msg = ros::topic::waitForMessage
-        <std_msgs::Float32>("/gr_width");
-    ROS_INFO_STREAM("The grasp width is: " << width);
-
-    return width;
-}
-
-std::vector<float> GraspListener::get_sinergies(){
-    pandaqb_movegroup_control::Sinergies::ConstPtr msg = 
-        ros::topic::waitForMessage<pandaqb_movegroup_control::Sinergies>(
-            "/sinergies");
-
+std::vector<double> GraspListener::get_sinergies(){
     ROS_INFO_STREAM("The grasp sinergies are: " << 
         sinergies[0] << ", " << sinergies[1]);
 
     return sinergies;
+}
+
+float GraspListener::get_width(){
+    ROS_INFO_STREAM("The widht is: " << width);
+    return width;
 }
