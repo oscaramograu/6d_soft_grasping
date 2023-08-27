@@ -2,24 +2,34 @@
 
 Controller::Controller(ros::NodeHandle *nh): GraspListener(nh),
         arm_controller(), eef_controller(nh){
-    grasp_server = nh->advertiseService(
-        "gr_exec", &Controller::callback, this);
 }
 
 Controller::~Controller(){
 }
 
-bool Controller::callback(std_srvs::SetBoolRequest &req, 
-        std_srvs::SetBoolResponse &res){
-
-    geometry_msgs::Pose target_pose = get_grasp_pose();
+void Controller::start_new_routine(){
+    std::cout << "PRESS ENTER TO START A NEW ROUTINE: ";
+    target_pose = get_grasp_pose();
+    place_pose = get_place_pose();
 
     arm_controller.set_grasp(target_pose);
-    eef_controller.open();
-    arm_controller.approach_grasp();
+    arm_controller.set_place_pose(place_pose);
+
+    pick_and_place_routine();
+}
+
+void Controller::pick_and_place_routine(){
     eef_controller.close_hand();
+    arm_controller.approach_grasp();
+
+    eef_controller.open();
+    arm_controller.move_to_g_pose();
+
+    eef_controller.grasp();
     arm_controller.pick_up();
 
-    res.success = true;
-    return true;
+    arm_controller.move_to_place_pose();
+    eef_controller.open();
+
+    arm_controller.move_home();
 }

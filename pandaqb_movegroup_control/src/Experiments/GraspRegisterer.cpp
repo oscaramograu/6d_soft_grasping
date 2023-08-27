@@ -1,11 +1,8 @@
 #include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
 
 GraspRegisterer::GraspRegisterer(ros::NodeHandle *nh): 
-        GraspListener(nh), id(0), file(),
+        Controller(nh), id(0), file(),
         exp_files_path("/home/oscar/catkin_ws/src/thesis/results/"){
-
-    grasp_client = nh->serviceClient<std_srvs::SetBool>("gr_exec");
-    srv.request.data = true;
 
     pub = nh->advertise<std_msgs::String>("stop_flag", 10);
     msg.data = "";
@@ -38,7 +35,7 @@ void GraspRegisterer::open_file(){
       exit(1);
     }
 
-    *file << "id, Width, Object, Success, Grasp type" << std::endl;
+    *file << "id, Width, Object, Grasp Success, Place Success, First sinergy, Second sinergy" << std::endl;
 }
 
 void GraspRegisterer::register_data(){
@@ -48,59 +45,44 @@ void GraspRegisterer::register_data(){
     << id << ", " 
     << width << ", " 
     << object << ", " 
-    << success << ", " 
-    << grasp_type << ", " 
+    << grasp_success << ", " 
+    << place_success << ", " 
+    << sinergies[0] << ", " 
+    << sinergies[1] << ", "
     << std::endl;
 }
 
 void GraspRegisterer::set_data(){
     id++;
     width = get_width();
-    set_grasp();
+    sinergies = get_sinergies();
+    
+    start_new_routine();
 
-    send_grasp_request();
-    set_success();
+    std::cout << "GRASP SUCCESS";
+    set_success(grasp_success);
+    std::cout << "PLACE SUCCESS";
+    set_success(place_success);
+
     pub.publish(msg);
     std::cout << "Press enter when object is detected again:";
     std::string enter;
-    std::cin >> enter;
+    std::getline(std::cin, enter);
 }
 
-void GraspRegisterer::set_grasp(){
-    if(eef == "qb_hand"){
-    std::vector<double> sinergies =  get_sinergies();
-        grasp_type = std::to_string(sinergies[0]) 
-            + ", " + std::to_string(sinergies[1]);
-    }
-    else{
-        grasp_type = "parallel_plates";
-    }
-}
-
-void GraspRegisterer::send_grasp_request(){
-    if (grasp_client.call(srv))
-    {
-        ROS_INFO_STREAM("The grasp execution request was properly sent.");
-    }
-    else
-    {
-        ROS_ERROR("Failed to call service gr_exec");
-    }
-}
-
-void GraspRegisterer::set_success(){
+void GraspRegisterer::set_success(bool &successs_var){
     std::string succeded = "";
     do{
-        std::cout << "Enter y if grasp succeded or n if not:";
+        std::cout << "Enter y if succeded or n if not:";
         std::cin >> succeded;
     }
     while(succeded != "n" && succeded != "y");   
     std::cout << "Succeeded value = " << succeded << std::endl;
     if(succeded == "n"){
-        success = false;
+        successs_var = false;
     }
     else if(succeded == "y"){
-        success = true;
+        successs_var = true;
     }
-    std::cout << "Success value = " << success << std::endl;
+    std::cout << "Success value = " << successs_var << std::endl;
 }

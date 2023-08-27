@@ -42,7 +42,7 @@ void GroupMover::planExecute(){
 
     if (success){
         ROS_INFO_STREAM("Planning succeeded");
-        ROS_INFO_STREAM("Press keyboard to execute it");
+        ROS_INFO_STREAM("Press enter key to execute it");
         std::string user_input;
         std::getline(std::cin, user_input);
         move_group_->execute(plan);
@@ -89,7 +89,7 @@ void GroupMover::build_cart_plan(){
 
     if (fraction == 1){
         ROS_INFO_STREAM("Planning succeeded");
-        ROS_INFO_STREAM("Press keyboard to execute the planned waypoints");
+        ROS_INFO_STREAM("Press enter key to execute the planned waypoints");
 
         std::string user_input;
         std::getline(std::cin, user_input);

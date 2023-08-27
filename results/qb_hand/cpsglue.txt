@@ -1,0 +1,3 @@
+id, Width, Object, Grasp Success, Place Success, First sinergy, Second sinergy
+1, 0.0297563, cpsglue, 1, 0, 0.9, 0, 
+2, 0.0297563, cpsglue, 0, 0, 0.9, 0, 

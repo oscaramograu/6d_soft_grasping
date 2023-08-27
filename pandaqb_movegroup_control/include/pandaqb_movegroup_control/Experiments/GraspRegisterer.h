@@ -6,8 +6,9 @@
 #include <std_msgs/String.h>
 
 #include <pandaqb_movegroup_control/Target/GraspListener.h>
+#include <pandaqb_movegroup_control/Control/Controller.h>
 
-class GraspRegisterer: public GraspListener{
+class GraspRegisterer: public Controller{
 public:
     GraspRegisterer(ros::NodeHandle *nh);
     ~GraspRegisterer();
@@ -20,9 +21,8 @@ private:
     
     void set_data();
 
-    void set_grasp();
-    void send_grasp_request();
-    void set_success();
+    void send_grasp_();
+    void set_success(bool &success_var);
 
     std::ofstream *file;
     std::string exp_files_path, file_path;
@@ -34,7 +34,9 @@ private:
     std_msgs::String msg;
 
     int id;
-    bool success;
     float width;
-    std::string grasp_type, object, eef;
+    std::vector<double> sinergies;
+    bool grasp_success, place_success;
+
+    std::string object, eef;
 };

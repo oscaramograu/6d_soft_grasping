@@ -6,7 +6,8 @@
 // #include <pandaqb_movegroup_control/Control/EEFController.h>
 // #include <pandaqb_movegroup_control/Control/ArmController.h>
 // #include <pandaqb_movegroup_control/Target/GraspListener.h>
-#include <pandaqb_movegroup_control/Control/Controller.h>
+// #include <pandaqb_movegroup_control/Control/Controller.h>
+#include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -66,31 +67,17 @@ int main(int argc, char** argv){
 
 // ================= REAL CODE ===========================
     ros::NodeHandle nh;
-    GraspListener gr(&nh);
-    geometry_msgs::Pose target_pose, place_pose;
-    target_pose = gr.get_grasp_pose();
-    place_pose = gr.get_place_pose();
 
-    ArmController ac;
-    EEFController eef_c(&nh);
+    GraspRegisterer grasp_reg(&nh);
 
-    ac.set_grasp(target_pose);
-    ac.set_place_pose(place_pose);
-
-    eef_c.close_hand();
-    ac.approach_grasp();
-
-    eef_c.open();
-    ac.move_to_g_pose();
-
-    eef_c.grasp();
-    ac.pick_up();
-
-    ac.move_to_place_pose();
-    eef_c.open();
-
-    ac.move_home();
-
+    ros::Rate rate(2);
+    int n_max(2), n(0);
+    
+    while(ros::ok() && n < n_max){
+        n++;
+        grasp_reg.register_data();
+        rate.sleep();
+    }
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
     // ROS_INFO_STREAM("READY TO GRASP");
