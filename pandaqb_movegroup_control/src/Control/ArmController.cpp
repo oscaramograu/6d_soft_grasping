@@ -13,10 +13,21 @@ ArmController::ArmController(): arm_mover("arm"){
 
     arm_mover.set_EEF_link(eef_frame);
     std::string path = "move_group/arm/";
+
+    place_pose.position.x = 0;
+    place_pose.position.y = 0.75;
+    place_pose.position.z = 0;
     }
 
 ArmController::~ArmController(){
 }
+
+void ArmController::set_grasp(geometry_msgs::Pose pose){
+    grasp_pose = pose;
+    compute_pre_grasp_pose();
+    // compute_place_pose();
+}
+
 void ArmController::approach_grasp(){
     ROS_INFO_STREAM("New plan: PRE GRASP POSE");
 
@@ -36,9 +47,12 @@ void ArmController::move_to_g_pose(){
     arm_mover.moveTo(grasp_pose);
 }
 
-void ArmController::set_grasp(geometry_msgs::Pose pose){
-    grasp_pose = pose;
-    compute_pre_grasp_pose();
+void ArmController::approach_place(){
+
+}
+
+void ArmController::place(){
+
 }
 
 void ArmController::pick_up(){
@@ -47,6 +61,7 @@ void ArmController::pick_up(){
     arm_mover.moveTo(pre_grasp_pose);
     arm_mover.moveHome();
 }
+
 geometry_msgs::Pose ArmController::get_current_pose(){
     return arm_mover.getCurrentPose();
 }
@@ -62,6 +77,8 @@ void ArmController::compute_pre_grasp_pose(){
     std::cout << "The pre grasp pose is:\n" << pre_grasp_pose << std::endl;
 }
 
+
+
 void ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
     Eigen::Quaterniond quad = orient_msg_to_eigen(orient);
 
@@ -75,7 +92,8 @@ void ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
         << offsets << std::endl;
 }
 
-Eigen::Quaterniond ArmController::orient_msg_to_eigen(geometry_msgs::Quaternion orient){
+Eigen::Quaterniond ArmController::orient_msg_to_eigen(
+        geometry_msgs::Quaternion orient){
     Eigen::Quaterniond quad;
     quad.x() = orient.x;
     quad.y() = orient.y;

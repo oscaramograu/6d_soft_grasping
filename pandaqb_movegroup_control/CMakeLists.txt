@@ -140,6 +140,18 @@ add_dependencies(experiment_recorder_node
   Experiment_libs
   )
 
+# ======================================== Place Pose Broadcaster Node ========================================
+add_executable(PlacePoseBroadcaster_node
+  ${PROJECT_SOURCE_DIR}/src/PlacePoseBroadcaster.cpp)
+
+add_dependencies(PlacePoseBroadcaster_node
+  ${PlacePoseBroadcaster_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+  target_link_libraries(PlacePoseBroadcaster_node
+  Control_libs
+  MoveGroup_libs
+  )
+
 # ======================================== Object Publisher Node ========================================
 add_library(Object_libs
   ${PROJECT_SOURCE_DIR}/src/Target/TargetObject.cpp

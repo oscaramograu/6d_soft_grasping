@@ -49,7 +49,7 @@ void GraspListener::gr_param_callback(
 
 geometry_msgs::Pose GraspListener::get_grasp_pose(){
     build_gr_pose();
-    ROS_INFO_STREAM(target_pose);
+    // ROS_INFO_STREAM(target_pose);
     return target_pose;
 }
 
