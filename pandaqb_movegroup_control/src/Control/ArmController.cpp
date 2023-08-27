@@ -17,15 +17,22 @@ ArmController::ArmController(): arm_mover("arm"){
     place_pose.position.x = 0;
     place_pose.position.y = 0.75;
     place_pose.position.z = 0;
-    }
+}
 
 ArmController::~ArmController(){
 }
 
 void ArmController::set_grasp(geometry_msgs::Pose pose){
     grasp_pose = pose;
-    compute_pre_grasp_pose();
-    // compute_place_pose();
+    pre_grasp_pose = compute_pre_pose(grasp_pose);
+
+}
+
+void ArmController::set_place_pose(geometry_msgs::Pose pose){
+    place_pose = pose;
+    ROS_INFO_STREAM("sdal;asfkl;;ljk");
+
+    pre_place_pose = compute_pre_pose(place_pose);
 }
 
 void ArmController::approach_grasp(){
@@ -47,12 +54,19 @@ void ArmController::move_to_g_pose(){
     arm_mover.moveTo(grasp_pose);
 }
 
-void ArmController::approach_place(){
+void ArmController::move_to_place_pose(){
+    ROS_INFO_STREAM("New plan: PLACE POSE");
+    std::vector<double> rotated_joints = arm_mover.getCurrentJointState();
+    rotated_joints[0] += M_PI_2;
+    arm_mover.moveTo(rotated_joints);
 
-}
-
-void ArmController::place(){
-
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    target_pose.position.z -= 0.2;
+    arm_mover.apend_waypt(target_pose);
+    arm_mover.apend_waypt(pre_place_pose);
+    arm_mover.apend_waypt(place_pose);
+    arm_mover.build_cart_plan();
+    arm_mover.clear_waypt();
 }
 
 void ArmController::pick_up(){
@@ -62,34 +76,41 @@ void ArmController::pick_up(){
     arm_mover.moveHome();
 }
 
+void ArmController::move_home(){
+    ROS_INFO_STREAM("New plan: HOMENIG");
+    arm_mover.moveTo(pre_place_pose);
+    arm_mover.moveHome();
+}
+
 geometry_msgs::Pose ArmController::get_current_pose(){
     return arm_mover.getCurrentPose();
 }
 
-void ArmController::compute_pre_grasp_pose(){
-    pre_grasp_pose = grasp_pose;
+geometry_msgs::Pose ArmController::compute_pre_pose(geometry_msgs::Pose final_pose){
+    geometry_msgs::Pose pre_pose = final_pose;
 
-    compute_normal_offset(grasp_pose.orientation);
-    pre_grasp_pose.position.x += offsets[0];
-    pre_grasp_pose.position.y += offsets[1];
-    pre_grasp_pose.position.z += offsets[2];
-    
-    std::cout << "The pre grasp pose is:\n" << pre_grasp_pose << std::endl;
+    Eigen::Vector3d offsets = compute_normal_offset(grasp_pose.orientation);
+    pre_pose.position.x += offsets[0];
+    pre_pose.position.y += offsets[1];
+    pre_pose.position.z += offsets[2];
+    ROS_INFO_STREAM("sdal;asfkl;;ljk");
+
+    std::cout << "The pre pose pose is:\n" << pre_pose << std::endl;
+    return pre_pose;
 }
 
-
-
-void ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
+Eigen::Vector3d ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
     Eigen::Quaterniond quad = orient_msg_to_eigen(orient);
 
-    Eigen::Vector3d normal_offsets(0, 0, -0.05);
+    Eigen::Vector3d normal_offsets(0, 0, -0.05), oriented_offsets;
     std::cout << "The offsets in target grasp coordinates are:\n"
         << normal_offsets << std::endl;
 
-    offsets = quad.matrix()*normal_offsets;
+    oriented_offsets = quad.matrix()*normal_offsets;
 
     std::cout << "The offsets in abs coordinates are:\n"
-        << offsets << std::endl;
+        << oriented_offsets << std::endl;
+    return oriented_offsets;
 }
 
 Eigen::Quaterniond ArmController::orient_msg_to_eigen(

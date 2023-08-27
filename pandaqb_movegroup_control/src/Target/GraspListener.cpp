@@ -12,17 +12,17 @@ GraspListener::GraspListener(ros::NodeHandle *nh){
 GraspListener::~GraspListener(){
 };
 
-void GraspListener::build_gr_pose(){
+geometry_msgs::Pose GraspListener::get_pose_from_tf(std::string tf_frame){
     try {
-        listener.waitForTransform("/panda_link0", "/target_grasp", 
+        listener.waitForTransform("/panda_link0", tf_frame, 
             ros::Time(0), ros::Duration(50.0));
-        listener.lookupTransform("/panda_link0", "/target_grasp", 
+        listener.lookupTransform("/panda_link0", tf_frame, 
             ros::Time(0), transform);
     } catch (tf::TransformException ex) {
         ROS_ERROR("%s",ex.what());
     }
 
-    target_pose = tf_to_pose(transform);
+    return tf_to_pose(transform);
 }
 
 geometry_msgs::Pose GraspListener::tf_to_pose(tf::StampedTransform transform){
@@ -48,9 +48,11 @@ void GraspListener::gr_param_callback(
 }
 
 geometry_msgs::Pose GraspListener::get_grasp_pose(){
-    build_gr_pose();
-    // ROS_INFO_STREAM(target_pose);
-    return target_pose;
+    return get_pose_from_tf("/target_grasp");;
+}
+
+geometry_msgs::Pose GraspListener::get_place_pose(){
+    return get_pose_from_tf("/place_pose");
 }
 
 std::vector<double> GraspListener::get_sinergies(){

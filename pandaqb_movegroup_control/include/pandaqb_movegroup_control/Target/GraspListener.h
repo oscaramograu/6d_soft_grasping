@@ -15,22 +15,22 @@ private:
     float width;
     std::vector<double> sinergies;
 
-    geometry_msgs::Pose target_pose;
-
     geometry_msgs::Pose tf_to_pose(
         tf::StampedTransform transform);
 
     void gr_param_callback(
         const pandaqb_movegroup_control::Grasp::ConstPtr& msg);
 
+    geometry_msgs::Pose get_pose_from_tf(std::string tf_frame);
+
 public:
     GraspListener(ros::NodeHandle *nh);
     ~GraspListener();
 
     geometry_msgs::Pose get_grasp_pose();
+    geometry_msgs::Pose get_place_pose();
     std::vector<double> get_sinergies();
     float get_width();
 
-    void build_gr_pose();
 };
 #endif

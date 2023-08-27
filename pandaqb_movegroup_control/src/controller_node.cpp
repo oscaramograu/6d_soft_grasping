@@ -67,12 +67,15 @@ int main(int argc, char** argv){
 // ================= REAL CODE ===========================
     ros::NodeHandle nh;
     GraspListener gr(&nh);
-    geometry_msgs::Pose target_pose = gr.get_grasp_pose();
+    geometry_msgs::Pose target_pose, place_pose;
+    target_pose = gr.get_grasp_pose();
+    place_pose = gr.get_place_pose();
 
     ArmController ac;
     EEFController eef_c(&nh);
 
     ac.set_grasp(target_pose);
+    ac.set_place_pose(place_pose);
 
     eef_c.close_hand();
     ac.approach_grasp();
@@ -83,7 +86,10 @@ int main(int argc, char** argv){
     eef_c.grasp();
     ac.pick_up();
 
+    ac.move_to_place_pose();
     eef_c.open();
+
+    ac.move_home();
 
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
