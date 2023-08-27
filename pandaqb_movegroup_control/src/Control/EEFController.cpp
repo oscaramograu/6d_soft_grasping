@@ -25,7 +25,6 @@ EEFController::~EEFController(){
 
 void EEFController::grasp(){
     if(using_qb){
-
         std::vector<double> sinergies = get_sinergies();
 
         hc->grasp(sinergies);
@@ -38,7 +37,7 @@ void EEFController::grasp(){
 }
 
 void EEFController::close_hand(){
-    std::vector<double> power_sinergy = {0, 0.9};
+    std::vector<double> power_sinergy = {0.9, 0};
     hc->grasp(power_sinergy);
 }
 

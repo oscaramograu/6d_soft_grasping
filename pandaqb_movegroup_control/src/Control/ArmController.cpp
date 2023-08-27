@@ -13,41 +13,27 @@ ArmController::ArmController(): arm_mover("arm"){
 
     arm_mover.set_EEF_link(eef_frame);
     std::string path = "move_group/arm/";
-    ros::param::get(path + "left", left_pose);
-    ros::param::get(path + "right", right_pose);
     }
 
 ArmController::~ArmController(){
 }
 void ArmController::approach_grasp(){
-    // move_to_pre_pose();
+    ROS_INFO_STREAM("New plan: PRE GRASP POSE");
 
     geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
     target_pose.position.z -= 0.2;
 
     arm_mover.apend_waypt(target_pose);
     arm_mover.apend_waypt(pre_grasp_pose);
-    // arm_mover.apend_waypt(grasp_pose);
 
     arm_mover.build_cart_plan();
     arm_mover.clear_waypt();
 }
 
 void ArmController::move_to_g_pose(){
+    ROS_INFO_STREAM("New plan: GRASP POSE");
+
     arm_mover.moveTo(grasp_pose);
-}
-
-void ArmController::move_to_pre_pose(){
-    right_gr_flag = check_right_grasp();
-    if(right_gr_flag){
-        ROS_INFO_STREAM("Approaching right pre grasp pose");
-        arm_mover.moveTo(right_pose);
-    }
-    else{
-        ROS_INFO_STREAM("Approaching left pre grasp pose");
-
-        arm_mover.moveTo(left_pose);
-    }
 }
 
 void ArmController::set_grasp(geometry_msgs::Pose pose){
@@ -56,6 +42,8 @@ void ArmController::set_grasp(geometry_msgs::Pose pose){
 }
 
 void ArmController::pick_up(){
+    ROS_INFO_STREAM("New plan: PICK UP");
+
     arm_mover.moveTo(pre_grasp_pose);
     arm_mover.moveHome();
 }
@@ -87,29 +75,6 @@ void ArmController::compute_normal_offset(geometry_msgs::Quaternion orient){
         << offsets << std::endl;
 }
 
-bool ArmController::check_right_grasp(){
-    Eigen::Quaterniond quad = orient_msg_to_eigen(grasp_pose.orientation);
-    
-    Eigen::Vector3d Y_axis, obj_vect, y_proj, obj_proj;
-    Y_axis = quad.matrix().col(1);
-    obj_vect = -pose_msg_to_eigen(grasp_pose.position);
-
-    y_proj = projectVectorOntoPlane(Y_axis);
-    obj_proj = projectVectorOntoPlane(obj_vect);
-    
-    // Calculate the cross product of the two projected vectors
-    Eigen::Vector3d cross_prod = y_proj.cross(obj_proj);
-
-    // Get the direction of the cross product along the plane normal
-    Eigen::Vector3d Z_plane_n(0.0, 0.0, 1.0);
-    double cross_dir = cross_prod.dot(Z_plane_n);
-
-    // Determine the sign of the angle
-    bool right_flag = (cross_dir >= 0);
-    ROS_INFO_STREAM(right_flag);
-    return right_flag;
-}
-
 Eigen::Quaterniond ArmController::orient_msg_to_eigen(geometry_msgs::Quaternion orient){
     Eigen::Quaterniond quad;
     quad.x() = orient.x;
@@ -117,22 +82,4 @@ Eigen::Quaterniond ArmController::orient_msg_to_eigen(geometry_msgs::Quaternion 
     quad.z() = orient.z;
     quad.w() = orient.w;
     return quad;
-}
-Eigen::Vector3d ArmController::pose_msg_to_eigen(geometry_msgs::Point position){
-    Eigen::Vector3d vect;
-    vect << 
-        position.x,
-        position.y,
-        position.z;
-    
-    return vect;
-}
-
-Eigen::Vector3d ArmController::projectVectorOntoPlane(Eigen::Vector3d v){
-    Eigen::Vector3d Z_plane_n(0.0, 0.0, 1.0);
-    double dot_prod = v.dot(Z_plane_n);
-    double mag_n_sq = Z_plane_n.squaredNorm();
-    Eigen::Vector3d v_parallel = (dot_prod / mag_n_sq) * Z_plane_n;
-    Eigen::Vector3d v_proj = v - v_parallel;
-    return v_proj;
 }

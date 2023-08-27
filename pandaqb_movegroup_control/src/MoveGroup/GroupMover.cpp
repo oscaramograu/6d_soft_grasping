@@ -8,10 +8,7 @@ GroupMover::~GroupMover(){
 
 // Cartesianspace
 void GroupMover::moveTo(const geometry_msgs::Pose& pose){
-    ROS_INFO_STREAM("Moving to cartesian space.");
-
     move_group_->setPoseTarget(pose);
-
     vizPlan(pose);
     planExecute();
     vizEnd();
@@ -19,8 +16,6 @@ void GroupMover::moveTo(const geometry_msgs::Pose& pose){
 
 // Jointspace
 void GroupMover::moveTo(std::vector<double> joints){
-    ROS_INFO_STREAM("Moving to joint space.");
-
     move_group_->setJointValueTarget(joints);
 
     planExecute();
@@ -43,8 +38,6 @@ void GroupMover::set_EEF_link(std::string arm_eef_frame){
 }
 
 void GroupMover::planExecute(){
-    ROS_INFO_STREAM("Planning succeeded");
-
     bool success = (move_group_->plan(plan)==moveit::core::MoveItErrorCode::SUCCESS);
 
     if (success){
@@ -84,7 +77,7 @@ void GroupMover::build_cart_plan(){
     trajectory_processing::IterativeParabolicTimeParameterization iptp;
     bool success = iptp.computeTimeStamps(rt);
 
-    ROS_INFO("Computed time stamp %s",success?"SUCCEDED":"FAILED");
+    // ROS_INFO("Plan result status %s",success?"SUCCEDED":"FAILED");
 
     // Get RobotTrajectory_msg from RobotTrajectory
     rt.getRobotTrajectoryMsg(trajectory_msg);
@@ -92,16 +85,17 @@ void GroupMover::build_cart_plan(){
 
     plan.trajectory_ = trajectory_msg;
 
-    ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)",fraction * 100.0);   
+    // ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)",fraction * 100.0);   
 
     if (fraction == 1){
+        ROS_INFO_STREAM("Planning succeeded");
         ROS_INFO_STREAM("Press keyboard to execute the planned waypoints");
 
         std::string user_input;
         std::getline(std::cin, user_input);
 
         move_group_->execute(plan);
-        ROS_INFO_STREAM("Plan executed.");
+        // ROS_INFO_STREAM("Plan executed.");
     }
 
     else{

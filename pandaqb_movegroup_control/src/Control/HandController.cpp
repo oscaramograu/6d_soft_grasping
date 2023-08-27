@@ -12,7 +12,7 @@ void HandController::print_joints(){
 }
 
 void HandController::grasp(std::vector<double> sinergies){
-    ROS_INFO_STREAM("HAND GRASP");
+    ROS_INFO_STREAM("New plan: HAND GRASP");
     std::vector<double> hand_joints = {sinergies[1], sinergies[0]};
     moveTo(hand_joints);
     open_flag = false;
@@ -20,7 +20,7 @@ void HandController::grasp(std::vector<double> sinergies){
 
 void HandController::open(){
     std::vector<double> hand_joints{0, 0};
-    ROS_INFO_STREAM("HAND OPEN");
+    ROS_INFO_STREAM("New plan: HAND OPEN");
     moveTo(hand_joints);
     open_flag = true;
 }
