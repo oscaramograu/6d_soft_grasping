@@ -13,10 +13,6 @@ ArmController::ArmController(): arm_mover("arm"){
 
     arm_mover.set_EEF_link(eef_frame);
     std::string path = "move_group/arm/";
-
-    place_pose.position.x = 0;
-    place_pose.position.y = 0.75;
-    place_pose.position.z = 0;
 }
 
 ArmController::~ArmController(){
@@ -25,14 +21,11 @@ ArmController::~ArmController(){
 void ArmController::set_grasp(geometry_msgs::Pose pose){
     grasp_pose = pose;
     pre_grasp_pose = compute_pre_pose(grasp_pose);
-
 }
 
 void ArmController::set_place_pose(geometry_msgs::Pose pose){
     place_pose = pose;
-    ROS_INFO_STREAM("sdal;asfkl;;ljk");
-
-    pre_place_pose = compute_pre_pose(place_pose);
+    pre_place_pose = compute_pre_pose(pose);
 }
 
 void ArmController::approach_grasp(){
@@ -89,11 +82,10 @@ geometry_msgs::Pose ArmController::get_current_pose(){
 geometry_msgs::Pose ArmController::compute_pre_pose(geometry_msgs::Pose final_pose){
     geometry_msgs::Pose pre_pose = final_pose;
 
-    Eigen::Vector3d offsets = compute_normal_offset(grasp_pose.orientation);
+    Eigen::Vector3d offsets = compute_normal_offset(final_pose.orientation);
     pre_pose.position.x += offsets[0];
     pre_pose.position.y += offsets[1];
     pre_pose.position.z += offsets[2];
-    ROS_INFO_STREAM("sdal;asfkl;;ljk");
 
     std::cout << "The pre pose pose is:\n" << pre_pose << std::endl;
     return pre_pose;
