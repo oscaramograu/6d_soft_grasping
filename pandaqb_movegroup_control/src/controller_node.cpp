@@ -6,8 +6,8 @@
 // #include <pandaqb_movegroup_control/Control/EEFController.h>
 // #include <pandaqb_movegroup_control/Control/ArmController.h>
 // #include <pandaqb_movegroup_control/Target/GraspListener.h>
-// #include <pandaqb_movegroup_control/Control/Controller.h>
-#include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
+#include <pandaqb_movegroup_control/Control/Controller.h>
+// #include <pandaqb_movegroup_control/Experiments/GraspRegisterer.h>
 
 void rotate_aroundZ(tf::StampedTransform &tf, float theta){
     tf::Quaternion tf_rot;
@@ -66,18 +66,26 @@ int main(int argc, char** argv){
     spinner.start();
 
 // ================= REAL CODE ===========================
+    // ros::NodeHandle nh;
+
+    // GraspRegisterer grasp_reg(&nh);
+
+    // ros::Rate rate(2);
+    // int n_max(2), n(0);
+    
+    // while(ros::ok() && n < n_max){
+    //     n++;
+    //     grasp_reg.register_data();
+    //     rate.sleep();
+    // }
+
+// =================  CONTROLLER CODE ===========================
     ros::NodeHandle nh;
 
-    GraspRegisterer grasp_reg(&nh);
+    // Controller cont(&nh);
 
-    ros::Rate rate(2);
-    int n_max(2), n(0);
-    
-    while(ros::ok() && n < n_max){
-        n++;
-        grasp_reg.register_data();
-        rate.sleep();
-    }
+    // cont.start_new_routine();
+
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
     // ROS_INFO_STREAM("READY TO GRASP");
@@ -89,7 +97,7 @@ int main(int argc, char** argv){
     //     loop_rate.sleep();
     // }
 // ================= TESTING POSE ===========================
-    // tf::StampedTransform transform;
+    tf::StampedTransform transform;
     // tf::TransformListener listener;
 
     // try {
@@ -101,21 +109,22 @@ int main(int argc, char** argv){
     //     ROS_ERROR("%s",ex.what());
     // }
 
-    // tf::Quaternion rotation;
-    // rotation.setW(0);
-    // rotation.setX(0);
-    // rotation.setY(0);
-    // rotation.setZ(1);
+    tf::Quaternion rotation;
+    rotation.setW(0);
+    rotation.setX(0);
+    rotation.setY(0);
+    rotation.setZ(-1);
 
-    // transform.setRotation(rotation);
-    // rotate_aroundX(transform, M_PI);
+    transform.setRotation(rotation);
+    rotate_aroundX(transform, M_PI);
+    // rotate_aroundZ(transform, M_PI_2);
 
-    // geometry_msgs::Pose  target_pose = tf_to_pose(transform);
-    // target_pose.position.z += 0.05;
-
-    // GroupMover arm("arm");
-    // arm.set_EEF_link("qbhand2m1_end_effector_link");
-    // arm.moveTo(target_pose);
+    geometry_msgs::Pose  target_pose = tf_to_pose(transform);
+    target_pose.position.z += 0.2;
+    target_pose.position.x = 0.65;
+    GroupMover arm("arm");
+    arm.set_EEF_link("pandaqb2m1_end_effector_link");
+    arm.moveTo(target_pose);
     
 // ================= PRINT CURRENT JOINT STATES ===========================
 

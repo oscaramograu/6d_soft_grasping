@@ -1,0 +1,1 @@
+id, Width, Object, Grasp Success, Place Success, First sinergy, Second sinergy

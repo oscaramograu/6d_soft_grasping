@@ -65,13 +65,41 @@ class GraspsBase(Grasps):
     
     def _rotate_around_Z(self, arr: np.ndarray, theta):
         new_arr = arr.copy()
+        Ri = new_arr[:3, :3]
 
-        rot = np.eye(4)
+        rot = np.eye(3)
         rot[:2,:2] = np.array([
             [cos(theta), -sin(theta)],
             [sin(theta), cos(theta)]])
+        Rf = Ri@rot
+        new_arr[:3, :3] = Rf
+        return new_arr
     
-        return new_arr@rot
+    def _rotate_around_Y(self, arr: np.ndarray, theta):
+        new_arr = arr.copy()
+        R_i =new_arr[:3, :3]
+        rot = np.array([
+            [cos(theta), 0, sin(theta)],
+            [0, 1, 0],
+            [-sin(theta), 0, cos(theta)]
+        ]) 
+        R_f = R_i@rot
+        new_arr[:3, :3] = R_f
+
+        return new_arr
+    
+    def _rotate_around_X(self, arr: np.ndarray, theta):
+        new_arr = arr.copy()
+        R_i =new_arr[:3, :3]
+        rot = np.array([
+            [1, 0, 0],
+            [0, cos(theta), -sin(theta)],
+            [0, sin(theta), cos(theta)]
+        ]) 
+        R_f = R_i@rot
+        new_arr[:3, :3] = R_f
+
+        return new_arr
     
     def _select_grasp_inds_by_ang(self, vect:np.ndarray, tr_ang: float, axis: int):
         """

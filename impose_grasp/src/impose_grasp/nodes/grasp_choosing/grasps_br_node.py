@@ -14,11 +14,11 @@ class GraspBrNode:
         self._cam_tf_listener = TfListener("camera_frame")
         
         chooser = self._build_chooser()
-        # self.target = chooser.compute_best_grasp_ind()
-        good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
-                          if chooser.good_gr_flags[i]]  
-        self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
-        # self.target = 75
+        self.target = chooser.compute_best_grasp_ind()
+        # good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
+        #                   if chooser.good_gr_flags[i]]  
+        # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
+        # self.target = 9      
         print("The target grasp is: ", self.target)
         self.broadcaster = GraspsBroadcasater(chooser)
 
@@ -32,14 +32,15 @@ class GraspBrNode:
         obj_pose, cam_pose = self._get_and_listen_poses()
 
         orienter = GraspOrienter(obj_pose)
-        # orienter.orient_grasps()
+        orienter.orient_grasps()
 
-        mapper = GraspMapper(width_th=0.04, theta=-20, grasps=orienter)
+        mapper = GraspMapper(width_th=0.04, theta=-30, grasps=orienter)
         mapper.map_grasps(using_offset=True)
+    
 
         filterer = GraspFilterer(mapper)
         filterer.filter(obj_pose, cam_pose)
-
+        
         return GraspChooser(filterer)
     
     def _get_and_listen_poses(self)-> (np.ndarray, np.ndarray):

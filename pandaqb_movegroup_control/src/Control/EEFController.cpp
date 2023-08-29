@@ -26,7 +26,7 @@ EEFController::~EEFController(){
 void EEFController::grasp(){
     if(using_qb){
         std::vector<double> sinergies = get_sinergies();
-
+        // sinergies = {0.4, 0.1};
         hc->grasp(sinergies);
     }
     else{

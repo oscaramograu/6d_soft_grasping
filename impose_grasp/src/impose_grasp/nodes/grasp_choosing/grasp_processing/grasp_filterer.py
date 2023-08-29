@@ -14,11 +14,15 @@ class GraspFilterer(GraspsBase):
         the ones which's Zs are pointing upwards and Ys are pointing to the robot base. Or the 
         ones that are pointing to the camera frame.
         """
+        self.set_abs_poses(obj_pose)
+
         vertical_vec =  np.array([0,0,-1])
+        obj_to_base_vec = obj_pose[:3,3]/np.linalg.norm(obj_pose[:3,3])
 
         if self.using_qb_hand:
-            pass
-            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=50, axis=2)            
+            # good_grasps_ids_1  = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)            
+            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=60, axis=2)
+            # good_grasps_ids = [i for i in good_grasps_ids_1 if i in good_grasps_ids_2]            
             good_grasps_ids = self._select_higher_grasps(good_grasps_ids, obj_pose, th_dist=0.02)
 
         else:

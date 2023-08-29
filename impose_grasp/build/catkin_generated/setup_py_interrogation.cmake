@@ -1,0 +1,7 @@
+set(impose_grasp_SETUP_PY_SETUP_MODULE "distutils.core")
+set(impose_grasp_SETUP_PY_VERSION "0.0.0")
+set(impose_grasp_SETUP_PY_SCRIPTS "")
+set(impose_grasp_SETUP_PY_PACKAGES "impose_grasp")
+set(impose_grasp_SETUP_PY_PACKAGE_DIRS "src/impose_grasp")
+set(impose_grasp_SETUP_PY_MODULES "")
+set(impose_grasp_SETUP_PY_MODULE_DIRS "")

@@ -2,7 +2,7 @@
 
 GraspRegisterer::GraspRegisterer(ros::NodeHandle *nh): 
         Controller(nh), id(0), file(),
-        exp_files_path("/home/oscar/catkin_ws/src/thesis/results/"){
+        exp_files_path("/home/neurolab/catkin_ws/src/thesis/results/"){
 
     pub = nh->advertise<std_msgs::String>("stop_flag", 10);
     msg.data = "";

@@ -33,6 +33,7 @@ class Detector():
             (Used after setting the frame )
         """
         self.bbox = self.darknet_detector.inference(self.frame)
+        if self.bbox is not None: print("Object detection works.")
     
     def compute_affine(self):    
         """
@@ -50,7 +51,7 @@ class Detector():
         if self.bbox is not None:
             detected, affine = self.pvn_detector.inference(self.bbox, self.frame.rgb.copy(
                 ), self.frame.depth, self.frame.intrinsic, use_icp=_use_icp)  # affine.shape = 3x4 !
-
+            print("Pose estimation works.")
             self.affine = affine
             self.detected = detected
         else:

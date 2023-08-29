@@ -48,6 +48,10 @@ class ObjectBroadcaster(TransformBroadcaster):
                 if f_obj_cam is not None and cam_world is not None:
                     self.obj_world = cam_world@f_obj_cam
                     print("object has been found")
+                    self.obj_world[0, 3] += 0.015
+                    self.obj_world[1, 3] += 0
+                    self.obj_world[2, 3] += 0.01
+
                     self.broadcast_transform(self.obj_world)
                     return True
                 else: 

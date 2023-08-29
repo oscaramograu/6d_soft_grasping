@@ -75,7 +75,8 @@ class GraspChooser(GraspsBase):
         print("List of good grasps ids: ", good_grasp_ids)
         print("List of pointcloud pts for each valid grasp: ", pts_in_col)
         print("List of socres for each valid grasp: ", dist_scores)
-
+        print("The grasp sinergy values are: ", self.synergies_values[best_i])
+        print("The widht is: ", self.widths[best_i])
         return best_i
     
     def _build_scene(self):

@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/neurolab/catkin_ws/src/thesis/impose_grasp/build/devel/setup.sh

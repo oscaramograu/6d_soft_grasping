@@ -1,0 +1,8 @@
+prefix=/home/neurolab/catkin_ws/src/thesis/impose_grasp/build/devel
+
+Name: impose_grasp
+Description: Description of impose_grasp
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
