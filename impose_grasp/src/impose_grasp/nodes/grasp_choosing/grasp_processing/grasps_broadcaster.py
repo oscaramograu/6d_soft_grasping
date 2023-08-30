@@ -33,8 +33,6 @@ class GraspsBroadcasater(GraspsBase):
         gpose = self.rel_poses[ind]
         br:TransformBroadcaster = self.broadcasters[ind]
         br.broadcast_transform(gpose)  
-
-        self._publish_msgs(ind)
     
     def _set_up_broadcasters(self):
         self.broadcasters = []

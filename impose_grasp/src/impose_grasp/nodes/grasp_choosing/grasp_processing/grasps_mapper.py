@@ -10,8 +10,7 @@ class GraspMapper(GraspsBase):
         super().__init__(grasps)
 
         self.theta = theta*pi/180
-        self.pinch_offsets = np.array([0.026, -0.015, -0.025])
-        # self.pinch_offsets = np.array([0, 0.01, -0.03])
+        self.pinch_offsets = np.array([-0.018, 0.0, -0.015])
         self.power_offsets = np.array([0.0, 0.0, -0.02])
 
         self.pinch_sinergy = [0.7, 0.99]
@@ -35,8 +34,8 @@ class GraspMapper(GraspsBase):
         else:
             g_post_off = mapped_g
 
-        of_and_rot_g = self._rotate_around_X(g_post_off, 10*pi/180)  
-        of_and_rot_g = self._rotate_around_Y(of_and_rot_g, -10*pi/180)  
+        of_and_rot_g = self._rotate_around_X(g_post_off, 0*pi/180)  
+        of_and_rot_g = self._rotate_around_Y(of_and_rot_g, 0*pi/180)  
         final_g = self._rotate_around_Z(of_and_rot_g, self.theta)
         return [final_g, sin_values]
     

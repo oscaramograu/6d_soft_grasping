@@ -82,9 +82,9 @@ int main(int argc, char** argv){
 // =================  CONTROLLER CODE ===========================
     ros::NodeHandle nh;
 
-    // Controller cont(&nh);
+    Controller cont(&nh);
 
-    // cont.start_new_routine();
+    cont.start_new_routine();
 
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
@@ -97,34 +97,46 @@ int main(int argc, char** argv){
     //     loop_rate.sleep();
     // }
 // ================= TESTING POSE ===========================
-    tf::StampedTransform transform;
+    // tf::StampedTransform transform;
     // tf::TransformListener listener;
 
     // try {
-    //     listener.waitForTransform("/panda_link0", "/cpsduck_frame", 
+    //     listener.waitForTransform("/qbhand2m1_palm_link", "/qbhand2m1_end_effector_link", 
     //         ros::Time(0), ros::Duration(50.0));
-    //     listener.lookupTransform("/panda_link0", "/cpsduck_frame", 
+    //     listener.lookupTransform("/qbhand2m1_palm_link", "/qbhand2m1_end_effector_link", 
+    //         ros::Time(0), transform);
+    // } catch (tf::TransformException ex) {
+    //     ROS_ERROR("%s",ex.what());
+    // }
+    // std::cout << "The disctance from the palm to the eef link is: " << std::endl;
+    // std::cout << tf_to_pose(transform) << std::endl;
+    // try {
+    //     listener.waitForTransform("/panda_link0", "/place_pose", 
+    //         ros::Time(0), ros::Duration(50.0));
+    //     listener.lookupTransform("/panda_link0", "/place_pose", 
     //         ros::Time(0), transform);
     // } catch (tf::TransformException ex) {
     //     ROS_ERROR("%s",ex.what());
     // }
 
-    tf::Quaternion rotation;
-    rotation.setW(0);
-    rotation.setX(0);
-    rotation.setY(0);
-    rotation.setZ(-1);
+    // tf::Quaternion rotation;
+    // rotation.setW(0);
+    // rotation.setX(0);
+    // rotation.setY(0);
+    // rotation.setZ(-1);
 
-    transform.setRotation(rotation);
-    rotate_aroundX(transform, M_PI);
+    // transform.setRotation(rotation);
+    // // rotate_aroundX(transform, M_PI);
     // rotate_aroundZ(transform, M_PI_2);
 
-    geometry_msgs::Pose  target_pose = tf_to_pose(transform);
-    target_pose.position.z += 0.2;
-    target_pose.position.x = 0.65;
-    GroupMover arm("arm");
-    arm.set_EEF_link("pandaqb2m1_end_effector_link");
-    arm.moveTo(target_pose);
+    // geometry_msgs::Pose  target_pose = tf_to_pose(transform);
+    // target_pose.position.x = 0.65;
+    // target_pose.position.y = -0.05;
+    // target_pose.position.z = 0.2;
+    // std::cout << target_pose << std::endl;
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("qbhand2m1_end_effector_link");
+    // arm.moveTo(target_pose);
     
 // ================= PRINT CURRENT JOINT STATES ===========================
 

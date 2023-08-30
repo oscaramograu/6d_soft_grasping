@@ -500,4 +500,9 @@
     <disable_collisions link1="qbhand2m1_index_knuckle_link" link2="qbhand2m1_thumb_distal_link" reason="User"/>
     <disable_collisions link1="qbhand2m1_index_distal_link" link2="qbhand2m1_thumb_distal_link" reason="User"/>
     <disable_collisions link1="qbhand2m1_middle_distal_link" link2="qbhand2m1_thumb_distal_link" reason="User"/>
+
+    <disable_collisions link1="qbhand2m1_thumb_distal_link" link2="box" reason="User"/>
+    <disable_collisions link1="qbhand2m1_thumb_knuckle_link" link2="box" reason="User"/>
+    <disable_collisions link1="qbhand2m1_thumb_proximal_link" link2="box" reason="User"/>
+    <disable_collisions link1="qbhand2m1_thumb_distal_link" link2="box" reason="User"/>
 </robot>

@@ -26,13 +26,20 @@ EEFController::~EEFController(){
 void EEFController::grasp(){
     if(using_qb){
         std::vector<double> sinergies = get_sinergies();
-        // sinergies = {0.4, 0.1};
         hc->grasp(sinergies);
     }
     else{
         float width;
         width = get_width();
         gc->close_gripper(width);
+    }
+}
+void EEFController::pre_pinch(){
+    float width = get_width();
+    std::cout << width << std::endl;
+    if (width < 0.04){
+        std::vector<double> sinergies = {0.38, 0.0};
+        hc->grasp(sinergies);
     }
 }
 

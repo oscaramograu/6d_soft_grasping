@@ -10,5 +10,5 @@ if __name__ == "__main__":
     g_br = GraspBrNode(obj)
 
     while not rospy.is_shutdown():
-        g_br(br_only_target=0)
+        g_br(br_only_target=1)
         rate.sleep() 

@@ -21,7 +21,7 @@ class GraspFilterer(GraspsBase):
 
         if self.using_qb_hand:
             # good_grasps_ids_1  = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)            
-            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=60, axis=2)
+            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=50, axis=2)
             # good_grasps_ids = [i for i in good_grasps_ids_1 if i in good_grasps_ids_2]            
             good_grasps_ids = self._select_higher_grasps(good_grasps_ids, obj_pose, th_dist=0.02)
 

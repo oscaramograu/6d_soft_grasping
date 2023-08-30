@@ -31,15 +31,15 @@ void ArmController::set_place_pose(geometry_msgs::Pose pose){
 void ArmController::approach_grasp(){
     ROS_INFO_STREAM("New plan: PRE GRASP POSE");
 
-    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
-    target_pose.position.z -= 0.2;
-    arm_mover.apend_waypt(target_pose);
+    // geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    // target_pose.position.z -= 0.2;
+    // arm_mover.apend_waypt(target_pose);
 
-    arm_mover.apend_waypt(target_pose);  
-    arm_mover.apend_waypt(pre_grasp_pose);  
+    // arm_mover.apend_waypt(target_pose);  
+    // arm_mover.apend_waypt(pre_grasp_pose);  
 
-    arm_mover.build_cart_plan();
-    arm_mover.clear_waypt();
+    // arm_mover.build_cart_plan();
+    // arm_mover.clear_waypt();
 
     arm_mover.moveTo(pre_grasp_pose);
 }

@@ -9,10 +9,6 @@
     <node pkg="pandaqb_movegroup_control" type= "object_publisher_node"
     name="scene_objects_publisher_node" output="screen"/>
 
-    <!-- Add other scene objects to the planning scene -->
-    <node pkg="pandaqb_movegroup_control" type= "scene_objects_publisher_node"
-    name="target_obj_publisher_node" output="screen"/>
-
     <!-- Visualise the pointcloud in rviz -->
     <node unless="$(arg camera_sim)"  pkg="impose_grasp" type="pcd_publisher_node.py" 
         name="pcd_publisher_node" output="screen" />    

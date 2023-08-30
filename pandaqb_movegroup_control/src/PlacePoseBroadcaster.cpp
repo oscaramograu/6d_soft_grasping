@@ -68,8 +68,8 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
 
 void init_place_pose(geometry_msgs::Pose &place_pose){
     place_pose.position.x = 0.5;
-    place_pose.position.y = 0.1;
-    place_pose.position.z = 0.35;
+    place_pose.position.y = -0.11;
+    place_pose.position.z = 0.00;
 
     place_pose.orientation = compute_place_or();
 }  
@@ -81,11 +81,10 @@ int main(int argc, char **argv){
     tf::TransformBroadcaster broadcaster;
 
     init_place_pose(place_pose);
-
+    std::cout << place_pose << std::endl;
     ros::Rate loop_rate(10); // Publish at 10 Hz
 
     while (ros::ok()) {
-
         place_tf = geometry_msgs_to_tf(place_pose);
         broadcaster.sendTransform(tf::StampedTransform(place_tf, ros::Time::now(), "panda_link0", "place_pose"));
         
