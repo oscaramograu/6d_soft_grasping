@@ -63,13 +63,14 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
 
     place_pose_or_1 = rot_y * base_or;
     place_pose_or_2 = rot_z * place_pose_or_1;
+
     return eigen_to_orient_msg(place_pose_or_2);
 }
 
 void init_place_pose(geometry_msgs::Pose &place_pose){
     place_pose.position.x = 0.5;
     place_pose.position.y = -0.11;
-    place_pose.position.z = 0.00;
+    place_pose.position.z = 0.0;
 
     place_pose.orientation = compute_place_or();
 }  

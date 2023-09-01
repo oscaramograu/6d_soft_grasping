@@ -50,7 +50,7 @@ moveit_msgs::CollisionObject build_box(){
 
 moveit_msgs::CollisionObject build_platform(){
     shape_msgs::SolidPrimitive plat_prim = build_primitive(1.5, 1.5, 0.03);
-    geometry_msgs::Pose plat_pose = build_pose(0.1, -0.75, -0.031, plat_prim);
+    geometry_msgs::Pose plat_pose = build_pose(0.1, -0.75, -0.06, plat_prim);
 
     return build_col_obj("box", plat_prim, plat_pose);
 }

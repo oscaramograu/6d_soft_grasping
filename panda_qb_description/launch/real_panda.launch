@@ -15,6 +15,7 @@
   </include>
 
   <include file="$(find panda_qb_description)/launch/camera_pose.launch" />
+  <!-- <include file="$(find panda_qb_description)/launch/pinch_pose.launch" /> -->
 
   <!-- Launch moveit planning execution -->
   <!-- <include unless = "$(arg load_gripper)" 

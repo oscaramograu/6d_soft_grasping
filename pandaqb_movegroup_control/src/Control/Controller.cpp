@@ -18,6 +18,8 @@ void Controller::start_new_routine(){
 }
 
 void Controller::pick_and_place_routine(){
+    arm_controller.move_home();
+
     eef_controller.open();
     arm_controller.approach_grasp();
     eef_controller.pre_pinch();

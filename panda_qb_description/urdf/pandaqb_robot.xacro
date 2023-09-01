@@ -15,6 +15,13 @@
       <xacro:build_hand_2m_from_yaml configuration="qbhand_right" namespace="qbhand2m1" parent="qb_hand_wrist">
         <origin xyz="0.018 0.0 0.063" rpy="${pi/2} 0 ${pi/2}"/>
       </xacro:build_hand_2m_from_yaml>
+
+    <link name="pinch_link" />
+    <joint name="pinch_joint" type="fixed">
+      <origin xyz="-0.005 -0.017 0.030" rpy="0.174532925 0 0.523598775" />
+      <parent link="qbhand2m1_end_effector_link" />
+      <child  link="pinch_link" />
+    </joint>
     </xacro:if>
   </xacro:macro>
 </robot>

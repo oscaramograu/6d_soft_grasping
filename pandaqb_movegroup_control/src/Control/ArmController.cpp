@@ -5,7 +5,7 @@ ArmController::ArmController(): arm_mover("arm"){
     ros::param::get("robot_config", rbt_conf);
 
     if(rbt_conf == "qb_hand"){
-        eef_frame = "qbhand2m1_end_effector_link";
+        eef_frame = "pinch_link";
     }
     else if(rbt_conf == "gripper"){
         eef_frame = "panda_hand_tcp";

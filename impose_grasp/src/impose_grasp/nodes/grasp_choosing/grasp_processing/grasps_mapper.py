@@ -10,7 +10,8 @@ class GraspMapper(GraspsBase):
         super().__init__(grasps)
 
         self.theta = theta*pi/180
-        self.pinch_offsets = np.array([-0.018, 0.0, -0.015])
+        # self.pinch_offsets = np.array([-0.018, 0.0, -0.015])
+        self.pinch_offsets = np.array([0.015, 0.01, -0.01])
         self.power_offsets = np.array([0.0, 0.0, -0.02])
 
         self.pinch_sinergy = [0.7, 0.99]

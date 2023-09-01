@@ -8,7 +8,7 @@ std::string grippr_mesh_pth(std::string robot_config){
     mesh_folder =  impose_grasp_path + "/data/models/";
 
     if(robot_config == "qb_hand"){
-        extension = "_col3.ply";
+        extension = "_col_pinch.ply";
     }
     else{
         extension = "_col.ply";

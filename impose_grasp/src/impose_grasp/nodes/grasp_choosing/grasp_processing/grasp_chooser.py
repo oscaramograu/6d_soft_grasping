@@ -15,7 +15,7 @@ class GraspChooser(GraspsBase):
         self.voxel_size = 0.00
 
         self.scene: o3d.t.geometry.RaycastingScene 
-        self._build_scene()
+        self._build_eef()
 
     def compute_best_grasp_ind(self):
         """
@@ -79,11 +79,11 @@ class GraspChooser(GraspsBase):
         print("The widht is: ", self.widths[best_i])
         return best_i
     
-    def _build_scene(self):
+    def _build_eef(self):
         """
         Builds the mesh of the movement projection of the end effector.
         """
-        if self.using_qb_hand: eef = "qb_hand_col3"
+        if self.using_qb_hand: eef = "qb_hand_col"
         else: eef = "qb_gripper_col"
 
         EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,

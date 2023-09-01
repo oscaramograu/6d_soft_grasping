@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="(empty)"
-	BuildStamp="20230830-0656-Experimental"
+	BuildStamp="20230901-0604-Experimental"
 	Name="neurolab-Precision-5820-Tower"
 	Generator="ctest-3.26.1"
 	CompilerName="/usr/bin/c++"
@@ -21,14 +21,14 @@
 	TotalVirtualMemory="0"
 	TotalPhysicalMemory="31793"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="1250.51"
+	ProcessorClockFrequency="3523.78"
 	>
 	<Testing>
-		<StartDateTime>Aug 30 15:56 CEST</StartDateTime>
-		<StartTestTime>1693403813</StartTestTime>
+		<StartDateTime>Sep 01 08:04 CEST</StartDateTime>
+		<StartTestTime>1693548253</StartTestTime>
 		<TestList/>
-		<EndDateTime>Aug 30 15:56 CEST</EndDateTime>
-		<EndTestTime>1693403813</EndTestTime>
+		<EndDateTime>Sep 01 08:04 CEST</EndDateTime>
+		<EndTestTime>1693548253</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

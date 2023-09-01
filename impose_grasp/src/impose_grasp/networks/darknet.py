@@ -10,7 +10,7 @@ from impose_grasp.models.cameras.base_camera import CamFrame
 
 class DarknetDetector():
     def __init__(self, obj_name) -> None:
-        self.confidence = 0.01  # settings
+        self.confidence = 0.05  # settings
 
         self._dt_obj_type = obj_name
         self._obj_detector = self._create_obj_detector()

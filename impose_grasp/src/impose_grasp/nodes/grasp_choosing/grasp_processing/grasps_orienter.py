@@ -15,7 +15,7 @@ class GraspOrienter(GraspsBase):
             obj_to_base_vec = -self.obj_pose[:3,3]/np.linalg.norm(-self.obj_pose[:3,3])
             good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)
             self._invert_opposite_Ys(good_gps_y_inds)
-            print("Grasps where reoriented.")
+            print("Grasps where reoriented.")   
         else:
             print("Grasps where not reoriented.")
 

@@ -1,25 +1,23 @@
-#include <pandaqb_movegroup_control/MoveGroup/GroupMover.h>
+#include <ros/ros.h>
+#include <trajectory_msgs/JointTrajectory.h>
+#include <trajectory_msgs/JointTrajectoryPoint.h>
 
-class HandController: public GroupMover{
+class HandController{
 public:
-    HandController();
+    HandController(ros::NodeHandle *nh);
     ~HandController();
     
-    void grasp(std::vector<double> sinergies);
+    void grasp(std::vector<double> synergies);
 
-    /**
-     * Opens the qb soft hand.
-     */
     void open();
-
-    /**
-     * Checks the open flag and retrieves its value.
-     * The flag is true if the last method called was a open().
-     */
-    bool is_open();
     
     void print_joints();
 
 private:
-    bool open_flag;
+    void publish_traj(std::vector<double> synergies);
+    void init_point();
+
+    ros::Publisher traj_syn_pub;
+    trajectory_msgs::JointTrajectory traj_msg;
+    trajectory_msgs::JointTrajectoryPoint point;
 };    

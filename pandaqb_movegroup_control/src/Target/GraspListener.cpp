@@ -56,9 +56,6 @@ geometry_msgs::Pose GraspListener::get_place_pose(){
 }
 
 std::vector<double> GraspListener::get_sinergies(){
-    ROS_INFO_STREAM("The grasp sinergies are: " << 
-        sinergies[0] << ", " << sinergies[1]);
-
     return sinergies;
 }
 
