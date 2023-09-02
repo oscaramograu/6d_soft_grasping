@@ -19,7 +19,6 @@ class PoseFilter:
             self.poses = self.poses[1:]
 
         self.f_pose = sum(self.poses)/len(self.poses)
-
     def get_filtered_pose(self):
         """
         It returns the last filtered pose.

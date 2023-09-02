@@ -5,7 +5,7 @@ ArmController::ArmController(): arm_mover("arm"){
     ros::param::get("robot_config", rbt_conf);
 
     if(rbt_conf == "qb_hand"){
-        eef_frame = "pinch_link";
+        eef_frame = "power_link";
     }
     else if(rbt_conf == "gripper"){
         eef_frame = "panda_hand_tcp";
@@ -16,6 +16,15 @@ ArmController::ArmController(): arm_mover("arm"){
 }
 
 ArmController::~ArmController(){
+}
+
+void ArmController::set_tcp(std::string tcp){
+    if(tcp == "pinch_link" || tcp == "power_link"){
+        arm_mover.set_EEF_link(tcp);
+    }
+    else{
+        std::cout << "Wrong tcp link was set." << std::endl;
+    }
 }
 
 void ArmController::set_grasp(geometry_msgs::Pose pose){
@@ -100,7 +109,6 @@ geometry_msgs::Pose ArmController::compute_pre_pose(geometry_msgs::Pose final_po
     pre_pose.position.y += offsets[1];
     pre_pose.position.z += offsets[2];
 
-    std::cout << "The pre pose pose is:\n" << pre_pose << std::endl;
     return pre_pose;
 }
 
@@ -108,13 +116,8 @@ Eigen::Vector3d ArmController::compute_normal_offset(geometry_msgs::Quaternion o
     Eigen::Quaterniond quad = orient_msg_to_eigen(orient);
 
     Eigen::Vector3d normal_offsets(0, 0, -0.05), oriented_offsets;
-    std::cout << "The offsets in target grasp coordinates are:\n"
-        << normal_offsets << std::endl;
 
     oriented_offsets = quad.matrix()*normal_offsets;
-
-    std::cout << "The offsets in abs coordinates are:\n"
-        << oriented_offsets << std::endl;
     return oriented_offsets;
 }
 

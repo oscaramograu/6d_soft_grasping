@@ -15,7 +15,7 @@ class GraspMapper(GraspsBase):
         self.power_offsets = np.array([0.0, 0.0, -0.02])
 
         self.pinch_sinergy = [0.7, 0.99]
-        self.power_sinergy = [0.99, 0.0]
+        self.power_sinergy = [0.8, 0.0]
 
         self.width_th = width_th
 
@@ -58,7 +58,7 @@ class GraspMapper(GraspsBase):
             return self._compute_th_sinergies(width)
             
         else:
-            return self.pinch_sinergy
+            return self.power_sinergy
         
     def _compute_th_sinergies(self, width):
         if width > self.width_th:

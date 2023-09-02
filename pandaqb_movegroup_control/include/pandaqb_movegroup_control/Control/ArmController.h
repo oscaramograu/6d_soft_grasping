@@ -7,6 +7,7 @@ public:
 
     void set_grasp(geometry_msgs::Pose pose);
     void set_place_pose(geometry_msgs::Pose pose);
+    void set_tcp(std::string tcp);
 
     void approach_grasp();
     void move_to_g_pose();

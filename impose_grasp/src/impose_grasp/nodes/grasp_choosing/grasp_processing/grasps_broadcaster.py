@@ -23,6 +23,10 @@ class GraspsBroadcasater(GraspsBase):
             if(self.good_gr_flags[i]):
                 self._broadcast_grasp(i)
 
+    def broadcast_all_grasps(self):
+        for i in range(len(self.rel_poses)):
+            self._broadcast_grasp(i)
+
     def broadcast_target(self, target_ind):
         gpose = self.rel_poses[target_ind]
         self.target_gr_br.broadcast_transform(gpose) 

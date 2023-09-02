@@ -83,7 +83,7 @@ class GraspChooser(GraspsBase):
         """
         Builds the mesh of the movement projection of the end effector.
         """
-        if self.using_qb_hand: eef = "qb_hand_col"
+        if self.using_qb_hand: eef = "qb_hand_col_pinch"
         else: eef = "qb_gripper_col"
 
         EEF_mesh_path = os.path.join(PATH_TO_IMPOSE_GRASP,

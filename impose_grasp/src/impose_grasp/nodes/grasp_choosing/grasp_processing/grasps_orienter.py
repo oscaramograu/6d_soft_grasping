@@ -13,7 +13,18 @@ class GraspOrienter(GraspsBase):
     def orient_grasps(self):
         if self.using_qb_hand:
             obj_to_base_vec = -self.obj_pose[:3,3]/np.linalg.norm(-self.obj_pose[:3,3])
-            good_gps_y_inds = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)
+            obj_base_dist = np.linalg.norm(self.obj_pose[:2, 3])
+            if(obj_base_dist > 0.55):
+                rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, -30)
+                good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
+
+            elif(obj_base_dist < 0.40):
+                rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180 - 30)
+                good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
+            
+            else:
+                good_gps_y_inds = []
+
             self._invert_opposite_Ys(good_gps_y_inds)
             print("Grasps where reoriented.")   
         else:
@@ -31,3 +42,11 @@ class GraspOrienter(GraspsBase):
             original_pose = self.rel_poses[ind][:3, 3].copy()
             self.rel_poses[ind] = self._rotate_around_Z(self.rel_poses[ind], pi)
             self.rel_poses[ind][:3, 3] = original_pose
+    
+    def _rotate_vect_on_Z(self, vect:np.ndarray, ang:float):
+        ang_rad = ang/180*np.pi
+        rot = np.array([
+            [np.cos(ang_rad), -np.sin(ang_rad), 0],
+            [np.sin(ang_rad), np.cos(ang_rad), 0],
+            [0, 0, 1]])
+        return rot@vect
