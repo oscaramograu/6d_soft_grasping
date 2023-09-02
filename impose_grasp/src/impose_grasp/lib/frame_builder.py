@@ -2,6 +2,8 @@ import rospy
 import os
 import numpy as np
 
+
+from sensor_msgs.msg import Image
 from impose_grasp.lib.utils import multiarray_to_numpy, PATH_TO_IMPOSE_GRASP
 from std_msgs.msg import Float32MultiArray
 from impose_grasp.models.cameras.base_camera import CamFrame
@@ -23,10 +25,11 @@ class FrameBuilder:
                         os.path.join(cal_path, "intrinsic_matrix.txt"))        
                     
     def get_actual_frame(self):
-        if self.frame.depth is not None and self.frame.rgb is not None:
-            return self.frame
-        else:
-            return None
+        if self.frame.depth is None:
+            rospy.wait_for_message("/camera/depth/numpy", Image)
+        if self.frame.rgb is  None:
+            rospy.wait_for_message("/camera/rgb/numpy", Image)
+        return self.frame
 
     def rgb_callback(self, msg: Float32MultiArray):
         self.frame.rgb = multiarray_to_numpy(msg)
