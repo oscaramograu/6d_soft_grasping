@@ -8,6 +8,7 @@ class GraspOrienter(GraspsBase):
         super().__init__()
         self.set_abs_poses(obj_pose)
         self.obj_pose = obj_pose
+        self.reoriented = [False for i in self.rel_poses]
 
  
     def orient_grasps(self):
@@ -37,7 +38,8 @@ class GraspOrienter(GraspsBase):
         """
         inds = range(len(self.rel_poses))
         inverted_gr_y_inds = [x for x in inds if x not in good_g_inds]
-
+        self.reoriented = [x in inverted_gr_y_inds for x in inds]
+        
         for ind in inverted_gr_y_inds:
             original_pose = self.rel_poses[ind][:3, 3].copy()
             self.rel_poses[ind] = self._rotate_around_Z(self.rel_poses[ind], pi)

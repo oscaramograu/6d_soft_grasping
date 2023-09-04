@@ -44,7 +44,7 @@ void EEFController::pre_pinch(){
         sinergies = {0.35, 0.05};
     }
     else{
-        sinergies = {0.28, -0.03};
+        sinergies = {0.26, -0.02};
     }
     std::cout << sinergies[0] << ", " << sinergies[1] << std::endl;
     hc->grasp(sinergies);

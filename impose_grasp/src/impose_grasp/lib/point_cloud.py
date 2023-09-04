@@ -112,7 +112,7 @@ class PointCloud(FrameBuilder):
         Sets the transformation from the object frame to the camera frame.
         Used to convert the pointcloud from camera to object coordinates.
         """
-        self.listener.listen_tf()
+        self.listener.listen()
         self.target_pose = self.listener.get_np_frame()
 
     def get_pcd_wrt_target(self, target_g_pose: np.ndarray):

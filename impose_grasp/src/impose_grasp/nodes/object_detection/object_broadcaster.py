@@ -9,7 +9,7 @@ from impose_grasp.lib.tf_broadcaster import TransformBroadcaster
 from impose_grasp.nodes.object_detection.pose_filter import PoseFilter
 
 class  ObjectBroadcaster(TransformBroadcaster):
-    def __init__(self, target_obj: str):
+    def __init__(self, target_obj: str, max_poses: int):
         obj_frame = target_obj + "_frame"
 
         super().__init__("panda_link0", obj_frame)
@@ -18,8 +18,7 @@ class  ObjectBroadcaster(TransformBroadcaster):
         self.num = 0
         self.rgb = None
 
-        self.n_poses = 0
-        self.max_poses = 5
+        self.max_poses = max_poses
 
         self.det = Detector(target_obj)
         self.fb = FrameBuilder()
@@ -38,12 +37,11 @@ class  ObjectBroadcaster(TransformBroadcaster):
         - The tf frame is broadcasted between the camera_frame,
         and a new 'target'_frame.
         """
-        if self.n_poses < self.max_poses:
-            self.n_poses += 1
+        if len(self.filter.poses) < self.max_poses:
             obj_world = self._compute_transform()
             if obj_world is not None:
                 self.filter.filter_pose(obj_world)
-            if self.n_poses == self.max_poses:
+            if len(self.filter.poses) == self.max_poses:
                 print("object has been fixed")
 
         else:
@@ -51,7 +49,6 @@ class  ObjectBroadcaster(TransformBroadcaster):
             self.broadcast_transform(obj_world)
 
     def restart(self):
-        self.n_poses = 0
         self.filter.clear_poses()
 
     def _compute_transform(self):

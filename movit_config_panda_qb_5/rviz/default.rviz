@@ -9,6 +9,7 @@ Panels:
         - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
         - /Image1
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.6529411673545837
     Tree Height: 404
@@ -171,6 +172,14 @@ Visualization Manager:
             Show Trail: false
             Value: true
           panda_link8:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          pinch_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          power_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -494,6 +503,14 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          pinch_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          power_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           qb_hand_wrist_link:
             Alpha: 1
             Show Axes: false
@@ -755,13 +772,15 @@ Visualization Manager:
         panda_link8:
           Value: false
         pinch_link:
+          Value: false
+        power_link:
           Value: true
         qb_hand_wrist_link:
           Value: false
         qbhand2m1_base_link:
           Value: false
         qbhand2m1_end_effector_link:
-          Value: true
+          Value: false
         qbhand2m1_index_distal_link:
           Value: false
         qbhand2m1_index_distal_virtual_link:
@@ -879,59 +898,61 @@ Visualization Manager:
                               panda_K:
                                 {}
                           qb_hand_wrist_link:
-                            qbhand2m1_base_link:
-                              qbhand2m1_end_effector_link:
-                                pinch_link:
-                                  {}
-                              qbhand2m1_palm_link:
-                                qbhand2m1_index_knuckle_link:
-                                  qbhand2m1_index_proximal_virtual_link:
-                                    qbhand2m1_index_proximal_link:
-                                      qbhand2m1_index_middle_virtual_link:
-                                        qbhand2m1_index_middle_link:
-                                          qbhand2m1_index_distal_virtual_link:
-                                            qbhand2m1_index_distal_link:
-                                              {}
-                                qbhand2m1_little_knuckle_link:
-                                  qbhand2m1_little_proximal_virtual_link:
-                                    qbhand2m1_little_proximal_link:
-                                      qbhand2m1_little_middle_virtual_link:
-                                        qbhand2m1_little_middle_link:
-                                          qbhand2m1_little_distal_virtual_link:
-                                            qbhand2m1_little_distal_link:
-                                              {}
-                                qbhand2m1_manipulation_tendon_virtual_link:
-                                  {}
-                                qbhand2m1_middle_knuckle_link:
-                                  qbhand2m1_middle_proximal_virtual_link:
-                                    qbhand2m1_middle_proximal_link:
-                                      qbhand2m1_middle_middle_virtual_link:
-                                        qbhand2m1_middle_middle_link:
-                                          qbhand2m1_middle_distal_virtual_link:
-                                            qbhand2m1_middle_distal_link:
-                                              {}
-                                qbhand2m1_motor_1_tendon_virtual_link:
-                                  {}
-                                qbhand2m1_motor_2_tendon_virtual_link:
-                                  {}
-                                qbhand2m1_ring_knuckle_link:
-                                  qbhand2m1_ring_proximal_virtual_link:
-                                    qbhand2m1_ring_proximal_link:
-                                      qbhand2m1_ring_middle_virtual_link:
-                                        qbhand2m1_ring_middle_link:
-                                          qbhand2m1_ring_distal_virtual_link:
-                                            qbhand2m1_ring_distal_link:
-                                              {}
-                                qbhand2m1_synergy_tendon_virtual_link:
-                                  {}
-                                qbhand2m1_thumb_knuckle_link:
-                                  qbhand2m1_thumb_proximal_virtual_link:
-                                    qbhand2m1_thumb_proximal_link:
-                                      qbhand2m1_thumb_distal_virtual_link:
-                                        qbhand2m1_thumb_distal_link:
-                                          {}
+                            {}
         root_link:
-          {}
+          qbhand2m1_base_link:
+            qbhand2m1_end_effector_link:
+              pinch_link:
+                {}
+              power_link:
+                {}
+            qbhand2m1_palm_link:
+              qbhand2m1_index_knuckle_link:
+                qbhand2m1_index_proximal_virtual_link:
+                  qbhand2m1_index_proximal_link:
+                    qbhand2m1_index_middle_virtual_link:
+                      qbhand2m1_index_middle_link:
+                        qbhand2m1_index_distal_virtual_link:
+                          qbhand2m1_index_distal_link:
+                            {}
+              qbhand2m1_little_knuckle_link:
+                qbhand2m1_little_proximal_virtual_link:
+                  qbhand2m1_little_proximal_link:
+                    qbhand2m1_little_middle_virtual_link:
+                      qbhand2m1_little_middle_link:
+                        qbhand2m1_little_distal_virtual_link:
+                          qbhand2m1_little_distal_link:
+                            {}
+              qbhand2m1_manipulation_tendon_virtual_link:
+                {}
+              qbhand2m1_middle_knuckle_link:
+                qbhand2m1_middle_proximal_virtual_link:
+                  qbhand2m1_middle_proximal_link:
+                    qbhand2m1_middle_middle_virtual_link:
+                      qbhand2m1_middle_middle_link:
+                        qbhand2m1_middle_distal_virtual_link:
+                          qbhand2m1_middle_distal_link:
+                            {}
+              qbhand2m1_motor_1_tendon_virtual_link:
+                {}
+              qbhand2m1_motor_2_tendon_virtual_link:
+                {}
+              qbhand2m1_ring_knuckle_link:
+                qbhand2m1_ring_proximal_virtual_link:
+                  qbhand2m1_ring_proximal_link:
+                    qbhand2m1_ring_middle_virtual_link:
+                      qbhand2m1_ring_middle_link:
+                        qbhand2m1_ring_distal_virtual_link:
+                          qbhand2m1_ring_distal_link:
+                            {}
+              qbhand2m1_synergy_tendon_virtual_link:
+                {}
+              qbhand2m1_thumb_knuckle_link:
+                qbhand2m1_thumb_proximal_virtual_link:
+                  qbhand2m1_thumb_proximal_link:
+                    qbhand2m1_thumb_distal_virtual_link:
+                      qbhand2m1_thumb_distal_link:
+                        {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -989,8 +1010,8 @@ Visualization Manager:
       marker size (px): 200
       markers, X: 3
       markers, Y: 4
-      measured marker size (m): 0.058000
-      measured separation (m): 0.006000
+      measured marker size (m): 0,058000
+      measured separation (m): 0,006000
       object: ""
       sensor: camera_frame
       sensor_mount_type: 1
@@ -1024,7 +1045,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.7888948917388916
+      Distance: 1.6146231889724731
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1040,9 +1061,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.43979698419570923
+      Pitch: 0.5597971081733704
       Target Frame: <Fixed Frame>
-      Yaw: 2.0629427433013916
+      Yaw: 2.347942352294922
     Saved: ~
 Window Geometry:
   Displays:

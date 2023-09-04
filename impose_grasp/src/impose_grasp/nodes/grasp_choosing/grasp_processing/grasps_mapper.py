@@ -25,11 +25,11 @@ class GraspMapper(GraspsBase):
                 grasp = [self.rel_poses[ind], self.widths[ind]]
                 self.rel_poses[ind], sin_values = self._map_grasp(grasp, using_offset)
                 self.synergies_values.append(sin_values)
-            print("Grasps where mapped")
+            # print("Grasps where mapped")
 
     def _map_grasp(self, grasp, using_offset = True)->List[np.ndarray]:
         mapped_g, w = grasp
-        sin_values = self._compute_sinergies(w, using_th_mode=False)
+        sin_values = self._compute_sinergies(w, using_th_mode=True)
         if using_offset:
             g_post_off = self._offset(mapped_g, w)
         else:
@@ -62,10 +62,10 @@ class GraspMapper(GraspsBase):
         
     def _compute_th_sinergies(self, width):
         if width > self.width_th:
-            return self.pinch_sinergy
+            return self.power_sinergy
             
         else:
-            return self.power_sinergy
+            return self.pinch_sinergy
     
     def _compute_lineal_sinergies(self, w): 
         """ I make the assumptiona that minus than 5 mm is a full pinch and more 

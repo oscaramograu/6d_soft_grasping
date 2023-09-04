@@ -18,9 +18,10 @@ class GraspBrNode:
         # good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
         #                   if chooser.good_gr_flags[i]]  
         # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
-        # self.target = 3      
-        print("The target grasp width is: ", chooser.widths[self.target])
+        # self.target = 48     
         print("The target grasp is: ", self.target)
+        print("The target grasp width is: ", chooser.widths[self.target])
+        print("Was the grasp reoriented? ", chooser.reoriented[self.target])
         self.broadcaster = GraspsBroadcasater(chooser)
 
     def __call__(self, br_only_target: bool):
@@ -46,10 +47,10 @@ class GraspBrNode:
         return GraspChooser(filterer)
     
     def _get_and_listen_poses(self)-> (np.ndarray, np.ndarray):
-        self._obj_tf_listener.listen_tf()
+        self._obj_tf_listener.listen()
         obj_pose = self._obj_tf_listener.get_np_frame()
 
-        self._cam_tf_listener.listen_tf()
+        self._cam_tf_listener.listen()
         cam_pose = self._cam_tf_listener.get_np_frame()
 
         return obj_pose, cam_pose

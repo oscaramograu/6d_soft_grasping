@@ -15,6 +15,7 @@ class Grasps:
     abs_poses: List[np.ndarray]
     good_gr_flags: List [bool]
     synergies_values: List [List [float]]
+    reoriented: List[bool]
 
 class GraspsBase(Grasps):
     obj_name: str
@@ -41,7 +42,8 @@ class GraspsBase(Grasps):
                 grasps.widths,
                 grasps.abs_poses,
                 grasps.good_gr_flags,
-                grasps.synergies_values)
+                grasps.synergies_values,
+                grasps.reoriented)
 
     def _load_from_file(self):
         MODELS_PATH = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models")
@@ -58,7 +60,7 @@ class GraspsBase(Grasps):
         super().__init__(
             rel_poses,
             widths,
-            [], [], [])
+            [], [], [], [])
     
     def set_abs_poses(self, obj_pose:np.ndarray):
         self.abs_poses = [obj_pose@gpose for gpose in self.rel_poses]

@@ -9,7 +9,7 @@ if __name__ == "__main__":
     restart_flag = Flag()
 
     obj = rospy.get_param("/target_object")
-    object_br = ObjectBroadcaster(obj)
+    object_br = ObjectBroadcaster(obj, max_poses=5)
 
     rate = rospy.Rate(2)
     while not rospy.is_shutdown():

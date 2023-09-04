@@ -33,7 +33,7 @@ class GraspFilterer(GraspsBase):
 
         self._build_good_flags(good_grasps_ids)
 
-        print("The good grasp ids are: ", good_grasps_ids)
+        # print("The good grasp ids are: ", good_grasps_ids)
 
     def _select_higher_grasps(self, ids, obj_pose:np.ndarray, th_dist: float = 0):
         """ It selects grasps which are over the target object in the z axis."""

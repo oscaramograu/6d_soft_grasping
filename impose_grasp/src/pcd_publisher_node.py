@@ -35,4 +35,4 @@ if __name__ == "__main__":
 
         r.sleep()
 
-    print("The pointcloud has been published ", n, " times, check if makes sence")
+    # print("The pointcloud has been published ", n, " times, check if makes sence")

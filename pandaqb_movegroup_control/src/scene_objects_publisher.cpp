@@ -42,8 +42,8 @@ geometry_msgs::Pose build_pose(float x, float y, float z, shape_msgs::SolidPrimi
 }
 
 moveit_msgs::CollisionObject build_box(){
-    shape_msgs::SolidPrimitive box_prim = build_primitive(0.28, 0.28, 0.15);
-    geometry_msgs::Pose box_pose = build_pose(0.55, -0.1, 0, box_prim);
+    shape_msgs::SolidPrimitive box_prim = build_primitive(0.405, 0.255, 0.155);
+    geometry_msgs::Pose box_pose = build_pose(0.4, 0.04, 0, box_prim);
 
     return build_col_obj("box", box_prim, box_pose);
 }
@@ -52,7 +52,7 @@ moveit_msgs::CollisionObject build_platform(){
     shape_msgs::SolidPrimitive plat_prim = build_primitive(1.5, 1.5, 0.03);
     geometry_msgs::Pose plat_pose = build_pose(0.1, -0.75, -0.06, plat_prim);
 
-    return build_col_obj("box", plat_prim, plat_pose);
+    return build_col_obj("platform  ", plat_prim, plat_pose);
 }
 
 int main(int argc, char **argv){
@@ -77,10 +77,10 @@ int main(int argc, char **argv){
 
 
     planning_scene.world.collision_objects.push_back(plat);
-    planning_scene_diff_publisher.publish(planning_scene);
-    
-    // planning_scene.world.collision_objects.push_back(box);
     // planning_scene_diff_publisher.publish(planning_scene);
+    
+    planning_scene.world.collision_objects.push_back(box);
+    planning_scene_diff_publisher.publish(planning_scene);
 
 
 

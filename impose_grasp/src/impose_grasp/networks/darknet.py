@@ -25,6 +25,7 @@ class DarknetDetector():
         confidence_threshold = self.confidence
         darknet_frame, detections, _ = self._obj_detector.image_detection(
             frame.rgb.copy(), confidence_threshold, None)
+        self._print_detections(detections)
 
         detections = [x for x in detections if x[0] == self._dt_obj_type]
         if len(detections) > 0:
@@ -53,3 +54,10 @@ class DarknetDetector():
         objectDetector.initial_trainer_and_model()
 
         return objectDetector
+    
+    def _print_detections(self, detections):
+        obj_confidences = {}
+        for obj, confidence, _ in detections:
+            if obj not in obj_confidences or confidence > obj_confidences[obj]:
+                obj_confidences[obj] = confidence
+        print(obj_confidences)

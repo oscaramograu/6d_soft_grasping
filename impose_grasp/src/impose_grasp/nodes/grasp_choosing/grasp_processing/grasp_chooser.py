@@ -54,7 +54,7 @@ class GraspChooser(GraspsBase):
             n_points = np.count_nonzero(result < th)
 
             if n_points < 1:  
-                print("The grasp: ", i, ", has no points in its grasping volume.")
+                # print("The grasp: ", i, ", has no points in its grasping volume.")
                 dist_score = np.mean(1. / result)
                 dist_scores.append(dist_score)
                 if dist_score < best_score:
@@ -72,11 +72,11 @@ class GraspChooser(GraspsBase):
         elif best_i == None and not self.using_qb_hand:
             print("No collision free grasp was found.")
         
-        print("List of good grasps ids: ", good_grasp_ids)
+        # print("List of good grasps ids: ", good_grasp_ids)
         print("List of pointcloud pts for each valid grasp: ", pts_in_col)
-        print("List of socres for each valid grasp: ", dist_scores)
-        print("The grasp sinergy values are: ", self.synergies_values[best_i])
-        print("The widht is: ", self.widths[best_i])
+        # print("List of socres for each valid grasp: ", dist_scores)
+        # print("The grasp sinergy values are: ", self.synergies_values[best_i])
+        # print("The widht is: ", self.widths[best_i])
         return best_i
     
     def _build_eef(self):
