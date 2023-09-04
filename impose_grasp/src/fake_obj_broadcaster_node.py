@@ -61,5 +61,5 @@ if __name__ == "__main__":
 
     obj_frame_name = "/" + obj + "_frame"
     tf_br = TransformBroadcaster("/panda_link0", obj_frame_name)
-    r = rospy.Rate(5)
+    r = rospy.Rate(10)
     run(tf_br, r)

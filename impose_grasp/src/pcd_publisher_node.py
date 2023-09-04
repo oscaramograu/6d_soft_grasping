@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     pub = rospy.Publisher("Realsense/points", PointCloud2, queue_size=1)
     pcd = PointCloud(frame)
-    r = rospy.Rate(2) # 10Hz
+    r = rospy.Rate(10) # 10Hz
 
     # br_node = GraspBrNode(obj)
     # g_pose = br_node.broadcaster.rel_poses[br_node.target]

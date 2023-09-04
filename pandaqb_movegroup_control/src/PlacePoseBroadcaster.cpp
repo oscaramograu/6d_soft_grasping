@@ -3,6 +3,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <tf/transform_broadcaster.h>
+#include <random>
 
 geometry_msgs::Pose place_pose;
 tf::Transform place_tf;
@@ -54,10 +55,17 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
     base_or.z() = 1;
 
     double angle_radians_y = M_PI;
+    // double angle_radians_y = 0;
+
     rot_y.w() = cos(angle_radians_y/2);
     rot_y.y() = -sin(angle_radians_y/2);
 
-    double angle_radians_z = M_PI_2;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist_rot_Z(- M_PI_4, M_PI_4);
+    double angle_radians_z = M_PI_2 + dist_rot_Z(gen);
+    // double angle_radians_z = 0;
+
     rot_z.w() = cos(angle_radians_z/2);
     rot_z.z() = -sin(angle_radians_z/2);
 
@@ -68,9 +76,17 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
 }
 
 void init_place_pose(geometry_msgs::Pose &place_pose){
-    place_pose.position.x = 0.5;
-    place_pose.position.y = -0.11;
-    place_pose.position.z = 0.0;
+    double corner_x = 0.4, corner_y = 0.04, l_x = 0.405, l_y = 0.255;
+    double random_off_x, random_off_y, margin(0.03);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist_x(corner_x + margin, corner_x + l_x - margin);
+    std::uniform_real_distribution<double> dist_y(corner_y + margin, corner_y + l_y - margin);
+
+    place_pose.position.x = dist_x(gen);
+    place_pose.position.y = dist_y(gen);
+    place_pose.position.z = 0.155 + 0.1;
 
     place_pose.orientation = compute_place_or();
 }  

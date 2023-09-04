@@ -18,7 +18,7 @@
 
     <link name="pinch_link" />
     <joint name="pinch_joint" type="fixed">
-      <origin xyz="-0.003 -0.015 0.022" rpy="0.0872665 0 0.523598775" />
+      <origin xyz="-0.003 -0.012 0.022" rpy="0.0872665 0 0.523598775" />
       <parent link="qbhand2m1_end_effector_link" />
       <child  link="pinch_link" />
     </joint>

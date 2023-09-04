@@ -11,7 +11,7 @@ if __name__ == "__main__":
     obj = rospy.get_param("/target_object")
     object_br = ObjectBroadcaster(obj, max_poses=5)
 
-    rate = rospy.Rate(2)
+    rate = rospy.Rate(10)
     while not rospy.is_shutdown():
         object_br.broadcast_tf()
 

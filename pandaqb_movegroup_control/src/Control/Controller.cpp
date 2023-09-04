@@ -37,10 +37,10 @@ void Controller::pick_and_place_routine(){
     eef_controller.grasp();
     // arm_controller.pick_up();
 
-    // arm_controller.move_to_place_pose();
-    // eef_controller.open();
+    arm_controller.move_to_place_pose();
+    eef_controller.open();
 
     arm_controller.move_home();
     // eef_controller.close_hand();
-    eef_controller.open();
+    // eef_controller.open();
 }

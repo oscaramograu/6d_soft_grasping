@@ -49,7 +49,7 @@ def set_up_camera_info():
 def main():
     rospy.init_node('img_publisher_node', anonymous=True)
     camera = D415(name="realsense_D415")
-    bridge = CvBridge()
+
     image_pub_rgb = rospy.Publisher(
         '/camera/rgb/image_raw', Image, queue_size=10)
     image_pub_d = rospy.Publisher(
@@ -63,7 +63,7 @@ def main():
     d_np_pub = rospy.Publisher(
         '/camera/depth/numpy', Float32MultiArray, queue_size=10)
 
-    rate = rospy.Rate(2)  # Publish at 10Hz
+    rate = rospy.Rate(10)  # Publish at 10Hz
 
     camera.start()
     while not rospy.is_shutdown():
