@@ -26,6 +26,8 @@ class  ObjectBroadcaster(TransformBroadcaster):
 
         self.filter = PoseFilter(self.max_poses)
 
+        self.start = datetime.now()
+
     def broadcast_tf(self):
         """
         - Grabs a frame using cam attribute.
@@ -43,13 +45,29 @@ class  ObjectBroadcaster(TransformBroadcaster):
                 self.filter.filter_pose(obj_world)
             if len(self.filter.poses) == self.max_poses:
                 print("object has been fixed")
+                stop = datetime.now()
+                delta_t = stop - self.start
+                print("It took:", delta_t.seconds + delta_t.microseconds*10**-6)
 
         else:
             obj_world = self.filter.get_pose_average()
             self.broadcast_transform(obj_world)
+        
+        return self._check_time()
+            
+        
+    def _check_time(self, max_sec):
+        now = datetime.now()
+        delta_t = now - self.start
+        if delta_t.seconds + delta_t.microseconds*10**-6 > max_sec:
+            print("No object found in ", max_sec, "s, timed out!")
+            return False
+        else:
+            return True
 
     def restart(self):
         self.filter.clear_poses()
+        self.start = datetime.now()
 
     def _compute_transform(self):
         frame = self.fb.get_actual_frame()

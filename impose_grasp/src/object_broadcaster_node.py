@@ -12,10 +12,13 @@ if __name__ == "__main__":
     object_br = ObjectBroadcaster(obj, max_poses=5)
 
     rate = rospy.Rate(10)
+    broadcast_flag = True
     while not rospy.is_shutdown():
-        object_br.broadcast_tf()
+        if broadcast_flag:
+            broadcast_flag = object_br.broadcast_tf()
 
         if restart_flag():
+            broadcast_flag = True
             object_br.restart()
             restart_flag.set_flag(False)
         rate.sleep()
