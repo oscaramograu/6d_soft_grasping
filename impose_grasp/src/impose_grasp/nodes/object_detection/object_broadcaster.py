@@ -1,5 +1,4 @@
 import rospy
-import numpy as np
 from datetime import datetime
 
 from impose_grasp.lib.tf_listener import TfListener
@@ -48,15 +47,16 @@ class  ObjectBroadcaster(TransformBroadcaster):
                 stop = datetime.now()
                 delta_t = stop - self.start
                 print("It took:", delta_t.seconds + delta_t.microseconds*10**-6)
+                return True
+            else:
+                return self._check_timeout(45)
 
         else:
             obj_world = self.filter.get_pose_average()
             self.broadcast_transform(obj_world)
-        
-        return self._check_time()
+            return True
             
-        
-    def _check_time(self, max_sec):
+    def _check_timeout(self, max_sec):
         now = datetime.now()
         delta_t = now - self.start
         if delta_t.seconds + delta_t.microseconds*10**-6 > max_sec:
@@ -92,4 +92,3 @@ class  ObjectBroadcaster(TransformBroadcaster):
         self.det.compute_affine()
 
         return self.det.get_affine()
-  

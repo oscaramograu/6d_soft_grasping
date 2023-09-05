@@ -13,6 +13,8 @@ if __name__ == "__main__":
 
     rate = rospy.Rate(10)
     broadcast_flag = True
+    object_br.restart()
+    
     while not rospy.is_shutdown():
         if broadcast_flag:
             broadcast_flag = object_br.broadcast_tf()
