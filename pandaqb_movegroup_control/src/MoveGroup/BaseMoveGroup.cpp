@@ -29,8 +29,12 @@ BaseMoveGroup::BaseMoveGroup(std::string planning_group){
     }
 }
 
-BaseMoveGroup::~BaseMoveGroup(){
-    
+BaseMoveGroup::~BaseMoveGroup(){   
+}
+
+void BaseMoveGroup::set_vel_acc_scaling(double v, double a){
+    move_group_->setMaxVelocityScalingFactor(v);
+    move_group_->setMaxAccelerationScalingFactor(a);
 }
 
 void BaseMoveGroup::load_params(){

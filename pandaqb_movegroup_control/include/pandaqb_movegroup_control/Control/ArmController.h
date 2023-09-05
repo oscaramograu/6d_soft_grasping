@@ -26,4 +26,5 @@ private:
 
     GroupMover arm_mover;
     geometry_msgs::Pose grasp_pose, place_pose, pre_grasp_pose, pre_place_pose;
+    double default_v, default_a;
 };

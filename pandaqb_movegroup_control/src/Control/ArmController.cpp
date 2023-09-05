@@ -13,6 +13,9 @@ ArmController::ArmController(): arm_mover("arm"){
 
     arm_mover.set_EEF_link(eef_frame);
     std::string path = "move_group/arm/";
+
+    ros::param::get("velocity_scaling", default_v);
+    ros::param::get("acceleration_scaling", default_a);
 }
 
 ArmController::~ArmController(){
@@ -71,19 +74,15 @@ void ArmController::move_to_g_pose(){
 
 void ArmController::move_to_place_pose(){
     ROS_INFO_STREAM("New plan: PLACE POSE");
-    // std::vector<double> rotated_joints = arm_mover.getCurrentJointState();
-    // rotated_joints[0] += M_PI_2;
-    // arm_mover.moveTo(rotated_joints);
-
+    arm_mover.set_vel_acc_scaling(1, 1);
     geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
 
-    // arm_mover.apend_waypt(target_pose);
     arm_mover.apend_waypt(pre_grasp_pose);
     arm_mover.apend_waypt(place_pose);
     arm_mover.build_cart_plan();
     arm_mover.clear_waypt();
 
-    // arm_mover.moveTo(place_pose);
+    arm_mover.set_vel_acc_scaling(default_v, default_a);
 }
 
 void ArmController::pick_up(){

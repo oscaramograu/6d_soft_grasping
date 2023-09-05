@@ -15,6 +15,8 @@ public:
     BaseMoveGroup(std::string planning_group);
     ~BaseMoveGroup();
 
+    void set_vel_acc_scaling(double v, double a);
+
 protected: 
     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_;
     moveit::planning_interface::PlanningSceneInterface planning_scene_;
