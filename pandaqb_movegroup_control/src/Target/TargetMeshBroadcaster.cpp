@@ -57,7 +57,7 @@ void TargetMeshBr::add_target_mesh(bool is_obj){
     }
 
     target_pose = build_pose(target_tf.getOrigin(), target_tf.getRotation());
-    std::cout << target_pose << std::endl;
+    // std::cout << target_pose << std::endl;
 
     add_to_world(target_pose);
 }

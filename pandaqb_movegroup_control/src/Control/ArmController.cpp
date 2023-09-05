@@ -57,7 +57,14 @@ void ArmController::move_to_g_pose(){
     ROS_INFO_STREAM("New plan: GRASP POSE");
     // geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
     // arm_mover.apend_waypt(target_pose);
-    arm_mover.moveTo(grasp_pose);
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    target_pose.position.z -= 0.2;
+    arm_mover.apend_waypt(target_pose);
+    arm_mover.apend_waypt(pre_grasp_pose);
+    arm_mover.apend_waypt(grasp_pose);
+    arm_mover.build_cart_plan();
+    arm_mover.clear_waypt();
+
     // arm_mover.build_cart_plan();
     // arm_mover.clear_waypt();
 }
@@ -68,14 +75,15 @@ void ArmController::move_to_place_pose(){
     // rotated_joints[0] += M_PI_2;
     // arm_mover.moveTo(rotated_joints);
 
-    // geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
-    // target_pose.position.z -= 0.2;
-    // arm_mover.apend_waypt(target_pose);
-    // arm_mover.apend_waypt(pre_place_pose);
-    // arm_mover.build_cart_plan();
-    // arm_mover.clear_waypt();
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
 
-    arm_mover.moveTo(place_pose);
+    // arm_mover.apend_waypt(target_pose);
+    arm_mover.apend_waypt(pre_grasp_pose);
+    arm_mover.apend_waypt(place_pose);
+    arm_mover.build_cart_plan();
+    arm_mover.clear_waypt();
+
+    // arm_mover.moveTo(place_pose);
 }
 
 void ArmController::pick_up(){
@@ -95,6 +103,7 @@ void ArmController::move_home(){
     // arm_mover.build_cart_plan();
     // arm_mover.clear_waypt();
     arm_mover.moveHome();
+    arm_mover.printCurrentJointPosition();
 }
 
 geometry_msgs::Pose ArmController::get_current_pose(){

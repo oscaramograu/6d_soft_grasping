@@ -15,13 +15,13 @@ class GraspOrienter(GraspsBase):
         if self.using_qb_hand:
             obj_to_base_vec = -self.obj_pose[:3,3]/np.linalg.norm(-self.obj_pose[:3,3])
             obj_base_dist = np.linalg.norm(self.obj_pose[:2, 3])
-            if(obj_base_dist > 0.55):
+            if(obj_base_dist > 0.45):
                 rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, -30)
                 good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
 
-            elif(obj_base_dist < 0.40):
-                rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180 - 30)
-                good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
+            # elif(obj_base_dist < 0.40):
+            #     rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180 - 30)
+            #     good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
             
             else:
                 good_gps_y_inds = []

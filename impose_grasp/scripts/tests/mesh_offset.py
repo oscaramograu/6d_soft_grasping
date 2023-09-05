@@ -3,9 +3,9 @@ import numpy as np
 import os
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP
 
-mesh_pth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "qb_hand_col.stl")
-mesh_pinch_pth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "qb_hand_col_pinch.stl")
-mesh_pinch_plypth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "qb_hand_col_pinch.ply")
+mesh_pth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "qb_hand_col_fingers.stl")
+mesh_pinch_pth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "qb_hand_col_pinch_fingers.stl")
+mesh_pinch_plypth = os.path.join(PATH_TO_IMPOSE_GRASP, "data", "models", "qb_hand_col_pinch_fingers.ply")
 
 # Load the stl file
 mesh = trimesh.load_mesh(mesh_pth)

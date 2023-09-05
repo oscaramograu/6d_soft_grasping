@@ -11,6 +11,7 @@ Panels:
         - /Image1
         - /TF1
         - /TF1/Frames1
+        - /TF1/Frames1/cpsduck_frame1
       Splitter Ratio: 0.6529411673545837
     Tree Height: 404
   - Class: rviz/Selection
@@ -30,7 +31,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -393,7 +394,7 @@ Visualization Manager:
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
         Planning Group: arm
-        Query Goal State: false
+        Query Goal State: true
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
@@ -731,6 +732,8 @@ Visualization Manager:
         All Enabled: false
         camera_frame:
           Value: false
+        cpsduck_frame:
+          Value: true
         panda_EE:
           Value: false
         panda_K:
@@ -773,6 +776,8 @@ Visualization Manager:
           Value: false
         pinch_link:
           Value: false
+        place_pose:
+          Value: true
         power_link:
           Value: true
         qb_hand_wrist_link:
@@ -859,6 +864,8 @@ Visualization Manager:
           Value: false
         root_link:
           Value: false
+        target_grasp:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 0.5
       Name: TF
@@ -867,6 +874,9 @@ Visualization Manager:
       Show Names: false
       Tree:
         panda_link0:
+          cpsduck_frame:
+            target_grasp:
+              {}
           panda_link0_sc:
             {}
           panda_link1:
@@ -898,61 +908,63 @@ Visualization Manager:
                               panda_K:
                                 {}
                           qb_hand_wrist_link:
-                            {}
+                            qbhand2m1_base_link:
+                              qbhand2m1_end_effector_link:
+                                pinch_link:
+                                  {}
+                                power_link:
+                                  {}
+                              qbhand2m1_palm_link:
+                                qbhand2m1_index_knuckle_link:
+                                  qbhand2m1_index_proximal_virtual_link:
+                                    qbhand2m1_index_proximal_link:
+                                      qbhand2m1_index_middle_virtual_link:
+                                        qbhand2m1_index_middle_link:
+                                          qbhand2m1_index_distal_virtual_link:
+                                            qbhand2m1_index_distal_link:
+                                              {}
+                                qbhand2m1_little_knuckle_link:
+                                  qbhand2m1_little_proximal_virtual_link:
+                                    qbhand2m1_little_proximal_link:
+                                      qbhand2m1_little_middle_virtual_link:
+                                        qbhand2m1_little_middle_link:
+                                          qbhand2m1_little_distal_virtual_link:
+                                            qbhand2m1_little_distal_link:
+                                              {}
+                                qbhand2m1_manipulation_tendon_virtual_link:
+                                  {}
+                                qbhand2m1_middle_knuckle_link:
+                                  qbhand2m1_middle_proximal_virtual_link:
+                                    qbhand2m1_middle_proximal_link:
+                                      qbhand2m1_middle_middle_virtual_link:
+                                        qbhand2m1_middle_middle_link:
+                                          qbhand2m1_middle_distal_virtual_link:
+                                            qbhand2m1_middle_distal_link:
+                                              {}
+                                qbhand2m1_motor_1_tendon_virtual_link:
+                                  {}
+                                qbhand2m1_motor_2_tendon_virtual_link:
+                                  {}
+                                qbhand2m1_ring_knuckle_link:
+                                  qbhand2m1_ring_proximal_virtual_link:
+                                    qbhand2m1_ring_proximal_link:
+                                      qbhand2m1_ring_middle_virtual_link:
+                                        qbhand2m1_ring_middle_link:
+                                          qbhand2m1_ring_distal_virtual_link:
+                                            qbhand2m1_ring_distal_link:
+                                              {}
+                                qbhand2m1_synergy_tendon_virtual_link:
+                                  {}
+                                qbhand2m1_thumb_knuckle_link:
+                                  qbhand2m1_thumb_proximal_virtual_link:
+                                    qbhand2m1_thumb_proximal_link:
+                                      qbhand2m1_thumb_distal_virtual_link:
+                                        qbhand2m1_thumb_distal_link:
+                                          {}
+          place_pose:
+            {}
         root_link:
-          qbhand2m1_base_link:
-            qbhand2m1_end_effector_link:
-              pinch_link:
-                {}
-              power_link:
-                {}
-            qbhand2m1_palm_link:
-              qbhand2m1_index_knuckle_link:
-                qbhand2m1_index_proximal_virtual_link:
-                  qbhand2m1_index_proximal_link:
-                    qbhand2m1_index_middle_virtual_link:
-                      qbhand2m1_index_middle_link:
-                        qbhand2m1_index_distal_virtual_link:
-                          qbhand2m1_index_distal_link:
-                            {}
-              qbhand2m1_little_knuckle_link:
-                qbhand2m1_little_proximal_virtual_link:
-                  qbhand2m1_little_proximal_link:
-                    qbhand2m1_little_middle_virtual_link:
-                      qbhand2m1_little_middle_link:
-                        qbhand2m1_little_distal_virtual_link:
-                          qbhand2m1_little_distal_link:
-                            {}
-              qbhand2m1_manipulation_tendon_virtual_link:
-                {}
-              qbhand2m1_middle_knuckle_link:
-                qbhand2m1_middle_proximal_virtual_link:
-                  qbhand2m1_middle_proximal_link:
-                    qbhand2m1_middle_middle_virtual_link:
-                      qbhand2m1_middle_middle_link:
-                        qbhand2m1_middle_distal_virtual_link:
-                          qbhand2m1_middle_distal_link:
-                            {}
-              qbhand2m1_motor_1_tendon_virtual_link:
-                {}
-              qbhand2m1_motor_2_tendon_virtual_link:
-                {}
-              qbhand2m1_ring_knuckle_link:
-                qbhand2m1_ring_proximal_virtual_link:
-                  qbhand2m1_ring_proximal_link:
-                    qbhand2m1_ring_middle_virtual_link:
-                      qbhand2m1_ring_middle_link:
-                        qbhand2m1_ring_distal_virtual_link:
-                          qbhand2m1_ring_distal_link:
-                            {}
-              qbhand2m1_synergy_tendon_virtual_link:
-                {}
-              qbhand2m1_thumb_knuckle_link:
-                qbhand2m1_thumb_proximal_virtual_link:
-                  qbhand2m1_thumb_proximal_link:
-                    qbhand2m1_thumb_distal_virtual_link:
-                      qbhand2m1_thumb_distal_link:
-                        {}
+          {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -1045,7 +1057,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.6146231889724731
+      Distance: 1.6309764385223389
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1061,9 +1073,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5597971081733704
+      Pitch: 0.4747975766658783
       Target Frame: <Fixed Frame>
-      Yaw: 2.347942352294922
+      Yaw: 1.9579498767852783
     Saved: ~
 Window Geometry:
   Displays:

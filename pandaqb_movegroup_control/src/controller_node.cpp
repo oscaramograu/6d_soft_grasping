@@ -83,9 +83,9 @@ int main(int argc, char** argv){
 // =================  CONTROLLER CODE ===========================
     ros::NodeHandle nh;
 
-    Controller cont(&nh);
+    // Controller cont(&nh);
 
-    cont.start_new_routine();
+    // cont.start_new_routine();
 
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
@@ -141,9 +141,9 @@ int main(int argc, char** argv){
     
 // ================= PRINT CURRENT JOINT STATES ===========================
 
-    // GroupMover arm("arm");
-    // arm.set_EEF_link("panda_link8");
-    // arm.printCurrentJointPosition();
+    GroupMover arm("arm");
+    arm.set_EEF_link("panda_link8");
+    arm.printCurrentJointPosition();
 
     // target_pose.position.z += 0.05;
 

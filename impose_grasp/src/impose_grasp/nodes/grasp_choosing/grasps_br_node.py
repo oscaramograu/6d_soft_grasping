@@ -19,9 +19,10 @@ class GraspBrNode:
         #                   if chooser.good_gr_flags[i]]  
         # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
         # self.target = 48     
-        print("The target grasp is: ", self.target)
-        print("The target grasp width is: ", chooser.widths[self.target])
-        print("Was the grasp reoriented? ", chooser.reoriented[self.target])
+        print("target, width, reoriented, num col pts, avg col dist")
+        n_eef_pts, avg_dist = chooser.get_chosen_crit(self.target)
+        print(self.target, ", ", chooser.widths[self.target], ", ", chooser.reoriented[self.target], ", ", n_eef_pts, ", ", avg_dist)
+        # print("The target grasp relative pose is: ", chooser.rel_poses[self.target])
         self.broadcaster = GraspsBroadcasater(chooser)
 
     def __call__(self, br_only_target: bool):

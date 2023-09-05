@@ -23,7 +23,7 @@ void TargetObject::add_to_world(geometry_msgs::Pose pose){
     planning_scene.world.collision_objects.push_back(collision_object);
     planning_scene.is_diff = true;
     planning_scene_diff_publisher.publish(planning_scene);
-    ROS_INFO_STREAM(object_name_ << "Object added to world");
+    // ROS_INFO_STREAM(object_name_ << "Object added to world");
 }
 
 void TargetObject::set_mesh_path(){
@@ -34,7 +34,7 @@ void TargetObject::set_mesh_path(){
     file_name = object_name_ + ".ply";
 
     mesh_path_ = mesh_folder + file_name;
-    std::cout << "The mesh path is: " << mesh_path_ << std::endl;
+    // std::cout << "The mesh path is: " << mesh_path_ << std::endl;
 }
 
 void TargetObject::load_moveit_mesh(){
@@ -70,7 +70,7 @@ void TargetObject::load_moveit_mesh(){
         moveit_mesh.triangles.push_back(face);
     }
 
-    ROS_INFO_STREAM("Mesh was loaded without errors");
+    // ROS_INFO_STREAM("Mesh was loaded without errors");
 }
 
 void TargetObject::create_collision_object(geometry_msgs::Pose pose){
@@ -83,5 +83,5 @@ void TargetObject::create_collision_object(geometry_msgs::Pose pose){
     collision_object.mesh_poses.push_back(pose);
 
     collision_object.operation = collision_object.ADD;   
-    ROS_INFO_STREAM("Collision object created");
+    // ROS_INFO_STREAM("Collision object created");
 }

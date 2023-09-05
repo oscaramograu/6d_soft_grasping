@@ -42,12 +42,16 @@ void EEFController::pre_pinch(){
     std::vector<double> sinergies;
     if (width < 0.055){
         sinergies = {0.35, 0.05};
+        hc->grasp(sinergies);
+
     }
     else{
         sinergies = {0.26, -0.02};
+        hc->grasp(sinergies);
+        sinergies = {0.28, 0.0};
+        hc->grasp(sinergies);
     }
     std::cout << sinergies[0] << ", " << sinergies[1] << std::endl;
-    hc->grasp(sinergies);
 }
 
 void EEFController::close_hand(){

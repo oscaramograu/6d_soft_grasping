@@ -76,8 +76,8 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
 }
 
 void init_place_pose(geometry_msgs::Pose &place_pose){
-    double corner_x = 0.4, corner_y = 0.04, l_x = 0.405, l_y = 0.255;
-    double random_off_x, random_off_y, margin(0.03);
+    double corner_x = 0.3, corner_y = 0.04, l_x = 0.405, l_y = 0.255;
+    double random_off_x, random_off_y, margin(0.13);
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -86,7 +86,7 @@ void init_place_pose(geometry_msgs::Pose &place_pose){
 
     place_pose.position.x = dist_x(gen);
     place_pose.position.y = dist_y(gen);
-    place_pose.position.z = 0.155 + 0.1;
+    place_pose.position.z = 0.155 + 0.15;
 
     place_pose.orientation = compute_place_or();
 }  
@@ -98,7 +98,7 @@ int main(int argc, char **argv){
     tf::TransformBroadcaster broadcaster;
 
     init_place_pose(place_pose);
-    std::cout << place_pose << std::endl;
+    // std::cout << place_pose << std::endl;
     ros::Rate loop_rate(10); // Publish at 10 Hz
 
     while (ros::ok()) {
