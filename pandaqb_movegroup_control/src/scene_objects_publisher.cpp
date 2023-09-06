@@ -43,7 +43,7 @@ geometry_msgs::Pose build_pose(float x, float y, float z, shape_msgs::SolidPrimi
 
 moveit_msgs::CollisionObject build_box(){
     shape_msgs::SolidPrimitive box_prim = build_primitive(0.405, 0.255, 0.145);
-    geometry_msgs::Pose box_pose = build_pose(0.3, 0.04, 0, box_prim);
+    geometry_msgs::Pose box_pose = build_pose(0.335, -0.11, 0, box_prim);
 
     return build_col_obj("box", box_prim, box_pose);
 }

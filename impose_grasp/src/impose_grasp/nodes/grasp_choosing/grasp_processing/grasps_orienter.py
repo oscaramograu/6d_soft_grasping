@@ -15,9 +15,9 @@ class GraspOrienter(GraspsBase):
         if self.using_qb_hand:
             obj_to_base_vec = -self.obj_pose[:3,3]/np.linalg.norm(-self.obj_pose[:3,3])
             obj_base_dist = np.linalg.norm(self.obj_pose[:2, 3])
-            if(obj_base_dist > 0.45):
+            if(obj_base_dist > 0.4):
                 rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, -30)
-                good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
+                good_gps_y_inds = self._select_grasp_inds_by_angle(rotated_obj_base_vec, tr_ang=90, axis=1)
 
             # elif(obj_base_dist < 0.40):
             #     rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180 - 30)
@@ -37,7 +37,7 @@ class GraspOrienter(GraspsBase):
         the grasp gets rotated 180 degrees.
         """
         inds = range(len(self.rel_poses))
-        inverted_gr_y_inds = [x for x in inds if x not in good_g_inds]
+        inverted_gr_y_inds = [x for x in inds if (x not in good_g_inds) and self.widths[x] < 0.055]
         self.reoriented = [x in inverted_gr_y_inds for x in inds]
         
         for ind in inverted_gr_y_inds:
@@ -47,8 +47,25 @@ class GraspOrienter(GraspsBase):
     
     def _rotate_vect_on_Z(self, vect:np.ndarray, ang:float):
         ang_rad = ang/180*np.pi
+
         rot = np.array([
             [np.cos(ang_rad), -np.sin(ang_rad), 0],
             [np.sin(ang_rad), np.cos(ang_rad), 0],
             [0, 0, 1]])
         return rot@vect
+
+    def _select_grasp_inds_by_angle(self, vect:np.ndarray, tr_ang: float, axis: int):
+        """
+        It filters the absolute pose grasps to select only the ones which's selected axis
+        angle wrt the given vector is smaller than the given threshold angle.
+
+        Keyword arguments:
+        axis -- from 0 to 2 are the x to z respectiveley
+        tr_ang -- in degrees
+        """
+        gposes = self.abs_poses
+        rel_ang = [np.dot(vect, gpose[:3, axis]) for gpose in gposes]
+        angle_thr = np.cos(tr_ang/180*np.pi)
+        inds = range(len(gposes))
+        selected_ids = [x for x in inds if (rel_ang[x] > angle_thr)]
+        return selected_ids

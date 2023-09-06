@@ -1,6 +1,7 @@
 import numpy as  np
 from math import pi
 from impose_grasp.nodes.grasp_choosing.grasps_base import GraspsBase, Grasps
+from impose_grasp.lib.np_angle_calc import rotate_Rt_on_x
 
 class GraspFilterer(GraspsBase):
     def __init__(self,  grasps: Grasps = None) -> None:
@@ -21,7 +22,7 @@ class GraspFilterer(GraspsBase):
 
         if self.using_qb_hand:
             # good_grasps_ids_1  = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)            
-            good_grasps_ids  = self._select_grasp_inds_by_ang(vertical_vec, tr_ang=40, axis=2)
+            good_grasps_ids  = self._select_grasp_inds_by_angle(vertical_vec, tr_ang=30, axis=2)
             # good_grasps_ids = [i for i in good_grasps_ids_1 if i in good_grasps_ids_2]            
             good_grasps_ids = self._select_higher_grasps(good_grasps_ids, obj_pose, th_dist=0.02)
 
@@ -35,6 +36,36 @@ class GraspFilterer(GraspsBase):
 
         # print("The good grasp ids are: ", good_grasps_ids)
 
+    def _select_grasp_inds_by_angle(self, vect:np.ndarray, tr_ang: float, axis: int):
+        """
+        It filters the absolute pose grasps to select only the ones which's selected axis
+        angle wrt the given vector is smaller than the given threshold angle.
+
+        Keyword arguments:
+        axis -- from 0 to 2 are the x to z respectiveley
+        tr_ang -- in degrees
+        """
+        selected_ids = []
+        angle_thr = np.cos(tr_ang/180*np.pi)
+
+        for i in range(len(self.abs_poses)):
+            gpose = self.abs_poses[i]
+            if self.widths[i] > 0.055:
+                gpose = rotate_Rt_on_x(gpose, 20)
+                # rel_ang1 = np.dot(vect.copy(), gpose[:3, axis])
+                # rel_ang2 = np.dot(vect.copy(), gpose2[:3, axis])
+                # print("1: ", rel_ang1*180/pi)
+                # print("2: ", rel_ang2)
+
+            else:
+                vect_ = vect.copy()
+
+            rel_ang = np.dot(vect_, gpose[:3, axis])
+            if rel_ang > angle_thr:
+                selected_ids.append(i)
+
+        return selected_ids
+    
     def _select_higher_grasps(self, ids, obj_pose:np.ndarray, th_dist: float = 0):
         """ It selects grasps which are over the target object in the z axis."""
         high_ids = [i for i in ids 

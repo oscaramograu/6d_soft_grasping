@@ -76,7 +76,7 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
 }
 
 void init_place_pose(geometry_msgs::Pose &place_pose){
-    double corner_x = 0.3, corner_y = 0.04, l_x = 0.405, l_y = 0.255;
+    double corner_x = 0.335, corner_y = -0.11, l_x = 0.405, l_y = 0.255;
     double random_off_x, random_off_y, margin(0.13);
 
     std::random_device rd;

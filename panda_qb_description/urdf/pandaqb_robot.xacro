@@ -18,14 +18,14 @@
 
     <link name="pinch_link" />
     <joint name="pinch_joint" type="fixed">
-      <origin xyz="0.007 -0.009 0.022" rpy="0.0872665 0 0.523598775" />
+      <origin xyz="-0.0 -0.014 0.022" rpy="0 0 0.523598775" />
       <parent link="qbhand2m1_end_effector_link" />
       <child  link="pinch_link" />
     </joint>
 
     <link name="power_link" />
     <joint name="power_joint" type="fixed">
-      <origin xyz="0.01 -0.02 0.0" rpy="0 0 0.523598775" />
+      <origin xyz="0.02 -0.02 -0.005" rpy="0 0 0.523598775" />
       <parent link="qbhand2m1_end_effector_link" />
       <child  link="power_link" />
     </joint>

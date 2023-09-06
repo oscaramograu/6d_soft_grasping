@@ -49,7 +49,7 @@ class  ObjectBroadcaster(TransformBroadcaster):
                 print("It took:", delta_t.seconds + delta_t.microseconds*10**-6)
                 return True
             else:
-                return self._check_timeout(45)
+                return self._check_timeout(30)
 
         else:
             obj_world = self.filter.get_pose_average()

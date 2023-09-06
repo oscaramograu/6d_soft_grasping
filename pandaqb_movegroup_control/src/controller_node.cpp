@@ -83,10 +83,12 @@ int main(int argc, char** argv){
 // =================  CONTROLLER CODE ===========================
     ros::NodeHandle nh;
 
-    // Controller cont(&nh);
+    Controller cont(&nh);
 
     // cont.start_new_routine();
-
+    // HandController hc(&nh);
+    // std::vector<double> syn(0.8, 0);
+    // hc.grasp(syn);
 // ================= EXPERIMENTING ===========================
     // Controller controller(&nh);
     // ROS_INFO_STREAM("READY TO GRASP");
@@ -141,9 +143,9 @@ int main(int argc, char** argv){
     
 // ================= PRINT CURRENT JOINT STATES ===========================
 
-    GroupMover arm("arm");
-    arm.set_EEF_link("panda_link8");
-    arm.printCurrentJointPosition();
+    // GroupMover arm("arm");
+    // arm.set_EEF_link("panda_link8");
+    // arm.printCurrentJointPosition();
 
     // target_pose.position.z += 0.05;
 

@@ -30,7 +30,8 @@ class GraspBrNode:
 
         if not br_only_target:
             # self.broadcaster.broadcast_good_grasps()
-            self.broadcaster.broadcast_all_grasps()
+            # self.broadcaster.broadcast_all_grasps()
+            self.broadcaster.broadcast_power_gs()
       
     def _build_chooser(self):
         obj_pose, cam_pose = self._get_and_listen_poses()
@@ -38,7 +39,7 @@ class GraspBrNode:
         orienter = GraspOrienter(obj_pose)
         orienter.orient_grasps()
 
-        mapper = GraspMapper(width_th=0.04, theta=0, grasps=orienter)
+        mapper = GraspMapper(width_th=0.055, theta=0, grasps=orienter)
         mapper.map_grasps(using_offset=False)
     
 

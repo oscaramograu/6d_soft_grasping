@@ -5,7 +5,7 @@ from typing import List
 from impose_grasp.nodes.grasp_choosing.grasps_base import GraspsBase, Grasps
 
 class GraspMapper(GraspsBase):
-    def __init__(self, width_th :float = 0.04,
+    def __init__(self, width_th :float = 0.055,
                 theta: float = 30, grasps: Grasps = None):
         super().__init__(grasps)
 
@@ -14,7 +14,7 @@ class GraspMapper(GraspsBase):
         self.pinch_offsets = np.array([0.015, 0.01, -0.01])
         self.power_offsets = np.array([0.0, 0.0, -0.02])
 
-        self.pinch_sinergy = [0.7, 0.99]
+        self.pinch_sinergy = [0.5, 0.8]
         self.power_sinergy = [0.8, 0.0]
 
         self.width_th = width_th

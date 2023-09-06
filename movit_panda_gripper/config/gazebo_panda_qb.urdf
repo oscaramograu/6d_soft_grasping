@@ -538,8 +538,8 @@
     </link>
     <link name="camera_frame" />
     <joint name="camera_joint" type="fixed">
-        <origin rpy="0.0872665 0 2.35619" xyz="0.06 0.06 0.02" />
-        <parent link="camera_support_link" />
+        <origin xyz="-0.041387 -0.0627379 0.0525437" rpy="3.08447 -3.11784 3.10978"/>
+        <parent link="panda_link8" />
         <child link="camera_frame" />
     </joint>
     <joint name="panda_hand_joint" type="fixed">
