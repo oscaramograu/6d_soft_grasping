@@ -17,7 +17,7 @@ class TfListener:
         self.listener.waitForTransform(self.base_frame, self.target_frame, rospy.Time(), rospy.Duration(4.0))
         self.trans, self.rot = self.listener.lookupTransform(self.base_frame, self.target_frame, rospy.Time(0))
 
-    def get_np_frame(self):
+    def get_np_frame(self) -> np.ndarray:
         R_np = R.from_quat(self.rot).as_matrix()
         t_np = np.array(self.trans)
 
