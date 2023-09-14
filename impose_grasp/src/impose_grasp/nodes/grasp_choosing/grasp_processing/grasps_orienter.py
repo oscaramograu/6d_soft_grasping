@@ -12,24 +12,28 @@ class GraspOrienter(GraspsBase):
 
  
     def orient_grasps(self):
-        if self.using_qb_hand:
-            obj_to_base_vec = -self.obj_pose[:3,3]/np.linalg.norm(-self.obj_pose[:3,3])
-            obj_base_dist = np.linalg.norm(self.obj_pose[:2, 3])
-            if(obj_base_dist > 0.4):
-                rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, -30)
-                good_gps_y_inds = self._select_grasp_inds_by_angle(rotated_obj_base_vec, tr_ang=90, axis=1)
+        obj_to_base_vec = -self.obj_pose[:3,3]/np.linalg.norm(-self.obj_pose[:3,3])
 
-            # elif(obj_base_dist < 0.40):
-            #     rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180 - 30)
-            #     good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
+        if self.using_qb_hand:
+            obj_base_dist = np.linalg.norm(self.obj_pose[:2, 3])
+            if(obj_base_dist > 0.45):
+                rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, -30)
+                good_gps_y_inds = self._select_grasp_inds_by_angle(rotated_obj_base_vec, tr_ang=45, axis=1)
+
+            elif(obj_base_dist < 0.37):
+                rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180 - 30)
+                good_gps_y_inds = self._select_grasp_inds_by_ang(rotated_obj_base_vec, tr_ang=90, axis=1)
             
             else:
                 good_gps_y_inds = []
 
-            self._invert_opposite_Ys(good_gps_y_inds)
-            print("Grasps where reoriented.")   
         else:
-            print("Grasps where not reoriented.")
+            rotated_obj_base_vec = self._rotate_vect_on_Z(obj_to_base_vec, 180)
+            good_gps_y_inds = self._select_grasp_inds_by_angs(rotated_obj_base_vec, tr_ang=90, axis=1)
+            # good_gps_y_inds = []
+
+        self._invert_opposite_Ys(good_gps_y_inds)
+        print("Grasps where reoriented.")   
 
     def _invert_opposite_Ys(self, good_g_inds):
         """
@@ -37,9 +41,10 @@ class GraspOrienter(GraspsBase):
         the grasp gets rotated 180 degrees.
         """
         inds = range(len(self.rel_poses))
-        inverted_gr_y_inds = [x for x in inds if (x not in good_g_inds) and self.widths[x] < 0.055]
+        # inverted_gr_y_inds = [x for x in inds if (x not in good_g_inds) and self.widths[x] < 0.055]
+        inverted_gr_y_inds = [x for x in inds if (x not in good_g_inds)]
+
         self.reoriented = [x in inverted_gr_y_inds for x in inds]
-        
         for ind in inverted_gr_y_inds:
             original_pose = self.rel_poses[ind][:3, 3].copy()
             self.rel_poses[ind] = self._rotate_around_Z(self.rel_poses[ind], pi)
@@ -54,7 +59,7 @@ class GraspOrienter(GraspsBase):
             [0, 0, 1]])
         return rot@vect
 
-    def _select_grasp_inds_by_angle(self, vect:np.ndarray, tr_ang: float, axis: int):
+    def _select_grasp_inds_by_angs(self, vect:np.ndarray, tr_ang: float, axis: int):
         """
         It filters the absolute pose grasps to select only the ones which's selected axis
         angle wrt the given vector is smaller than the given threshold angle.
@@ -68,4 +73,5 @@ class GraspOrienter(GraspsBase):
         angle_thr = np.cos(tr_ang/180*np.pi)
         inds = range(len(gposes))
         selected_ids = [x for x in inds if (rel_ang[x] > angle_thr)]
+
         return selected_ids

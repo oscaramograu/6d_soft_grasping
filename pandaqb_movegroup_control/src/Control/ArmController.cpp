@@ -40,8 +40,7 @@ void ArmController::set_place_pose(geometry_msgs::Pose pose){
     pre_place_pose = compute_pre_pose(pose);
 }
 
-void ArmController::approach_grasp(){
-    ROS_INFO_STREAM("New plan: PRE GRASP POSE");
+void ArmController::start(){
 
     // geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
     // target_pose.position.z -= 0.2;
@@ -52,8 +51,23 @@ void ArmController::approach_grasp(){
 
     // arm_mover.build_cart_plan();
     // arm_mover.clear_waypt();
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    arm_mover.moveTo(target_pose);
+}
 
-    arm_mover.moveTo(pre_grasp_pose);
+void ArmController::approach_grasp(){
+
+    // geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    // target_pose.position.z -= 0.2;
+    // arm_mover.apend_waypt(target_pose);
+
+    // arm_mover.apend_waypt(target_pose);  
+    // arm_mover.apend_waypt(pre_grasp_pose);  
+
+    // arm_mover.build_cart_plan();
+    // arm_mover.clear_waypt();
+    geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
+    arm_mover.moveTo(target_pose);
 }
 
 void ArmController::move_to_g_pose(){
@@ -61,7 +75,7 @@ void ArmController::move_to_g_pose(){
     // geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
     // arm_mover.apend_waypt(target_pose);
     geometry_msgs::Pose target_pose = arm_mover.getCurrentPose();
-    target_pose.position.z -= 0.2;
+    target_pose.position.z -= 0.1;
     arm_mover.apend_waypt(target_pose);
     arm_mover.apend_waypt(pre_grasp_pose);
     arm_mover.apend_waypt(grasp_pose);
@@ -82,7 +96,7 @@ void ArmController::move_to_place_pose(){
     arm_mover.build_cart_plan();
     arm_mover.clear_waypt();
 
-    arm_mover.set_vel_acc_scaling(default_v, default_a);
+    // arm_mover.set_vel_acc_scaling(default_v, default_a);
 }
 
 void ArmController::pick_up(){

@@ -22,7 +22,7 @@ class GraspFilterer(GraspsBase):
 
         if self.using_qb_hand:
             # good_grasps_ids_1  = self._select_grasp_inds_by_ang(obj_to_base_vec, tr_ang=90, axis=1)            
-            good_grasps_ids  = self._select_grasp_inds_by_angle(vertical_vec, tr_ang=30, axis=2)
+            good_grasps_ids  = self._select_grasp_inds_by_angle(vertical_vec, tr_ang=50, axis=2)
             # good_grasps_ids = [i for i in good_grasps_ids_1 if i in good_grasps_ids_2]            
             good_grasps_ids = self._select_higher_grasps(good_grasps_ids, obj_pose, th_dist=0.02)
 
@@ -30,7 +30,7 @@ class GraspFilterer(GraspsBase):
             # SELECT ONLY THE ONES THAT POINT TO THE CAMERA OF THE ROBOT
             obj_cam_vec = (obj_pose[:3, 3] - cam_pose[:3, 3])
             obj_cam_vec /= np.linalg.norm(obj_cam_vec)
-            good_grasps_ids  = self._select_grasp_inds_by_ang(obj_cam_vec, tr_ang=70, axis=2)
+            good_grasps_ids  = self._select_grasp_inds_by_ang(obj_cam_vec, tr_ang=40, axis=2)
 
         self._build_good_flags(good_grasps_ids)
 

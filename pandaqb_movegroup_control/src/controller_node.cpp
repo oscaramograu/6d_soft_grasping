@@ -72,7 +72,7 @@ int main(int argc, char** argv){
     // GraspRegisterer grasp_reg(&nh);
 
     // ros::Rate rate(2);
-    // int n_max(2), n(0);
+    // int n_max(2), n(0);cod
     
     // while(ros::ok() && n < n_max){
     //     n++;
@@ -85,7 +85,7 @@ int main(int argc, char** argv){
 
     Controller cont(&nh);
 
-    // cont.start_new_routine();
+    cont.start_new_routine();
     // HandController hc(&nh);
     // std::vector<double> syn(0.8, 0);
     // hc.grasp(syn);

@@ -51,7 +51,12 @@ class GraspsBroadcasater(GraspsBase):
 
     def _publish_msgs(self, ind):
         grasp_msg = Grasp()
-        grasp_msg.sinergies = self.synergies_values[ind]
+        if self.using_qb_hand:
+            grasp_msg.sinergies = self.synergies_values[ind]
+
+        else:
+            grasp_msg.sinergies = [0, 0]
+
         grasp_msg.width = self.widths[ind]
 
         self.grasp_params_pub.publish(grasp_msg)

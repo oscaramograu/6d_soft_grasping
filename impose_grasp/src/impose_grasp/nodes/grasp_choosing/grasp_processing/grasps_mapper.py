@@ -14,7 +14,9 @@ class GraspMapper(GraspsBase):
         self.pinch_offsets = np.array([0.015, 0.01, -0.01])
         self.power_offsets = np.array([0.0, 0.0, -0.02])
 
-        self.pinch_sinergy = [0.5, 0.8]
+        self.pinch_sinergy = [0.7, 0.8]
+        # self.pinch_sinergy = [0.85, 0.0]
+
         self.power_sinergy = [0.8, 0.0]
 
         self.width_th = width_th

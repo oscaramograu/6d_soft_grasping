@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20230908-0629-Experimental"
+	Name="neurolab-Precision-5820-Tower"
+	Generator="ctest-3.26.1"
+	CompilerName="/usr/bin/c++"
+	CompilerVersion="9.4.0"
+	OSName="Linux"
+	Hostname="neurolab-Precision-5820-Tower"
+	OSRelease="5.4.0-148-generic"
+	OSVersion="#165-Ubuntu SMP Tue Apr 18 08:53:12 UTC 2023"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="85"
+	ProcessorCacheSize="16896"
+	NumberOfLogicalCPU="16"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="0"
+	TotalPhysicalMemory="31793"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="4500"
+	>
+	<Testing>
+		<StartDateTime>Sep 08 08:29 CEST</StartDateTime>
+		<StartTestTime>1694154540</StartTestTime>
+		<TestList/>
+		<EndDateTime>Sep 08 08:29 CEST</EndDateTime>
+		<EndTestTime>1694154540</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

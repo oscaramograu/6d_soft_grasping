@@ -1,6 +1,6 @@
 <launch>
     <arg name="robot_sim" default = "false" />
-    <arg name="qb_hand" default = "true" />
+    <arg name="qb_hand" default = "false" />
 
     <rosparam command="load" 
     file="$(find impose_grasp)/config/params.yaml" />

@@ -18,7 +18,7 @@ class GraspBrNode:
         # good_grasp_ids = [i for i in range(len(chooser.rel_poses)) 
         #                   if chooser.good_gr_flags[i]]  
         # self.target = good_grasp_ids[random.randrange(0, len(good_grasp_ids))]
-        # self.target = 48     
+        # self.target = 89
         print("target, width, reoriented, num col pts, avg col dist")
         n_eef_pts, avg_dist = chooser.get_chosen_crit(self.target)
         print(self.target, ", ", chooser.widths[self.target], ", ", chooser.reoriented[self.target], ", ", n_eef_pts, ", ", avg_dist)
@@ -29,9 +29,9 @@ class GraspBrNode:
         self.broadcaster.broadcast_target(self.target)
 
         if not br_only_target:
-            # self.broadcaster.broadcast_good_grasps()
+            self.broadcaster.broadcast_good_grasps()
             # self.broadcaster.broadcast_all_grasps()
-            self.broadcaster.broadcast_power_gs()
+            # self.broadcaster.broadcast_power_gs()
       
     def _build_chooser(self):
         obj_pose, cam_pose = self._get_and_listen_poses()
@@ -40,7 +40,7 @@ class GraspBrNode:
         orienter.orient_grasps()
 
         mapper = GraspMapper(width_th=0.055, theta=0, grasps=orienter)
-        mapper.map_grasps(using_offset=False)
+        # mapper.map_grasps(using_offset=False)
     
 
         filterer = GraspFilterer(mapper)

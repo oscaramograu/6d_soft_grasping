@@ -11,7 +11,7 @@ EEFController::EEFController(ros::NodeHandle *nh): GraspListener(nh),
     }
     else if(rbt_conf == "gripper"){
         using_qb = false;
-        gc = new GripperController();
+        gc = new GripperController(nh);
     }
     else{
         ROS_INFO_STREAM("Wrong eef in yaml file.");
@@ -32,7 +32,7 @@ void EEFController::grasp(){
     else{
         float width;
         width = get_width();
-        gc->close_gripper(width);
+        gc->close_gripper(width-0.0075);
     }
 }
 
@@ -41,13 +41,13 @@ void EEFController::pre_pinch(){
     std::cout << width << std::endl;
     std::vector<double> sinergies;
     if (width < 0.055){
-        sinergies = {0.34, 0.05};
+        sinergies = {0.33, 0.05};
         hc->grasp(sinergies);
     }
     else{
         sinergies = {0.26, -0.02};
         hc->grasp(sinergies);
-        sinergies = {0.28, 0.0};
+        sinergies = {0.30, 0.0};
         hc->grasp(sinergies);
     }
     std::cout << sinergies[0] << ", " << sinergies[1] << std::endl;
