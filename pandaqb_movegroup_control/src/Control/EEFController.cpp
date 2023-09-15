@@ -45,9 +45,9 @@ void EEFController::pre_pinch(){
         hc->grasp(sinergies);
     }
     else{
-        sinergies = {0.26, -0.02};
+        sinergies = {0.26, -0.05};
         hc->grasp(sinergies);
-        sinergies = {0.30, 0.0};
+        // sinergies = {0.25, 0.0};
         hc->grasp(sinergies);
     }
     std::cout << sinergies[0] << ", " << sinergies[1] << std::endl;
@@ -60,8 +60,8 @@ void EEFController::close_hand(){
 
 void EEFController::open(){
     if(using_qb){
-        std::vector<double> sinergies = {0.7, 0};
-        hc->grasp(sinergies);
+        // std::vector<double> sinergies = {0.7, 0};
+        // hc->grasp(sinergies);
         hc->open();
     }
     else{

@@ -4,6 +4,7 @@ import ros_numpy
 import cv2
 import os
 from sensor_msgs.msg import Image
+import math
 
 from impose_grasp.lib.utils import PATH_TO_IMPOSE_GRASP, load_mesh
 from impose_grasp.lib.frame_builder import FrameBuilder
@@ -21,6 +22,23 @@ class MeshUtils(MeshLoader):
     def transform_mesh(self, Rt)->np.ndarray:
         Rt = Rt.copy()[:3, :]
         return np.dot(self.mesh_pts.copy(), Rt[:, :3].T) + Rt[:, 3]
+    
+    def find_edges_ids(self):
+        max_dist = 0
+        min_dist = math.inf
+        max_id = 0
+        min_id = 0
+        for i in range(self.mesh_pts.shape[0]):
+            pt = self.mesh_pts[i]
+            dist = np.linalg.norm(pt)
+            if dist > max_dist:
+                max_dist = dist
+                max_id = i
+            if dist < min_dist: 
+                min_dist = dist
+                min_id = i
+        print(max_dist)
+        return max_id, min_id
 
 class Object2ImgProjecter(MeshLoader):
     camera_intrinsic: np.ndarray

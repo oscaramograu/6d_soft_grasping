@@ -29,7 +29,8 @@ void Controller::start_new_routine(){
 void Controller::pick_and_place_routine(){
     arm_controller.start();
     eef_controller.open();
-    
+    // eef_controller.pre_pinch();
+
     arm_controller.move_to_g_pose();
 
     eef_controller.grasp();

@@ -9,6 +9,7 @@
   <param name="robot_description"
         command="xacro $(find panda_qb_description)/urdf/panda_gripper.urdf.xacro">
   </param>
+  
   <include file="$(find panda_qb_description)/launch/camera_pose_gripper.launch" />
 
   <include file="$(find franka_gripper)/launch/franka_gripper.launch" if="$(arg load_gripper)">

@@ -63,7 +63,7 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dist_rot_Z(- M_PI_4, M_PI_4);
-    double angle_radians_z = -M_PI_2 + dist_rot_Z(gen);
+    double angle_radians_z = M_PI_2 + dist_rot_Z(gen);
     // double angle_radians_z = 0;
 
     rot_z.w() = cos(angle_radians_z/2);
@@ -76,7 +76,7 @@ geometry_msgs::Pose::_orientation_type compute_place_or(){
 }
 
 void init_place_pose(geometry_msgs::Pose &place_pose){
-    double corner_x = 0.28, corner_y = -0.11, l_x = 0.405, l_y = 0.255;
+    double corner_x = 0.23, corner_y = -0.11, l_x = 0.405, l_y = 0.255;
     double random_off_x, random_off_y, margin(0.13);
 
     std::random_device rd;

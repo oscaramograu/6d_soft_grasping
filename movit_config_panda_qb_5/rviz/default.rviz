@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /MotionPlanning1/Planning Request1
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.6529411673545837
     Tree Height: 235
@@ -27,7 +28,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -84,10 +85,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -412,10 +409,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -725,10 +718,192 @@ Visualization Manager:
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
+        0:
+          Value: false
+        1:
+          Value: false
+        10:
+          Value: false
+        11:
+          Value: false
+        12:
+          Value: false
+        13:
+          Value: false
+        14:
+          Value: false
+        15:
+          Value: false
+        16:
+          Value: false
+        17:
+          Value: false
+        18:
+          Value: false
+        19:
+          Value: false
+        2:
+          Value: false
+        20:
+          Value: false
+        21:
+          Value: false
+        22:
+          Value: false
+        23:
+          Value: false
+        24:
+          Value: false
+        25:
+          Value: false
+        26:
+          Value: false
+        27:
+          Value: false
+        28:
+          Value: false
+        29:
+          Value: false
+        3:
+          Value: false
+        30:
+          Value: false
+        31:
+          Value: false
+        32:
+          Value: false
+        33:
+          Value: false
+        34:
+          Value: false
+        35:
+          Value: false
+        36:
+          Value: false
+        37:
+          Value: false
+        38:
+          Value: false
+        39:
+          Value: false
+        4:
+          Value: false
+        40:
+          Value: false
+        41:
+          Value: false
+        42:
+          Value: false
+        43:
+          Value: false
+        44:
+          Value: false
+        45:
+          Value: false
+        46:
+          Value: false
+        47:
+          Value: false
+        48:
+          Value: false
+        49:
+          Value: false
+        5:
+          Value: false
+        50:
+          Value: false
+        51:
+          Value: false
+        52:
+          Value: false
+        53:
+          Value: false
+        54:
+          Value: false
+        55:
+          Value: false
+        56:
+          Value: false
+        57:
+          Value: false
+        58:
+          Value: false
+        59:
+          Value: false
+        6:
+          Value: false
+        60:
+          Value: false
+        61:
+          Value: false
+        62:
+          Value: false
+        63:
+          Value: false
+        64:
+          Value: false
+        65:
+          Value: false
+        66:
+          Value: false
+        67:
+          Value: false
+        68:
+          Value: false
+        69:
+          Value: false
+        7:
+          Value: false
+        70:
+          Value: false
+        71:
+          Value: false
+        72:
+          Value: false
+        73:
+          Value: false
+        74:
+          Value: false
+        75:
+          Value: false
+        76:
+          Value: false
+        77:
+          Value: false
+        78:
+          Value: false
+        79:
+          Value: false
+        8:
+          Value: false
+        80:
+          Value: false
+        81:
+          Value: false
+        82:
+          Value: false
+        83:
+          Value: false
+        84:
+          Value: false
+        85:
+          Value: false
+        86:
+          Value: false
+        87:
+          Value: false
+        88:
+          Value: true
+        89:
+          Value: true
+        9:
+          Value: false
+        90:
+          Value: true
+        91:
+          Value: true
         All Enabled: false
         camera_frame:
-          Value: true
-        handeye_target:
           Value: true
         panda_EE:
           Value: false
@@ -772,6 +947,8 @@ Visualization Manager:
           Value: false
         pinch_link:
           Value: false
+        place_pose:
+          Value: true
         power_link:
           Value: true
         qb_hand_wrist_link:
@@ -858,6 +1035,10 @@ Visualization Manager:
           Value: false
         root_link:
           Value: false
+        stapler_frame:
+          Value: false
+        target_grasp:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 0.5
       Name: TF
@@ -891,8 +1072,7 @@ Visualization Manager:
                           {}
                         panda_link8:
                           camera_frame:
-                            handeye_target:
-                              {}
+                            {}
                           panda_NE:
                             panda_EE:
                               panda_K:
@@ -951,6 +1131,195 @@ Visualization Manager:
                                       qbhand2m1_thumb_distal_virtual_link:
                                         qbhand2m1_thumb_distal_link:
                                           {}
+          place_pose:
+            {}
+          stapler_frame:
+            0:
+              {}
+            1:
+              {}
+            10:
+              {}
+            11:
+              {}
+            12:
+              {}
+            13:
+              {}
+            14:
+              {}
+            15:
+              {}
+            16:
+              {}
+            17:
+              {}
+            18:
+              {}
+            19:
+              {}
+            2:
+              {}
+            20:
+              {}
+            21:
+              {}
+            22:
+              {}
+            23:
+              {}
+            24:
+              {}
+            25:
+              {}
+            26:
+              {}
+            27:
+              {}
+            28:
+              {}
+            29:
+              {}
+            3:
+              {}
+            30:
+              {}
+            31:
+              {}
+            32:
+              {}
+            33:
+              {}
+            34:
+              {}
+            35:
+              {}
+            36:
+              {}
+            37:
+              {}
+            38:
+              {}
+            39:
+              {}
+            4:
+              {}
+            40:
+              {}
+            41:
+              {}
+            42:
+              {}
+            43:
+              {}
+            44:
+              {}
+            45:
+              {}
+            46:
+              {}
+            47:
+              {}
+            48:
+              {}
+            49:
+              {}
+            5:
+              {}
+            50:
+              {}
+            51:
+              {}
+            52:
+              {}
+            53:
+              {}
+            54:
+              {}
+            55:
+              {}
+            56:
+              {}
+            57:
+              {}
+            58:
+              {}
+            59:
+              {}
+            6:
+              {}
+            60:
+              {}
+            61:
+              {}
+            62:
+              {}
+            63:
+              {}
+            64:
+              {}
+            65:
+              {}
+            66:
+              {}
+            67:
+              {}
+            68:
+              {}
+            69:
+              {}
+            7:
+              {}
+            70:
+              {}
+            71:
+              {}
+            72:
+              {}
+            73:
+              {}
+            74:
+              {}
+            75:
+              {}
+            76:
+              {}
+            77:
+              {}
+            78:
+              {}
+            79:
+              {}
+            8:
+              {}
+            80:
+              {}
+            81:
+              {}
+            82:
+              {}
+            83:
+              {}
+            84:
+              {}
+            85:
+              {}
+            86:
+              {}
+            87:
+              {}
+            88:
+              {}
+            89:
+              {}
+            9:
+              {}
+            90:
+              {}
+            91:
+              {}
+            target_grasp:
+              {}
         root_link:
           {}
       Update Interval: 0
@@ -1011,7 +1380,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.0458970069885254
+      Distance: 0.9526795148849487
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1027,9 +1396,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5547977685928345
+      Pitch: 0.8147976994514465
       Target Frame: <Fixed Frame>
-      Yaw: 1.95294988155365
+      Yaw: 1.4229540824890137
     Saved: ~
 Window Geometry:
   Displays:

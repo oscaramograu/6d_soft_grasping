@@ -5,11 +5,13 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
+        - /TF1
         - /TF1/Frames1
-        - /PointCloud21
+        - /MarkerArray1
       Splitter Ratio: 0.5
-    Tree Height: 181
+    Tree Height: 403
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -27,7 +29,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -221,7 +223,7 @@ Visualization Manager:
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
         Planning Group: arm
-        Query Goal State: true
+        Query Goal State: false
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
@@ -232,7 +234,7 @@ Visualization Manager:
         Scene Alpha: 0.8999999761581421
         Scene Color: 50; 230; 50
         Scene Display Time: 0.009999999776482582
-        Show Scene Geometry: true
+        Show Scene Geometry: false
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
       Scene Robot:
@@ -369,111 +371,9 @@ Visualization Manager:
       Frames:
         All Enabled: false
         camera_frame:
-          Value: true
+          Value: false
         camera_support_link:
           Value: false
-        cpsduck_frame:
-          Value: true
-        grasp_n_0:
-          Value: true
-        grasp_n_11:
-          Value: true
-        grasp_n_13:
-          Value: true
-        grasp_n_17:
-          Value: true
-        grasp_n_19:
-          Value: true
-        grasp_n_2:
-          Value: true
-        grasp_n_20:
-          Value: true
-        grasp_n_21:
-          Value: true
-        grasp_n_24:
-          Value: true
-        grasp_n_38:
-          Value: true
-        grasp_n_39:
-          Value: true
-        grasp_n_4:
-          Value: true
-        grasp_n_41:
-          Value: true
-        grasp_n_43:
-          Value: true
-        grasp_n_44:
-          Value: true
-        grasp_n_46:
-          Value: true
-        grasp_n_48:
-          Value: true
-        grasp_n_49:
-          Value: true
-        grasp_n_5:
-          Value: true
-        grasp_n_50:
-          Value: true
-        grasp_n_51:
-          Value: true
-        grasp_n_57:
-          Value: true
-        grasp_n_6:
-          Value: true
-        grasp_n_60:
-          Value: true
-        grasp_n_61:
-          Value: true
-        grasp_n_62:
-          Value: true
-        grasp_n_63:
-          Value: true
-        grasp_n_67:
-          Value: true
-        grasp_n_69:
-          Value: true
-        grasp_n_7:
-          Value: true
-        grasp_n_70:
-          Value: true
-        grasp_n_72:
-          Value: true
-        grasp_n_73:
-          Value: true
-        grasp_n_75:
-          Value: true
-        grasp_n_76:
-          Value: true
-        grasp_n_77:
-          Value: true
-        grasp_n_79:
-          Value: true
-        grasp_n_8:
-          Value: true
-        grasp_n_80:
-          Value: true
-        grasp_n_81:
-          Value: true
-        grasp_n_82:
-          Value: true
-        grasp_n_83:
-          Value: true
-        grasp_n_84:
-          Value: true
-        grasp_n_85:
-          Value: true
-        grasp_n_86:
-          Value: true
-        grasp_n_87:
-          Value: true
-        grasp_n_88:
-          Value: true
-        grasp_n_89:
-          Value: true
-        grasp_n_9:
-          Value: true
-        grasp_n_90:
-          Value: true
         panda_EE:
           Value: false
         panda_K:
@@ -524,10 +424,6 @@ Visualization Manager:
           Value: false
         panda_rightfinger:
           Value: false
-        place_pose:
-          Value: true
-        target_grasp:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -536,109 +432,6 @@ Visualization Manager:
       Show Names: false
       Tree:
         panda_link0:
-          cpsduck_frame:
-            grasp_n_0:
-              {}
-            grasp_n_11:
-              {}
-            grasp_n_13:
-              {}
-            grasp_n_17:
-              {}
-            grasp_n_19:
-              {}
-            grasp_n_2:
-              {}
-            grasp_n_20:
-              {}
-            grasp_n_21:
-              {}
-            grasp_n_24:
-              {}
-            grasp_n_38:
-              {}
-            grasp_n_39:
-              {}
-            grasp_n_4:
-              {}
-            grasp_n_41:
-              {}
-            grasp_n_43:
-              {}
-            grasp_n_44:
-              {}
-            grasp_n_46:
-              {}
-            grasp_n_48:
-              {}
-            grasp_n_49:
-              {}
-            grasp_n_5:
-              {}
-            grasp_n_50:
-              {}
-            grasp_n_51:
-              {}
-            grasp_n_57:
-              {}
-            grasp_n_6:
-              {}
-            grasp_n_60:
-              {}
-            grasp_n_61:
-              {}
-            grasp_n_62:
-              {}
-            grasp_n_63:
-              {}
-            grasp_n_67:
-              {}
-            grasp_n_69:
-              {}
-            grasp_n_7:
-              {}
-            grasp_n_70:
-              {}
-            grasp_n_72:
-              {}
-            grasp_n_73:
-              {}
-            grasp_n_75:
-              {}
-            grasp_n_76:
-              {}
-            grasp_n_77:
-              {}
-            grasp_n_79:
-              {}
-            grasp_n_8:
-              {}
-            grasp_n_80:
-              {}
-            grasp_n_81:
-              {}
-            grasp_n_82:
-              {}
-            grasp_n_83:
-              {}
-            grasp_n_84:
-              {}
-            grasp_n_85:
-              {}
-            grasp_n_86:
-              {}
-            grasp_n_87:
-              {}
-            grasp_n_88:
-              {}
-            grasp_n_89:
-              {}
-            grasp_n_9:
-              {}
-            grasp_n_90:
-              {}
-            target_grasp:
-              {}
           panda_link0_sc:
             {}
           panda_link1:
@@ -679,13 +472,11 @@ Visualization Manager:
                             panda_EE:
                               panda_K:
                                 {}
-          place_pose:
-            {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: visualization_marker_array
+      Marker Topic: /marker_array
       Name: MarkerArray
       Namespaces:
         {}
@@ -759,7 +550,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.3275723457336426
+      Distance: 1.649259090423584
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -767,17 +558,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.377083957195282
-        Y: 0.13884516060352325
-        Z: 0.3081081807613373
+        X: 0.3709936738014221
+        Y: 0.1058872640132904
+        Z: 0.1059541180729866
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5653995871543884
+      Pitch: 0.3103996813297272
       Target Frame: <Fixed Frame>
-      Yaw: 4.5167622566223145
+      Yaw: 1.7867621183395386
     Saved: ~
 Window Geometry:
   Displays:
@@ -791,7 +582,7 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002b70000035efc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000000f2000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fc00000135000002660000017d00fffffffa000000010100000002fb0000002600480061006e0064004500790065002000430061006c006900620072006100740069006f006e0000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000000000002b7000001f300fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016000000010000010f0000035efc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc0000003d0000035e0000000000fffffffaffffffff0100000002fb0000000a0049006d0061006700650000000000ffffffff0000005e00fffffffb0000000a0056006900650077007300000006290000010f0000010000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003afc0100000002fb0000000800540069006d0065010000000000000738000003bc00fffffffb0000000800540069006d006501000000000000045000000000000000000000047b0000035e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000002b70000035efc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000001d0000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fc00000213000001880000017d00fffffffa000000010100000002fb0000002600480061006e0064004500790065002000430061006c006900620072006100740069006f006e0000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000000000002b7000001f300fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016000000010000010f0000035efc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc0000003d0000035e0000000000fffffffaffffffff0100000002fb0000000a0049006d0061006700650000000000ffffffff0000005e00fffffffb0000000a0056006900650077007300000006290000010f0000010000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003afc0100000002fb0000000800540069006d0065010000000000000738000003bc00fffffffb0000000800540069006d006501000000000000045000000000000000000000047b0000035e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

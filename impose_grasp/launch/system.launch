@@ -1,14 +1,14 @@
 <launch>
     <arg name="robot_sim" default = "false" />
-    <arg name="qb_hand" default = "false" />
+    <arg name="qb_hand" default = "true" />
 
     <rosparam command="load" 
     file="$(find impose_grasp)/config/params.yaml" />
 
     <!-- Add other scene objects to the planning scene -->
-    <node pkg="pandaqb_movegroup_control" type= "scene_objects_publisher_node"
+    <!-- <node pkg="pandaqb_movegroup_control" type= "scene_objects_publisher_node"
     name="target_obj_publisher_node" output="screen"/>
-    
+     -->
     <!-- Launch fake robot in the scene -->
     <include unless="$(arg robot_sim)" file="$(find panda_qb_description)/launch/real_panda.launch">
         <arg name="qb_hand" value="$(arg qb_hand)" />

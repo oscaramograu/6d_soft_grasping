@@ -21,6 +21,8 @@
          if="$(arg load_gripper)">
   </param>
 
+  <include file="$(find panda_qb_description)/launch/camera_pose.launch" />
+
  <!-- Launch the franka control node -->
   <node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" required="true">
     <rosparam command="load" file="$(find franka_control)/config/franka_control_node.yaml" subst_value="true" />

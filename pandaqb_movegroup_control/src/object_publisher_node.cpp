@@ -25,6 +25,7 @@ int main(int argc, char** argv){
 
     std::string rbt_conf, hand_path;
     ros::param::get("robot_config", rbt_conf);
+    rbt_conf = "qb_hand";
     hand_path = grippr_mesh_pth(rbt_conf);
 // ==============  PUBLISH THE TARGET OBJECT ============== 
     TargetMeshBr object("", obj_name);

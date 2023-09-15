@@ -145,6 +145,7 @@ int main(int argc, char** argv){
 
     // GroupMover arm("arm");
     // arm.set_EEF_link("panda_link8");
+    // arm.moveHome();
     // arm.printCurrentJointPosition();
 
     // target_pose.position.z += 0.05;
